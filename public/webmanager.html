@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="id">
-
-<head>
+<!DOCTYPE html><html lang="id"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Manager - Dapoy Panel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -520,16 +516,16 @@
             <a href="/dashboard" class="nav-item "><span class="icon">📊</span>Dashboard</a>
             <a href="/tunnelmanager" class="nav-item "><span class="icon">☁️</span>Tunneling</a>
             <a href="/webmanager" class="nav-item active"><span class="icon">🌐</span>Website</a>
-            <a href="/appmanager" class="nav-item "><span class="icon">📦</span>Node & Pyth</a>
+            <a href="/appmanager" class="nav-item "><span class="icon">📦</span>Node &amp; Pyth</a>
             <a href="/databasemanager" class="nav-item "><span class="icon">🗄️</span>Database</a>
             <a href="/filemanager" class="nav-item "><span class="icon">📁</span>File Manager</a>
             <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span>phpMyAdmin</a>
             <a href="/terminal" class="nav-item "><span class="icon">🔧</span>Terminal SSH</a>
-            <a href="javascript:void(0)"
-                onclick="showDonateModal()"
-                class="nav-item"
-                style="margin-top: auto; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.5);"><span
-                    class="icon">💖</span>Donate</a>
+            
+            <div id="trialIndicator" style="display: none; justify-content: center; align-items: center; gap: 8px; margin-top: auto; margin-bottom: 10px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px dashed rgba(239, 68, 68, 0.5); padding: 12px; border-radius: 12px; font-weight: bold; font-size: 13px;">
+                ⏱️ Trial: <span id="trialCountdown" style="font-family: monospace; font-size: 14px;">--:--:--</span>
+            </div>
+        <a href="javascript:void(0)" onclick="showDonateModal()" class="nav-item" style="margin-top: 0; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.5);" id="btnDonateOrReg"><span class="icon">💖</span>Donate</a>
             <a href="/settings" class="nav-item "><span class="icon">⚙️</span>Pengaturan Sistem</a>
             <a href="/logout" class="nav-item" style="color: #ef4444;"><span class="icon">🚪</span>Logout</a>
         </nav>
@@ -565,54 +561,46 @@
         <div class="modal">
             <div class="modal-header">
                 <h3>🌐 Buat Website Baru</h3>
-                <button class="close-btn" onclick="closeAddWebModal()">&times;</button>
+                <button class="close-btn" onclick="closeAddWebModal()">×</button>
             </div>
             <div class="form-group" style="margin-bottom: 16px;" id="hostnameAutoGroup">
                 <label>Nama Domain / Subdomain</label>
                 <div style="display: flex; gap: 8px; align-items: center;">
-                    <input type="text" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9]/g, '')" id="webSubdomain" placeholder="subdomain"
-                        style="flex: 1; min-width: 0; height: 44px; padding: 0 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff;">
+                    <input type="text" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9]/g, '')" id="webSubdomain" placeholder="subdomain" style="flex: 1; min-width: 0; height: 44px; padding: 0 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff;">
                     <span style="color: var(--gray); font-weight: bold;">.</span>
-                    <select id="webDomainSelect"
-                        style="flex: 1.5; min-width: 0; height: 44px; padding: 0 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff;">
+                    <select id="webDomainSelect" style="flex: 1.5; min-width: 0; height: 44px; padding: 0 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff;">
                         <option value="">Memuat domain...</option>
                     </select>
                 </div>
                 <div style="margin-top: 8px; text-align: right;">
-                    <a href="javascript:void(0)" onclick="toggleDomainInputMode()"
-                        style="color: var(--secondary); font-size: 12px; text-decoration: none;">Gunakan Input
+                    <a href="javascript:void(0)" onclick="toggleDomainInputMode()" style="color: var(--secondary); font-size: 12px; text-decoration: none;">Gunakan Input
                         Manual</a>
                 </div>
             </div>
             <div class="form-group" style="margin-bottom: 16px; display: none;" id="hostnameManualGroup">
                 <label>Nama Domain / Subdomain (Manual)</label>
-                <input type="text" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9.-]/g, '')" id="webDomainManual" placeholder="Contoh: api.dapoy.net"
-                    style="width: 100%; height: 44px; padding: 0 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff;">
+                <input type="text" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9.-]/g, '')" id="webDomainManual" placeholder="Contoh: api.dapoy.net" style="width: 100%; height: 44px; padding: 0 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff;">
                 <div style="margin-top: 8px; text-align: right;">
-                    <a href="javascript:void(0)" onclick="toggleDomainInputMode()"
-                        style="color: var(--secondary); font-size: 12px; text-decoration: none;">Pilih dari
+                    <a href="javascript:void(0)" onclick="toggleDomainInputMode()" style="color: var(--secondary); font-size: 12px; text-decoration: none;">Pilih dari
                         Cloudflare</a>
                 </div>
             </div>
             <div class="form-group" style="margin-bottom: 16px;">
                 <label>Directory Path (Root Folder)</label>
                 <div style="display: flex; gap: 8px;">
-                    <select id="webBaseDir"
-                        style="flex: 1; min-width: 0; height: 44px; padding: 0 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                    <select id="webBaseDir" style="flex: 1; min-width: 0; height: 44px; padding: 0 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
                         <option value="/www/dp/">/www/dp/</option>
                                     <option value="/www/app/">/www/app/</option>
                                     <option value="/www/project/">/www/project/</option>
                     </select>
-                    <input type="text" oninput="this.value = this.value.replace(/\s+/g, '-')" id="webDirName" placeholder="nama-folder"
-                        style="flex: 2; min-width: 0; height: 44px; padding: 0 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                    <input type="text" oninput="this.value = this.value.replace(/\s+/g, '-')" id="webDirName" placeholder="nama-folder" style="flex: 2; min-width: 0; height: 44px; padding: 0 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
                 </div>
                 <p style="font-size: 12px; color: var(--gray); margin-top: 6px;">Biarkan kosong untuk otomatis
                     menggunakan nama domain.</p>
             </div>
             <div class="form-group" style="margin-bottom: 16px;">
                 <label>Versi PHP (Standar)</label>
-                <select id="webPhpVersion"
-                    style="width: 100%; height: 44px; padding: 0 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff;">
+                <select id="webPhpVersion" style="width: 100%; height: 44px; padding: 0 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff;">
                     <option value="81">PHP 8.1</option>
                     <option value="80">PHP 8.0</option>
                     <option value="74">PHP 7.4</option>
@@ -621,12 +609,11 @@
             </div>
             <div class="form-group" style="margin-bottom: 24px;">
                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                    <input type="checkbox" id="webEnableTunnel" checked style="width: auto;">
+                    <input type="checkbox" id="webEnableTunnel" checked="" style="width: auto;">
                     <span>Otomatis Buat Rute Cloudflare Tunnel (Tanpa Buka Port 80 VPS)</span>
                 </label>
             </div>
-            <button onclick="submitAddWeb()" class="btn btn-primary" id="btnSubmitAddWeb"
-                style="width: 100%; height: 44px; padding: 0 12px;">Buat Website</button>
+            <button onclick="submitAddWeb()" class="btn btn-primary" id="btnSubmitAddWeb" style="width: 100%; height: 44px; padding: 0 12px;">Buat Website</button>
         </div>
     </div>
     <script>
@@ -860,6 +847,105 @@ function showDonateModal() {
 }
 </script>
 
-</body>
 
-</html>
+
+
+<!-- REGISTRASI MODAL -->
+<div id="trialRegModal" class="modal">
+    <div class="modal-content" style="max-width: 400px; text-align: center; border-radius: 16px; padding: 30px;">
+        <h2 style="margin-top: 0; color: #fff;">Aktivasi Dapoy Panel</h2>
+        <p style="color: var(--gray); margin-bottom: 20px; font-size: 14px;">Waktu Free Trial (2 Jam) sedang berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
+        
+        <input type="text" id="modalLicenseKey" placeholder="DP-XXXX-XXXX" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-dark); color: #fff; text-align: center; font-family: monospace; font-size: 16px; margin-bottom: 15px; text-transform: uppercase;">
+        
+        <div style="display: flex; gap: 10px;">
+            <button onclick="document.getElementById('trialRegModal').classList.remove('active')" class="btn" style="flex: 1; background: var(--border); color: #fff; padding: 10px; border-radius: 10px;">Batal</button>
+            <button onclick="submitModalActivation()" id="btnModalActivate" class="btn btn-primary" style="flex: 1; padding: 10px; border-radius: 10px;">Aktivasi</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let trialInterval;
+async function fetchLicenseStatus() {
+    try {
+        const res = await fetch('/api/license-status');
+        const data = await res.json();
+        const btnDonate = document.getElementById('btnDonateOrReg');
+        const trialIndicator = document.getElementById('trialIndicator');
+        const trialCountdown = document.getElementById('trialCountdown');
+        
+        if (data.status === 'registered') {
+            if (trialIndicator) trialIndicator.style.display = 'none';
+            if (btnDonate) {
+                btnDonate.innerHTML = '<span class="icon">💎</span>Registered';
+                btnDonate.style.color = '#3b82f6';
+                btnDonate.style.borderColor = 'rgba(59, 130, 246, 0.5)';
+                btnDonate.style.background = 'rgba(59, 130, 246, 0.1)';
+                // Tetap bisa buka donate modal kalau di klik (opsional)
+            }
+        } else if (data.status === 'trial') {
+            if (btnDonate) {
+                btnDonate.innerHTML = '<span class="icon">🔑</span>Registrasi';
+                btnDonate.style.color = '#f59e0b';
+                btnDonate.style.borderColor = 'rgba(245, 158, 11, 0.5)';
+                btnDonate.style.background = 'rgba(245, 158, 11, 0.1)';
+                btnDonate.onclick = function() {
+                    document.getElementById('trialRegModal').classList.add('active');
+                };
+            }
+            if (trialIndicator && data.trialEndsAt) {
+                trialIndicator.style.display = 'flex';
+                
+                trialInterval = setInterval(() => {
+                    const now = Date.now();
+                    const diff = data.trialEndsAt - now;
+                    if (diff <= 0) {
+                        clearInterval(trialInterval);
+                        window.location.reload(); // akan diarahkan ke layar block
+                    } else {
+                        const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
+                        const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+                        const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+                        trialCountdown.innerText = h + ':' + m + ':' + s;
+                    }
+                }, 1000);
+            }
+        } else if (data.status === 'expired') {
+            window.location.reload();
+        }
+    } catch (err) {
+        console.error('Error fetching license status:', err);
+    }
+}
+
+async function submitModalActivation() {
+    const key = document.getElementById('modalLicenseKey').value.trim();
+    if (!key) return alert('Masukkan License Key!');
+    const btn = document.getElementById('btnModalActivate');
+    btn.disabled = true;
+    btn.innerText = 'Memproses...';
+    
+    try {
+        const res = await fetch('/api/activate', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ license_key: key })
+        });
+        const data = await res.json();
+        if (data.success) {
+            alert('Aktivasi Berhasil! Halaman akan dimuat ulang.');
+            window.location.reload();
+        } else {
+            alert('Gagal: ' + (data.message || 'Key tidak valid'));
+        }
+    } catch (err) {
+        alert('Terjadi kesalahan server.');
+    }
+    btn.disabled = false;
+    btn.innerText = 'Aktivasi';
+}
+
+document.addEventListener('DOMContentLoaded', fetchLicenseStatus);
+</script>
+</body></html>

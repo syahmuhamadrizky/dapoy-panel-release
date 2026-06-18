@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="id">
-
-<head>
+<!DOCTYPE html><html lang="id"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tunnel Manager - Dapoy Panel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -573,16 +569,16 @@
             <a href="/dashboard" class="nav-item "><span class="icon">📊</span>Dashboard</a>
             <a href="/tunnelmanager" class="nav-item active"><span class="icon">☁️</span>Tunneling</a>
             <a href="/webmanager" class="nav-item "><span class="icon">🌐</span>Website</a>
-            <a href="/appmanager" class="nav-item "><span class="icon">📦</span>Node & Pyth</a>
+            <a href="/appmanager" class="nav-item "><span class="icon">📦</span>Node &amp; Pyth</a>
             <a href="/databasemanager" class="nav-item "><span class="icon">🗄️</span>Database</a>
             <a href="/filemanager" class="nav-item "><span class="icon">📁</span>File Manager</a>
             <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span>phpMyAdmin</a>
             <a href="/terminal" class="nav-item "><span class="icon">🔧</span>Terminal SSH</a>
-            <a href="javascript:void(0)"
-                onclick="showDonateModal()"
-                class="nav-item"
-                style="margin-top: auto; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.5);"><span
-                    class="icon">💖</span>Donate</a>
+            
+            <div id="trialIndicator" style="display: none; justify-content: center; align-items: center; gap: 8px; margin-top: auto; margin-bottom: 10px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px dashed rgba(239, 68, 68, 0.5); padding: 12px; border-radius: 12px; font-weight: bold; font-size: 13px;">
+                ⏱️ Trial: <span id="trialCountdown" style="font-family: monospace; font-size: 14px;">--:--:--</span>
+            </div>
+        <a href="javascript:void(0)" onclick="showDonateModal()" class="nav-item" style="margin-top: 0; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.5);" id="btnDonateOrReg"><span class="icon">💖</span>Donate</a>
             <a href="/settings" class="nav-item "><span class="icon">⚙️</span>Pengaturan Sistem</a>
             <a href="/logout" class="nav-item" style="color: #ef4444;"><span class="icon">🚪</span>Logout</a>
         </nav>
@@ -600,8 +596,7 @@
                 <p id="cloudflareSetupDesc">Anda belum mengautentikasi Cloudflare Tunnel. Silakan hubungkan akun
                     Cloudflare Anda untuk mulai menggunakan Dapoy Panel secara eksternal.</p>
                 <div id="cloudflareActionContainer">
-                    <button onclick="startCloudflareLogin()" class="btn btn-success" id="btnStartLogin"
-                        style="padding: 12px 24px; font-size: 16px;">Hubungkan Sekarang</button>
+                    <button onclick="startCloudflareLogin()" class="btn btn-success" id="btnStartLogin" style="padding: 12px 24px; font-size: 16px;">Hubungkan Sekarang</button>
                     <div id="loginStatusText" style="margin-top: 16px; color: var(--warning); display: none;">Menunggu
                         otorisasi...</div>
                 </div>
@@ -609,27 +604,22 @@
                 <div id="cloudflaredInstallContainer" style="display: none; margin-top: 20px;">
                     <p style="color: var(--danger); font-weight: bold; margin-bottom: 12px;">⚠️ Sistem mendeteksi
                         'cloudflared' belum terpasang di VPS ini.</p>
-                    <button onclick="installCloudflared()" class="btn btn-primary" id="btnInstallCloudflared"
-                        style="padding: 12px 24px; font-size: 16px;">⬇️ Install Cloudflared Otomatis</button>
+                    <button onclick="installCloudflared()" class="btn btn-primary" id="btnInstallCloudflared" style="padding: 12px 24px; font-size: 16px;">⬇️ Install Cloudflared Otomatis</button>
                 </div>
             </div>
 
             <!-- Terminal Modal for Installation -->
             <div id="terminalModal" class="modal-overlay">
                 <div class="modal" style="max-width: 800px; padding: 0; background: #1e1e1e;">
-                    <div class="modal-header"
-                        style="background: #2d2d2d; border-bottom: 1px solid #404040; padding: 15px 20px; margin-bottom: 0;">
+                    <div class="modal-header" style="background: #2d2d2d; border-bottom: 1px solid #404040; padding: 15px 20px; margin-bottom: 0;">
                         <h3 id="terminalModalTitle" style="margin: 0; color: #fff; font-size: 16px;">Proses Instalasi
                         </h3>
-                        <button onclick="closeTerminalModal()"
-                            style="background: none; border: none; color: #fff; font-size: 20px; cursor: pointer;">&times;</button>
+                        <button onclick="closeTerminalModal()" style="background: none; border: none; color: #fff; font-size: 20px; cursor: pointer;">×</button>
                     </div>
                     <div style="padding: 20px;">
-                        <pre id="terminalLog"
-                            style="background: #000; color: #0f0; padding: 15px; border-radius: 8px; font-family: monospace; height: 400px; overflow-y: auto; margin: 0; font-size: 13px; white-space: pre-wrap; line-height: 1.5;"></pre>
+                        <pre id="terminalLog" style="background: #000; color: #0f0; padding: 15px; border-radius: 8px; font-family: monospace; height: 400px; overflow-y: auto; margin: 0; font-size: 13px; white-space: pre-wrap; line-height: 1.5;"></pre>
                         <div style="margin-top: 15px; text-align: right;">
-                            <button id="btnTerminalClose" onclick="closeTerminalModal()" class="btn btn-secondary"
-                                style="display: none;">Tutup</button>
+                            <button id="btnTerminalClose" onclick="closeTerminalModal()" class="btn btn-secondary" style="display: none;">Tutup</button>
                         </div>
                     </div>
                 </div>
@@ -644,8 +634,7 @@
                     <label>Nama Tunnel</label>
                     <input type="text" id="newTunnelName" placeholder="Contoh: dapoy-server-1">
                 </div>
-                <button onclick="createTunnel()" class="btn btn-primary" id="btnCreateTunnel"
-                    style="padding: 12px 24px; font-size: 16px;">Buat Tunnel</button>
+                <button onclick="createTunnel()" class="btn btn-primary" id="btnCreateTunnel" style="padding: 12px 24px; font-size: 16px;">Buat Tunnel</button>
                 <div id="createTunnelStatus" style="margin-top: 16px; color: var(--warning); display: none;">
                     Memproses...</div>
             </div>
@@ -686,7 +675,7 @@
                     </div>
                     <div class="form-group" style="display: flex; gap: 8px;">
                         <div style="flex: 3;">
-                            <label>Protocol & Host</label>
+                            <label>Protocol &amp; Host</label>
                             <select id="tunnelHost">
                                 <option value="http://localhost">http://localhost</option>
                                 <option value="http://127.0.0.1">http://127.0.0.1</option>
@@ -701,8 +690,7 @@
                         </div>
                     </div>
                     <div style="display: flex; gap: 8px;">
-                        <button onclick="addTunnelRoute()" class="btn btn-success" id="btnAddTunnel"
-                            style="padding: 12px 20px; flex: 1;">+ Tambah Rute</button>
+                        <button onclick="addTunnelRoute()" class="btn btn-success" id="btnAddTunnel" style="padding: 12px 20px; flex: 1;">+ Tambah Rute</button>
                     </div>
                 </div>
 
@@ -728,11 +716,10 @@
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
                     <div>
                         <h3>Manajemen Akun SFTP Klien</h3>
-                        <p style="color: var(--gray); font-size: 14px; margin-top: 4px;">Kelola username & password
+                        <p style="color: var(--gray); font-size: 14px; margin-top: 4px;">Kelola username &amp; password
                             khusus untuk SFTP / Auto-Deploy GitHub</p>
                     </div>
-                    <button onclick="openSftpHelp()" class="btn btn-secondary"
-                        style="font-size: 13px; padding: 6px 12px; display: flex; align-items: center; gap: 6px;">
+                    <button onclick="openSftpHelp()" class="btn btn-secondary" style="font-size: 13px; padding: 6px 12px; display: flex; align-items: center; gap: 6px;">
                         📚 Panduan Deployment Klien
                     </button>
                 </div>
@@ -751,8 +738,7 @@
                 <div class="form-group" style="display: flex; gap: 8px;">
                     <div style="flex: 1;">
                         <label>Base Path (Lokasi Utama)</label>
-                        <select id="sftpBaseDir"
-                            style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace; outline: none;">
+                        <select id="sftpBaseDir" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace; outline: none;">
                             <option value="/www/dp/">/www/dp/</option>
                                     <option value="/www/app/">/www/app/</option>
                                     <option value="/www/project/">/www/project/</option>
@@ -760,12 +746,10 @@
                     </div>
                     <div style="flex: 1;">
                         <label>Nama Folder Web</label>
-                        <input type="text" id="sftpDirectory" placeholder="Contoh: website_budi"
-                            style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace; outline: none;">
+                        <input type="text" id="sftpDirectory" placeholder="Contoh: website_budi" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace; outline: none;">
                     </div>
                 </div>
-                <button onclick="createSftpUser()" class="btn btn-primary" id="btnCreateSftpUser"
-                    style="padding: 12px 20px; width: 100%;">+ Buat Akun SFTP</button>
+                <button onclick="createSftpUser()" class="btn btn-primary" id="btnCreateSftpUser" style="padding: 12px 20px; width: 100%;">+ Buat Akun SFTP</button>
             </div>
 
             <table style="margin-top: 20px;">
@@ -789,7 +773,7 @@
         <div class="modal">
             <div class="modal-header">
                 <h3>⚙️ Pengaturan API Cloudflare</h3>
-                <button class="close-btn" onclick="closeApiSettings()">&times;</button>
+                <button class="close-btn" onclick="closeApiSettings()">×</button>
             </div>
             <p style="color: var(--gray); font-size: 14px; margin-bottom: 16px;">Masukkan Cloudflare API Token untuk
                 mengaktifkan fitur hapus DNS otomatis ketika rute dihapus.</p>
@@ -809,19 +793,16 @@
         <div class="modal" style="width: 650px;">
             <div class="modal-header">
                 <h3>📚 Dokumen Panduan Deployment Klien</h3>
-                <button class="close-btn" onclick="closeSftpHelp()">&times;</button>
+                <button class="close-btn" onclick="closeSftpHelp()">×</button>
             </div>
-            <div
-                style="color: var(--gray); font-size: 14px; line-height: 1.6; max-height: 70vh; overflow-y: auto; padding-right: 10px;">
+            <div style="color: var(--gray); font-size: 14px; line-height: 1.6; max-height: 70vh; overflow-y: auto; padding-right: 10px;">
                 <p style="margin-bottom: 16px;">Karena server Anda tidak menggunakan IP Publik langsung (dilindungi
                     Cloudflare Tunnel), berikut adalah 3 metode yang dapat digunakan oleh klien untuk mendeploy website
                     mereka. Berikan akun (Username, Password, URL Webhook) kepada klien Anda beserta panduan ini.</p>
 
-                <div
-                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
                     <h4 style="color: white; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
-                        <span
-                            style="background: var(--success); color: black; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Metode
+                        <span style="background: var(--success); color: black; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Metode
                             1</span>
                         GitHub Auto-Deploy (Webhook) — <i>Paling Disarankan</i>
                     </h4>
@@ -829,7 +810,7 @@
                             HTML, Laravel, dll).</b> Ini adalah cara paling instan. Begitu ada kode baru di GitHub, VPS
                         akan otomatis menarik (<i>PULL</i>) file tersebut.</p>
                     <ol style="padding-left: 20px; font-size: 13px; margin-bottom: 0;">
-                        <li>Buka repository GitHub klien > <b>Settings</b> > <b>Webhooks</b> > <b>Add webhook</b>.</li>
+                        <li>Buka repository GitHub klien &gt; <b>Settings</b> &gt; <b>Webhooks</b> &gt; <b>Add webhook</b>.</li>
                         <li>Paste <b>URL Webhook GitHub</b> (Bisa dicopy dari tombol 'Lihat Detail' akun).</li>
                         <li>Pilih Content type: <code>application/json</code> (atau form-urlencoded) dan simpan.</li>
                         <li style="color: var(--success); margin-top: 4px;"><b>Cerdas:</b> Folder web klien tidak perlu
@@ -838,11 +819,9 @@
                     </ol>
                 </div>
 
-                <div
-                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
                     <h4 style="color: white; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
-                        <span
-                            style="background: var(--warning); color: black; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Metode
+                        <span style="background: var(--warning); color: black; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Metode
                             2</span>
                         GitHub Actions (Jalur SFTP) — <i>Untuk Framework Berat</i>
                     </h4>
@@ -852,23 +831,20 @@
                     <div style="font-size: 13px; margin-bottom: 0;">
                         Tambahkan step ini di file <code>.github/workflows/deploy.yml</code> klien tepat sebelum step
                         upload SFTP:
-                        <pre
-                            style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; overflow-x: auto; margin-top: 6px; font-size: 12px; line-height: 1.4;"><code style="color: #a6accd;" id="docCmdGithub">- name: Buka Jalur Cloudflare Tunnel
+                        <pre style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; overflow-x: auto; margin-top: 6px; font-size: 12px; line-height: 1.4;"><code style="color: #a6accd;" id="docCmdGithub">- name: Buka Jalur Cloudflare Tunnel
   run: |
     wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
     sudo dpkg -i cloudflared-linux-amd64.deb
-    cloudflared access tcp --hostname ftp.dapoy.net --url localhost:2222 &
+    cloudflared access tcp --hostname ftp.dapoy.net --url localhost:2222 &amp;
     sleep 3</code></pre>
                         Lalu set target Host SFTP di script upload GitHub Action ke <b>localhost</b> dan port
                         <b>2222</b>.
                     </div>
                 </div>
 
-                <div
-                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px;">
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px;">
                     <h4 style="color: white; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
-                        <span
-                            style="background: var(--primary); color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Metode
+                        <span style="background: var(--primary); color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Metode
                             3</span>
                         Transfer Manual (FileZilla / SFTP)
                     </h4>
@@ -878,12 +854,10 @@
                         <li style="margin-bottom: 4px;">Install aplikasi <code>cloudflared</code> di laptop/PC klien.
                         </li>
                         <li style="margin-bottom: 4px;">Buka CMD/Terminal di laptop klien, jalankan: <br>
-                            <code
-                                style="background: rgba(0,0,0,0.4); padding: 4px 8px; border-radius: 4px; display: inline-block; margin-top: 4px; color: var(--success);"
-                                id="docCmdLocal">cloudflared access tcp --hostname ftp.dapoy.net --url localhost:2222</code>
+                            <code style="background: rgba(0,0,0,0.4); padding: 4px 8px; border-radius: 4px; display: inline-block; margin-top: 4px; color: var(--success);" id="docCmdLocal">cloudflared access tcp --hostname ftp.dapoy.net --url localhost:2222</code>
                         </li>
                         <li>Biarkan CMD terbuka. Buka FileZilla, isi Host: <b>localhost</b>, Port: <b>2222</b>, dan
-                            masukkan Username & Password akun SFTP klien.</li>
+                            masukkan Username &amp; Password akun SFTP klien.</li>
                     </ol>
                 </div>
 
@@ -895,10 +869,9 @@
         <div class="modal" style="width: 450px;">
             <div class="modal-header">
                 <h3>👁️ Detail Akun SFTP</h3>
-                <button class="close-btn" onclick="closeSftpDetail()">&times;</button>
+                <button class="close-btn" onclick="closeSftpDetail()">×</button>
             </div>
-            <div
-                style="background: rgba(0,0,0,0.2); padding: 16px; border-radius: 8px; margin-bottom: 16px; font-family: monospace; font-size: 13px;">
+            <div style="background: rgba(0,0,0,0.2); padding: 16px; border-radius: 8px; margin-bottom: 16px; font-family: monospace; font-size: 13px;">
                 <div style="margin-bottom: 10px; color: var(--gray);">Kredensial Login:</div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                     <span style="color: var(--gray);">Username:</span>
@@ -906,15 +879,13 @@
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                     <span style="color: var(--gray);">Password:</span>
-                    <span style="color: var(--primary); font-weight: bold; cursor: pointer;" id="detPassword"
-                        onclick="copyToClipboard(this.innerText)">... (Klik utk Copy)</span>
+                    <span style="color: var(--primary); font-weight: bold; cursor: pointer;" id="detPassword" onclick="copyToClipboard(this.innerText)">... (Klik utk Copy)</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                     <span style="color: var(--gray);">Direktori:</span>
                     <span style="color: white;" id="detDirectory">...</span>
                 </div>
-                <div
-                    style="margin-top: 16px; margin-bottom: 10px; color: var(--gray); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                <div style="margin-top: 16px; margin-bottom: 10px; color: var(--gray); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
                     Untuk Klien (FileZilla / GitHub):</div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                     <span style="color: var(--gray);">Host (FileZilla):</span>
@@ -924,14 +895,11 @@
                     <span style="color: var(--gray);">Port (FileZilla):</span>
                     <span style="color: white;">2222</span>
                 </div>
-                <div
-                    style="margin-top: 16px; margin-bottom: 10px; color: var(--gray); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                <div style="margin-top: 16px; margin-bottom: 10px; color: var(--gray); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
                     Untuk Klien (GitHub Auto Deploy):</div>
                 <div style="display: flex; flex-direction: column; margin-bottom: 8px;">
                     <span style="color: var(--gray); margin-bottom: 4px;">URL Webhook GitHub:</span>
-                    <span
-                        style="color: var(--primary); font-weight: bold; cursor: pointer; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 4px; word-break: break-all;"
-                        id="detWebhook" onclick="copyToClipboard(this.innerText)">... (Klik utk Copy)</span>
+                    <span style="color: var(--primary); font-weight: bold; cursor: pointer; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 4px; word-break: break-all;" id="detWebhook" onclick="copyToClipboard(this.innerText)">... (Klik utk Copy)</span>
                     <span style="color: var(--gray); font-size: 11px; margin-top: 4px;">*Set Content type ke
                         application/json di pengaturan GitHub Webhook</span>
                 </div>
@@ -1507,6 +1475,105 @@ function showDonateModal() {
 }
 </script>
 
-</body>
 
-</html>
+
+
+<!-- REGISTRASI MODAL -->
+<div id="trialRegModal" class="modal">
+    <div class="modal-content" style="max-width: 400px; text-align: center; border-radius: 16px; padding: 30px;">
+        <h2 style="margin-top: 0; color: #fff;">Aktivasi Dapoy Panel</h2>
+        <p style="color: var(--gray); margin-bottom: 20px; font-size: 14px;">Waktu Free Trial (2 Jam) sedang berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
+        
+        <input type="text" id="modalLicenseKey" placeholder="DP-XXXX-XXXX" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-dark); color: #fff; text-align: center; font-family: monospace; font-size: 16px; margin-bottom: 15px; text-transform: uppercase;">
+        
+        <div style="display: flex; gap: 10px;">
+            <button onclick="document.getElementById('trialRegModal').classList.remove('active')" class="btn" style="flex: 1; background: var(--border); color: #fff; padding: 10px; border-radius: 10px;">Batal</button>
+            <button onclick="submitModalActivation()" id="btnModalActivate" class="btn btn-primary" style="flex: 1; padding: 10px; border-radius: 10px;">Aktivasi</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let trialInterval;
+async function fetchLicenseStatus() {
+    try {
+        const res = await fetch('/api/license-status');
+        const data = await res.json();
+        const btnDonate = document.getElementById('btnDonateOrReg');
+        const trialIndicator = document.getElementById('trialIndicator');
+        const trialCountdown = document.getElementById('trialCountdown');
+        
+        if (data.status === 'registered') {
+            if (trialIndicator) trialIndicator.style.display = 'none';
+            if (btnDonate) {
+                btnDonate.innerHTML = '<span class="icon">💎</span>Registered';
+                btnDonate.style.color = '#3b82f6';
+                btnDonate.style.borderColor = 'rgba(59, 130, 246, 0.5)';
+                btnDonate.style.background = 'rgba(59, 130, 246, 0.1)';
+                // Tetap bisa buka donate modal kalau di klik (opsional)
+            }
+        } else if (data.status === 'trial') {
+            if (btnDonate) {
+                btnDonate.innerHTML = '<span class="icon">🔑</span>Registrasi';
+                btnDonate.style.color = '#f59e0b';
+                btnDonate.style.borderColor = 'rgba(245, 158, 11, 0.5)';
+                btnDonate.style.background = 'rgba(245, 158, 11, 0.1)';
+                btnDonate.onclick = function() {
+                    document.getElementById('trialRegModal').classList.add('active');
+                };
+            }
+            if (trialIndicator && data.trialEndsAt) {
+                trialIndicator.style.display = 'flex';
+                
+                trialInterval = setInterval(() => {
+                    const now = Date.now();
+                    const diff = data.trialEndsAt - now;
+                    if (diff <= 0) {
+                        clearInterval(trialInterval);
+                        window.location.reload(); // akan diarahkan ke layar block
+                    } else {
+                        const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
+                        const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+                        const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+                        trialCountdown.innerText = h + ':' + m + ':' + s;
+                    }
+                }, 1000);
+            }
+        } else if (data.status === 'expired') {
+            window.location.reload();
+        }
+    } catch (err) {
+        console.error('Error fetching license status:', err);
+    }
+}
+
+async function submitModalActivation() {
+    const key = document.getElementById('modalLicenseKey').value.trim();
+    if (!key) return alert('Masukkan License Key!');
+    const btn = document.getElementById('btnModalActivate');
+    btn.disabled = true;
+    btn.innerText = 'Memproses...';
+    
+    try {
+        const res = await fetch('/api/activate', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ license_key: key })
+        });
+        const data = await res.json();
+        if (data.success) {
+            alert('Aktivasi Berhasil! Halaman akan dimuat ulang.');
+            window.location.reload();
+        } else {
+            alert('Gagal: ' + (data.message || 'Key tidak valid'));
+        }
+    } catch (err) {
+        alert('Terjadi kesalahan server.');
+    }
+    btn.disabled = false;
+    btn.innerText = 'Aktivasi';
+}
+
+document.addEventListener('DOMContentLoaded', fetchLicenseStatus);
+</script>
+</body></html>

@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="id">
-
-<head>
+<!DOCTYPE html><html lang="id"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Dapoy Panel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; }
 
@@ -396,8 +392,7 @@
                 <div class="form-group">
                     <label for="username">Username</label>
                     <div class="input-wrapper">
-                        <input type="text" id="username" name="username" required placeholder="Masukkan username"
-                            autocomplete="username">
+                        <input type="text" id="username" name="username" required="" placeholder="Masukkan username" autocomplete="username">
                         <span class="input-icon">👤</span>
                     </div>
                 </div>
@@ -405,8 +400,7 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <div class="input-wrapper">
-                        <input type="password" id="password" name="password" required placeholder="Masukkan password"
-                            autocomplete="current-password">
+                        <input type="password" id="password" name="password" required="" placeholder="Masukkan password" autocomplete="current-password">
                         <span class="input-icon">🔒</span>
                     </div>
                 </div>
@@ -427,7 +421,7 @@
         </div>
 
         <div class="login-footer">
-            &copy; 2025 SMR Dapoy Panel. All rights reserved.
+            © 2025 SMR Dapoy Panel. All rights reserved.
         </div>
     </div>
 
@@ -531,6 +525,105 @@ function showDonateModal() {
 }
 </script>
 
-</body>
 
-</html>
+
+
+<!-- REGISTRASI MODAL -->
+<div id="trialRegModal" class="modal">
+    <div class="modal-content" style="max-width: 400px; text-align: center; border-radius: 16px; padding: 30px;">
+        <h2 style="margin-top: 0; color: #fff;">Aktivasi Dapoy Panel</h2>
+        <p style="color: var(--gray); margin-bottom: 20px; font-size: 14px;">Waktu Free Trial (2 Jam) sedang berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
+        
+        <input type="text" id="modalLicenseKey" placeholder="DP-XXXX-XXXX" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-dark); color: #fff; text-align: center; font-family: monospace; font-size: 16px; margin-bottom: 15px; text-transform: uppercase;">
+        
+        <div style="display: flex; gap: 10px;">
+            <button onclick="document.getElementById('trialRegModal').classList.remove('active')" class="btn" style="flex: 1; background: var(--border); color: #fff; padding: 10px; border-radius: 10px;">Batal</button>
+            <button onclick="submitModalActivation()" id="btnModalActivate" class="btn btn-primary" style="flex: 1; padding: 10px; border-radius: 10px;">Aktivasi</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let trialInterval;
+async function fetchLicenseStatus() {
+    try {
+        const res = await fetch('/api/license-status');
+        const data = await res.json();
+        const btnDonate = document.getElementById('btnDonateOrReg');
+        const trialIndicator = document.getElementById('trialIndicator');
+        const trialCountdown = document.getElementById('trialCountdown');
+        
+        if (data.status === 'registered') {
+            if (trialIndicator) trialIndicator.style.display = 'none';
+            if (btnDonate) {
+                btnDonate.innerHTML = '<span class="icon">💎</span>Registered';
+                btnDonate.style.color = '#3b82f6';
+                btnDonate.style.borderColor = 'rgba(59, 130, 246, 0.5)';
+                btnDonate.style.background = 'rgba(59, 130, 246, 0.1)';
+                // Tetap bisa buka donate modal kalau di klik (opsional)
+            }
+        } else if (data.status === 'trial') {
+            if (btnDonate) {
+                btnDonate.innerHTML = '<span class="icon">🔑</span>Registrasi';
+                btnDonate.style.color = '#f59e0b';
+                btnDonate.style.borderColor = 'rgba(245, 158, 11, 0.5)';
+                btnDonate.style.background = 'rgba(245, 158, 11, 0.1)';
+                btnDonate.onclick = function() {
+                    document.getElementById('trialRegModal').classList.add('active');
+                };
+            }
+            if (trialIndicator && data.trialEndsAt) {
+                trialIndicator.style.display = 'flex';
+                
+                trialInterval = setInterval(() => {
+                    const now = Date.now();
+                    const diff = data.trialEndsAt - now;
+                    if (diff <= 0) {
+                        clearInterval(trialInterval);
+                        window.location.reload(); // akan diarahkan ke layar block
+                    } else {
+                        const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
+                        const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+                        const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+                        trialCountdown.innerText = h + ':' + m + ':' + s;
+                    }
+                }, 1000);
+            }
+        } else if (data.status === 'expired') {
+            window.location.reload();
+        }
+    } catch (err) {
+        console.error('Error fetching license status:', err);
+    }
+}
+
+async function submitModalActivation() {
+    const key = document.getElementById('modalLicenseKey').value.trim();
+    if (!key) return alert('Masukkan License Key!');
+    const btn = document.getElementById('btnModalActivate');
+    btn.disabled = true;
+    btn.innerText = 'Memproses...';
+    
+    try {
+        const res = await fetch('/api/activate', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ license_key: key })
+        });
+        const data = await res.json();
+        if (data.success) {
+            alert('Aktivasi Berhasil! Halaman akan dimuat ulang.');
+            window.location.reload();
+        } else {
+            alert('Gagal: ' + (data.message || 'Key tidak valid'));
+        }
+    } catch (err) {
+        alert('Terjadi kesalahan server.');
+    }
+    btn.disabled = false;
+    btn.innerText = 'Aktivasi';
+}
+
+document.addEventListener('DOMContentLoaded', fetchLicenseStatus);
+</script>
+</body></html>
