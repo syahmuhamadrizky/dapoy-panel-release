@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,10 +38,16 @@
             border: 1px solid rgba(59, 130, 246, 0.2);
         }
 
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
     </style>
 </head>
+
 <body>
     <div class="layout-wrapper">
         <!-- SIDEBAR -->
@@ -49,7 +56,7 @@
                 <div class="logo sidebar-brand-logo">🚀</div>
                 <div class="title sidebar-brand-h1">Dapoy Panel</div>
             </div>
-            
+
             <nav class="sidebar-nav">
                 <a href="/dashboard" class="nav-item"><span class="icon">📊</span> Dashboard</a>
                 <a href="/tunnelmanager" class="nav-item"><span class="icon">☁️</span> Tunneling</a>
@@ -59,28 +66,35 @@
                 <a href="/filemanager" class="nav-item"><span class="icon">📁</span> File Manager</a>
                 <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span> phpMyAdmin</a>
                 <a href="/terminal" class="nav-item"><span class="icon">🔧</span> Terminal SSH</a>
-                
+
                 <div style="flex: 1;"></div> <!-- Spacer -->
-                
+
                 <!-- Trial & Donate -->
-                <div id="trialIndicator" style="display: none; justify-content: center; align-items: center; gap: 8px; margin-top: auto; margin-bottom: 10px; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px dashed rgba(239, 68, 68, 0.3); padding: 12px; border-radius: var(--radius-sm); font-weight: bold; font-size: 12px;">
+                <div id="trialIndicator"
+                    style="display: none; justify-content: center; align-items: center; gap: 8px; margin-top: auto; margin-bottom: 10px; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px dashed rgba(239, 68, 68, 0.3); padding: 12px; border-radius: var(--radius-sm); font-weight: bold; font-size: 12px;">
                     ⏱️ Trial: <span id="trialCountdown" style="font-family: monospace; font-size: 13px;">--:--:--</span>
                 </div>
-                <a href="javascript:void(0)" onclick="showDonateModal()" class="nav-item" style="margin-top: 0; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.3);" id="btnDonateOrReg">
+                <a href="javascript:void(0)" onclick="showDonateModal()" class="nav-item"
+                    style="margin-top: 0; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.3);"
+                    id="btnDonateOrReg">
                     <span class="icon">💖</span> Donate
                 </a>
-                
+
                 <a href="/settings" class="nav-item"><span class="icon">⚙️</span> Pengaturan Sistem</a>
             </nav>
-            
-            <div class="sidebar-header" style="border-top: 1px solid var(--sidebar-border); border-bottom: none; margin-top: 10px; padding-bottom: 0;">
+
+            <div class="sidebar-header"
+                style="border-top: 1px solid var(--sidebar-border); border-bottom: none; margin-top: 10px; padding-bottom: 0;">
                 <div class="flex align-center gap-3" style="width: 100%;">
-                    <div style="width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">👤</div>
+                    <div
+                        style="width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                        👤</div>
                     <div style="flex: 1;">
                         <div id="username" style="font-size: 13px; font-weight: 600; color: white;">Admin</div>
                         <div style="font-size: 11px; color: var(--text-sidebar);">Administrator</div>
                     </div>
-                    <a href="/logout" title="Logout" style="color: var(--danger); font-size: 18px; text-decoration: none;">🚪</a>
+                    <a href="/logout" title="Logout"
+                        style="color: var(--danger); font-size: 18px; text-decoration: none;">🚪</a>
                 </div>
             </div>
         </aside>
@@ -102,68 +116,90 @@
                 </div>
 
                 <!-- PHPMyAdmin Section -->
-                <div class="card mb-4" style="border: 1px solid rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.05);">
+                <div class="card mb-4"
+                    style="border: 1px solid rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.05);">
                     <div class="flex flex-between align-center">
                         <div>
                             <h3 class="card-title">🐳 phpMyAdmin (Docker)</h3>
-                            <p class="text-muted" style="font-size: 13px;">Interface web untuk mengelola database Docker Anda.</p>
+                            <p class="text-muted" style="font-size: 13px;">Interface web untuk mengelola database Docker
+                                Anda.</p>
                         </div>
                         <div id="pmaStatusContainer">
                             <span id="pmaStatusBadge" class="badge badge-warning">Memuat...</span>
                         </div>
                     </div>
 
-                    <div style="margin-top: 20px; padding: 16px; background: var(--bg-main); border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                    <div
+                        style="margin-top: 20px; padding: 16px; background: var(--bg-main); border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
                         <div style="margin-bottom: 16px;">
                             <label class="form-label">🌐 Domain Tunnel (Akses phpMyAdmin)</label>
-                            <div id="activePmaDomainContainer" style="display: none; margin-bottom: 10px; padding: 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-sm); color: #10b981; font-size: 13px;">
+                            <div id="activePmaDomainContainer"
+                                style="display: none; margin-bottom: 10px; padding: 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-sm); color: #10b981; font-size: 13px;">
                                 Domain Aktif: <strong id="activePmaDomainText">-</strong>
                             </div>
                             <div class="flex" style="gap: 0;">
-                                <input type="text" id="pmaTunnelSubdomain" placeholder="Subdomain (contoh: pma)" class="form-control" style="flex: 1; border-radius: var(--radius-sm) 0 0 var(--radius-sm); border-right: none;">
+                                <input type="text" id="pmaTunnelSubdomain" placeholder="Subdomain (contoh: pma)"
+                                    class="form-control"
+                                    style="flex: 1; border-radius: var(--radius-sm) 0 0 var(--radius-sm); border-right: none;">
                                 <select id="pmaTunnelZone" class="form-control" style="flex: 1; border-radius: 0;">
                                     <option value="">-- Loading Domain... --</option>
                                 </select>
-                                <button onclick="setupPmaTunnel()" id="btnSetupTunnel" class="btn btn-outline" style="border-radius: 0 var(--radius-sm) var(--radius-sm) 0; border-left: none; color: var(--secondary); background: rgba(59, 130, 246, 0.1);">⚡ Setup Route</button>
+                                <button onclick="setupPmaTunnel()" id="btnSetupTunnel" class="btn btn-outline"
+                                    style="border-radius: 0 var(--radius-sm) var(--radius-sm) 0; border-left: none; color: var(--secondary); background: rgba(59, 130, 246, 0.1);">⚡
+                                    Setup Route</button>
                             </div>
-                            <p class="text-muted" style="font-size: 11px; margin-top: 6px;">Sistem akan otomatis membuat rute Tunnel dan mendaftarkan CNAME DNS.</p>
+                            <p class="text-muted" style="font-size: 11px; margin-top: 6px;">Sistem akan otomatis membuat
+                                rute Tunnel dan mendaftarkan CNAME DNS.</p>
                         </div>
 
                         <div class="flex justify-end gap-2" style="flex-wrap: wrap;">
                             <button onclick="uninstallPma()" class="btn btn-danger">🗑️ Uninstall</button>
-                            <button onclick="installPma()" id="btnInstallPma" class="btn btn-primary">🚀 Install phpMyAdmin</button>
-                            <button onclick="openPmaLogin()" id="btnOpenPma" class="btn btn-outline" style="color: var(--success); border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.1); display: none;">🌐 Buka phpMyAdmin</button>
+                            <button onclick="installPma()" id="btnInstallPma" class="btn btn-primary">🚀 Install
+                                phpMyAdmin</button>
+                            <button onclick="openPmaLogin()" id="btnOpenPma" class="btn btn-outline"
+                                style="color: var(--success); border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.1); display: none;">🌐
+                                Buka phpMyAdmin</button>
                         </div>
                     </div>
                 </div>
 
                 <div id="tab-mysql" class="tab-content active">
                     <!-- Card: Status & Install MySQL -->
-                    <div class="card mb-4" style="border: 1px solid rgba(139, 92, 246, 0.3); background: rgba(139, 92, 246, 0.05);">
+                    <div class="card mb-4"
+                        style="border: 1px solid rgba(139, 92, 246, 0.3); background: rgba(139, 92, 246, 0.05);">
                         <div class="flex flex-between align-center">
                             <div>
-                                <div style="display: inline-block; background: rgba(139, 92, 246, 0.2); padding: 8px; border-radius: var(--radius-sm); margin-bottom: 8px; font-size: 20px;">🗄️</div>
+                                <div
+                                    style="display: inline-block; background: rgba(139, 92, 246, 0.2); padding: 8px; border-radius: var(--radius-sm); margin-bottom: 8px; font-size: 20px;">
+                                    🗄️</div>
                                 <h3 class="card-title">Database MySQL/MariaDB</h3>
-                                <p id="mysqlStatusText" class="text-muted" style="font-size: 13px;">Memeriksa status MySQL...</p>
+                                <p id="mysqlStatusText" class="text-muted" style="font-size: 13px;">Memeriksa status
+                                    MySQL...</p>
                             </div>
                         </div>
-                        
-                        <div id="mysqlNotInstalled" style="display: none; background: rgba(239, 68, 68, 0.1); padding: 20px; border-radius: var(--radius-sm); border: 1px solid var(--danger); text-align: center; margin-top: 16px;">
-                            <p style="color: var(--danger); margin-bottom: 16px; font-weight: 500;">⚠️ MySQL/MariaDB belum terinstall. Pilih versi dan klik install.</p>
+
+                        <div id="mysqlNotInstalled"
+                            style="display: none; background: rgba(239, 68, 68, 0.1); padding: 20px; border-radius: var(--radius-sm); border: 1px solid var(--danger); text-align: center; margin-top: 16px;">
+                            <p style="color: var(--danger); margin-bottom: 16px; font-weight: 500;">⚠️ MySQL/MariaDB
+                                belum terinstall. Pilih versi dan klik install.</p>
                             <div class="flex justify-center gap-2" style="max-width: 400px; margin: 0 auto;">
-                                <select id="mysqlVersionSelect" class="form-control" style="flex: 1; border-color: var(--danger);">
+                                <select id="mysqlVersionSelect" class="form-control"
+                                    style="flex: 1; border-color: var(--danger);">
                                     <option value="mariadb:10.11">MariaDB 10.11 (LTS - Disarankan)</option>
                                     <option value="mariadb:10.6">MariaDB 10.6</option>
                                     <option value="mariadb:11.4">MariaDB 11.4</option>
                                     <option value="mysql:8.0">MySQL 8.0</option>
                                     <option value="mysql:latest">MySQL Latest</option>
                                 </select>
-                                <button onclick="installMysql()" class="btn btn-danger" style="white-space: nowrap;" id="btnInstallMysql">📦 Install</button>
+                                <button onclick="installMysql()" class="btn btn-danger" style="white-space: nowrap;"
+                                    id="btnInstallMysql">📦 Install</button>
                             </div>
                         </div>
-                        
-                        <div id="mysqlInstalled" style="display: none; margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 16px;">
-                            <div class="grid-stats" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+
+                        <div id="mysqlInstalled"
+                            style="display: none; margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+                            <div class="grid-stats"
+                                style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
                                 <div class="form-group">
                                     <label class="form-label">Host MySQL</label>
                                     <input type="text" id="settingDbHost" placeholder="127.0.0.1" class="form-control">
@@ -178,11 +214,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Password</label>
-                                    <input type="password" id="settingDbPass" placeholder="Password MySQL" class="form-control">
+                                    <input type="password" id="settingDbPass" placeholder="Password MySQL"
+                                        class="form-control">
                                 </div>
                             </div>
                             <div class="text-right mt-4">
-                                <button onclick="saveDbSettings()" class="btn btn-primary" id="btnSaveDbSettings">💾 Simpan Database</button>
+                                <button onclick="saveDbSettings()" class="btn btn-primary" id="btnSaveDbSettings">💾
+                                    Simpan Database</button>
                             </div>
                         </div>
                     </div>
@@ -192,29 +230,37 @@
                         <div class="flex flex-between align-center">
                             <div>
                                 <h3 class="card-title">➕ Buat Database MySQL Baru</h3>
-                                <p class="text-muted" style="font-size: 13px;">Buat database dan user baru di MySQL Server VPS Anda.</p>
+                                <p class="text-muted" style="font-size: 13px;">Buat database dan user baru di MySQL
+                                    Server VPS Anda.</p>
                             </div>
-                            <button class="btn btn-outline" onclick="toggleSetupForm('setupMysqlFormContainer', 'btnToggleMysqlSetup')" id="btnToggleMysqlSetup">Tampilkan Formulir</button>
+                            <button class="btn btn-outline"
+                                onclick="toggleSetupForm('setupMysqlFormContainer', 'btnToggleMysqlSetup')"
+                                id="btnToggleMysqlSetup">Tampilkan Formulir</button>
                         </div>
 
-                        <div id="setupMysqlFormContainer" style="display: none; margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 24px;">
+                        <div id="setupMysqlFormContainer"
+                            style="display: none; margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 24px;">
                             <form id="setupMysqlForm" onsubmit="event.preventDefault(); installDatabase();">
                                 <div class="grid-stats" style="grid-template-columns: 1fr 1fr; margin-bottom: 16px;">
                                     <div class="form-group">
                                         <label class="form-label">Nama Database Baru</label>
-                                        <input type="text" id="mysqlDbName" placeholder="db_aplikasi" class="form-control" required="">
+                                        <input type="text" id="mysqlDbName" placeholder="db_aplikasi"
+                                            class="form-control" required="">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Username Baru</label>
-                                        <input type="text" id="mysqlDbUser" placeholder="user_aplikasi" class="form-control" required="">
+                                        <input type="text" id="mysqlDbUser" placeholder="user_aplikasi"
+                                            class="form-control" required="">
                                     </div>
                                 </div>
                                 <div class="form-group mb-4">
                                     <label class="form-label">Password User</label>
-                                    <input type="text" id="mysqlDbPass" placeholder="Masukkan password yang kuat" class="form-control" required="">
+                                    <input type="text" id="mysqlDbPass" placeholder="Masukkan password yang kuat"
+                                        class="form-control" required="">
                                 </div>
                                 <div class="text-right">
-                                    <button type="submit" class="btn btn-primary" id="btnCreateDb">➕ Buat Database</button>
+                                    <button type="submit" class="btn btn-primary" id="btnCreateDb">➕ Buat
+                                        Database</button>
                                 </div>
                             </form>
                         </div>
@@ -245,26 +291,62 @@
                 </div>
 
                 <!-- Install Log Modal -->
-                <div id="installLogModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); width: 800px; max-width: 90%; display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-lg);">
-                        <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-                            <h3 style="margin: 0; font-size: 18px; color: var(--text-main);" id="installLogTitle">📦 Installation Log</h3>
-                            <button id="btnInstallClose" class="btn btn-outline btn-sm" onclick="document.getElementById('installLogModal').style.display='none'; window.location.reload();">Tutup</button>
+                <div id="installLogModal"
+                    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+                    <div
+                        style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); width: 800px; max-width: 90%; display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-lg);">
+                        <div
+                            style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="margin: 0; font-size: 18px; color: var(--text-main);" id="installLogTitle">📦
+                                Installation Log</h3>
+                            <button id="btnInstallClose" class="btn btn-outline btn-sm"
+                                onclick="document.getElementById('installLogModal').style.display='none'; window.location.reload();">Tutup</button>
                         </div>
                         <div style="padding: 16px; background: #1e293b; height: 400px; overflow-y: auto;">
-                            <pre id="installLogContent" style="color: #e2e8f0; font-family: monospace; font-size: 13px; white-space: pre-wrap; margin: 0;"></pre>
+                            <pre id="installLogContent"
+                                style="color: #e2e8f0; font-family: monospace; font-size: 13px; white-space: pre-wrap; margin: 0;"></pre>
                         </div>
-                        <div style="padding: 16px; border-top: 1px solid var(--border-color); text-align: right; background: var(--bg-main);">
-                            <span id="installLogStatus" style="font-weight: bold; color: var(--warning); margin-right: 16px;">⏳ Memproses...</span>
+                        <div
+                            style="padding: 16px; border-top: 1px solid var(--border-color); text-align: right; background: var(--bg-main);">
+                            <span id="installLogStatus"
+                                style="font-weight: bold; color: var(--warning); margin-right: 16px;">⏳
+                                Memproses...</span>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div style="text-align: center; padding: 20px; color: var(--text-muted); font-size: 12px; margin-top: auto; border-top: 1px solid var(--border-color);">
+
+            <div
+                style="text-align: center; padding: 20px; color: var(--text-muted); font-size: 12px; margin-top: auto; border-top: 1px solid var(--border-color);">
                 &copy; 2025 SMR Dapoy Panel - Sistem Management Server. All rights reserved.
             </div>
         </main>
+
+        <!-- BOTTOM NAVIGATION - Mobile Only -->
+        <nav class="bottom-nav">
+            <ul class="bottom-nav-items">
+                <a href="/dashboard" class="bottom-nav-item">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/tunnelmanager" class="bottom-nav-item">
+                    <span class="nav-icon">☁️</span>
+                    <span>Tunnel</span>
+                </a>
+                <a href="/webmanager" class="bottom-nav-item">
+                    <span class="nav-icon">🌐</span>
+                    <span>Website</span>
+                </a>
+                <a href="/databasemanager" class="bottom-nav-item active">
+                    <span class="nav-icon">🗄️</span>
+                    <span>Database</span>
+                </a>
+                <a href="/settings" class="bottom-nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </a>
+            </ul>
+        </nav>
     </div>
 
     <!-- SCRIPTS ASLI -->
@@ -339,7 +421,7 @@
             try {
                 const pmaRes = await fetch('/api/pma/tunnel-domains');
                 const pmaData = await pmaRes.json();
-                
+
                 const activeContainer = document.getElementById('activePmaDomainContainer');
                 const activeText = document.getElementById('activePmaDomainText');
                 if (pmaData.success && pmaData.pmaDomain && pmaData.domains && pmaData.domains.includes(pmaData.pmaDomain)) {
@@ -353,7 +435,7 @@
                 const select = document.getElementById('pmaTunnelZone');
                 const zoneRes = await fetch('/api/cloudflare/zones');
                 const zoneData = await zoneRes.json();
-                
+
                 select.innerHTML = '';
                 if (zoneData.success && zoneData.zones && zoneData.zones.length > 0) {
                     zoneData.zones.forEach(zone => {
@@ -371,7 +453,7 @@
         async function setupPmaTunnel() {
             const subdomain = document.getElementById('pmaTunnelSubdomain').value.trim();
             const zone = document.getElementById('pmaTunnelZone').value;
-            
+
             if (!subdomain || !zone) return alert('⚠️ Masukkan subdomain dan pilih domain!');
             const domain = subdomain + '.' + zone;
 
@@ -446,7 +528,7 @@
                                     }
                                 }
                             }
-                        } catch (e) {}
+                        } catch (e) { }
                     }, 1500);
                 } else {
                     logContent.textContent += '\n\n' + result.message;
@@ -508,7 +590,7 @@
             const dbPass = document.getElementById('mysqlDbPass').value;
 
             if (!dbName || !dbUser || !dbPass) return alert('Semua field wajib diisi!');
-            
+
             if (!/^[a-zA-Z0-9_]+$/.test(dbName) || !/^[a-zA-Z0-9_]+$/.test(dbUser)) {
                 return alert('Nama database dan username hanya boleh berisi huruf, angka, dan underscore (_).');
             }
@@ -535,7 +617,7 @@
             } catch (e) {
                 alert('❌ Error system: ' + e.message);
             }
-            
+
             btn.disabled = false;
             btn.innerHTML = '➕ Buat Database';
         }
@@ -560,8 +642,8 @@
             }
         }
 
-        window.onload = () => { 
-            loadDatabases(); 
+        window.onload = () => {
+            loadDatabases();
             checkMysqlStatus();
         };
 
@@ -585,7 +667,7 @@
                     notInstalled.style.display = 'block';
                     installed.style.display = 'none';
                 }
-            } catch (error) {}
+            } catch (error) { }
         }
 
         async function installMysql() {
@@ -604,7 +686,7 @@
                     document.getElementById('settingDbUser').value = data.user || 'root';
                     document.getElementById('settingDbPass').value = data.password ? '********' : '';
                 }
-            } catch (error) {}
+            } catch (error) { }
         }
 
         async function saveDbSettings() {
@@ -662,119 +744,135 @@
     </script>
 
     <!-- DONATE MODAL -->
-    <div id="donateModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-        <div style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+    <div id="donateModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div
+            style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
             <div style="font-size: 40px; margin-bottom: 16px;">💖</div>
             <h2 style="margin-top: 0; color: var(--text-main); font-size: 20px;">Support Dapoy Panel</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px; line-height: 1.5;">Dukung pengembangan panel ini dengan berdonasi via Gopay / Dana ke nomor berikut atas nama <strong>Syah Muhamad Rizky</strong></p>
-            
-            <div style="display: flex; align-items: center; justify-content: center; background: #f1f5f9; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 20px;">
-                <code style="font-size: 18px; color: var(--secondary); letter-spacing: 2px; font-weight: bold; margin-right: 15px;">087777999907</code>
-                <button onclick="navigator.clipboard.writeText('087777999907'); this.innerText='Disalin!'; setTimeout(()=>this.innerText='Copy', 2000);" class="btn btn-secondary" style="padding: 6px 12px; font-size: 11px;">Copy</button>
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px; line-height: 1.5;">Dukung
+                pengembangan panel ini dengan berdonasi via Gopay / Dana ke nomor berikut atas nama <strong>Syah Muhamad
+                    Rizky</strong></p>
+
+            <div
+                style="display: flex; align-items: center; justify-content: center; background: #f1f5f9; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 20px;">
+                <code
+                    style="font-size: 18px; color: var(--secondary); letter-spacing: 2px; font-weight: bold; margin-right: 15px;">087777999907</code>
+                <button
+                    onclick="navigator.clipboard.writeText('087777999907'); this.innerText='Disalin!'; setTimeout(()=>this.innerText='Copy', 2000);"
+                    class="btn btn-secondary" style="padding: 6px 12px; font-size: 11px;">Copy</button>
             </div>
-            
-            <button onclick="document.getElementById('donateModal').style.display='none'" class="btn btn-outline" style="width: 100%;">Tutup</button>
+
+            <button onclick="document.getElementById('donateModal').style.display='none'" class="btn btn-outline"
+                style="width: 100%;">Tutup</button>
         </div>
     </div>
     <script>
-    function showDonateModal() {
-        document.getElementById('donateModal').style.display = 'flex';
-    }
+        function showDonateModal() {
+            document.getElementById('donateModal').style.display = 'flex';
+        }
     </script>
 
     <!-- REGISTRASI MODAL -->
-    <div id="trialRegModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-        <div style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+    <div id="trialRegModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div
+            style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
             <div style="font-size: 40px; margin-bottom: 16px;">🔑</div>
             <h2 style="margin-top: 0; color: var(--text-main); font-size: 20px;">Aktivasi Dapoy Panel</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px;">Waktu Free Trial (2 Jam) sedang berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
-            <input type="text" id="modalLicenseKey" placeholder="DP-XXXX-XXXX" class="form-control" style="text-align: center; font-family: monospace; font-size: 15px; margin-bottom: 15px; text-transform: uppercase;">
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px;">Waktu Free Trial (2 Jam) sedang
+                berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
+            <input type="text" id="modalLicenseKey" placeholder="DP-XXXX-XXXX" class="form-control"
+                style="text-align: center; font-family: monospace; font-size: 15px; margin-bottom: 15px; text-transform: uppercase;">
             <div style="display: flex; gap: 10px;">
-                <button onclick="document.getElementById('trialRegModal').style.display='none'" class="btn btn-outline" style="flex: 1;">Batal</button>
-                <button onclick="submitModalActivation()" id="btnModalActivate" class="btn btn-primary" style="flex: 1;">Aktivasi</button>
+                <button onclick="document.getElementById('trialRegModal').style.display='none'" class="btn btn-outline"
+                    style="flex: 1;">Batal</button>
+                <button onclick="submitModalActivation()" id="btnModalActivate" class="btn btn-primary"
+                    style="flex: 1;">Aktivasi</button>
             </div>
         </div>
     </div>
 
     <script>
-    let trialInterval;
-    async function fetchLicenseStatus() {
-        try {
-            const res = await fetch('/api/license-status');
-            const data = await res.json();
-            const btnDonate = document.getElementById('btnDonateOrReg');
-            const trialIndicator = document.getElementById('trialIndicator');
-            const trialCountdown = document.getElementById('trialCountdown');
-            
-            if (data.status === 'registered') {
-                if (trialIndicator) trialIndicator.style.display = 'none';
-                if (btnDonate) {
-                    btnDonate.innerHTML = '<span class="icon">💎</span> Registered';
-                    btnDonate.style.color = 'var(--secondary)';
-                    btnDonate.style.borderColor = 'rgba(59, 130, 246, 0.3)';
-                    btnDonate.style.background = 'rgba(59, 130, 246, 0.1)';
-                }
-            } else if (data.status === 'trial') {
-                if (btnDonate) {
-                    btnDonate.innerHTML = '<span class="icon">🔑</span> Registrasi';
-                    btnDonate.style.color = 'var(--warning)';
-                    btnDonate.style.borderColor = 'rgba(245, 158, 11, 0.3)';
-                    btnDonate.style.background = 'rgba(245, 158, 11, 0.1)';
-                    btnDonate.onclick = function() {
-                        document.getElementById('trialRegModal').style.display = 'flex';
-                    };
-                }
-                if (trialIndicator && data.trialEndsAt) {
-                    trialIndicator.style.display = 'flex';
-                    
-                    trialInterval = setInterval(() => {
-                        const now = Date.now();
-                        const diff = data.trialEndsAt - now;
-                        if (diff <= 0) {
-                            clearInterval(trialInterval);
-                            window.location.reload();
-                        } else {
-                            const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
-                            const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
-                            const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
-                            trialCountdown.innerText = h + ':' + m + ':' + s;
-                        }
-                    }, 1000);
-                }
-            } else if (data.status === 'expired') {
-                window.location.reload();
-            }
-        } catch (err) {}
-    }
+        let trialInterval;
+        async function fetchLicenseStatus() {
+            try {
+                const res = await fetch('/api/license-status');
+                const data = await res.json();
+                const btnDonate = document.getElementById('btnDonateOrReg');
+                const trialIndicator = document.getElementById('trialIndicator');
+                const trialCountdown = document.getElementById('trialCountdown');
 
-    async function submitModalActivation() {
-        const key = document.getElementById('modalLicenseKey').value.trim();
-        if (!key) return alert('Masukkan License Key!');
-        const btn = document.getElementById('btnModalActivate');
-        btn.disabled = true;
-        btn.innerText = 'Memproses...';
-        
-        try {
-            const res = await fetch('/api/activate', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ license_key: key })
-            });
-            const data = await res.json();
-            if (data.success) {
-                alert('Aktivasi Berhasil! Halaman akan dimuat ulang.');
-                window.location.reload();
-            } else {
-                alert('Gagal: ' + (data.message || 'Key tidak valid'));
-            }
-        } catch (err) {
-            alert('Terjadi kesalahan server.');
+                if (data.status === 'registered') {
+                    if (trialIndicator) trialIndicator.style.display = 'none';
+                    if (btnDonate) {
+                        btnDonate.innerHTML = '<span class="icon">💎</span> Registered';
+                        btnDonate.style.color = 'var(--secondary)';
+                        btnDonate.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+                        btnDonate.style.background = 'rgba(59, 130, 246, 0.1)';
+                    }
+                } else if (data.status === 'trial') {
+                    if (btnDonate) {
+                        btnDonate.innerHTML = '<span class="icon">🔑</span> Registrasi';
+                        btnDonate.style.color = 'var(--warning)';
+                        btnDonate.style.borderColor = 'rgba(245, 158, 11, 0.3)';
+                        btnDonate.style.background = 'rgba(245, 158, 11, 0.1)';
+                        btnDonate.onclick = function () {
+                            document.getElementById('trialRegModal').style.display = 'flex';
+                        };
+                    }
+                    if (trialIndicator && data.trialEndsAt) {
+                        trialIndicator.style.display = 'flex';
+
+                        trialInterval = setInterval(() => {
+                            const now = Date.now();
+                            const diff = data.trialEndsAt - now;
+                            if (diff <= 0) {
+                                clearInterval(trialInterval);
+                                window.location.reload();
+                            } else {
+                                const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
+                                const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+                                const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+                                trialCountdown.innerText = h + ':' + m + ':' + s;
+                            }
+                        }, 1000);
+                    }
+                } else if (data.status === 'expired') {
+                    window.location.reload();
+                }
+            } catch (err) { }
         }
-        btn.disabled = false;
-        btn.innerText = 'Aktivasi';
-    }
 
-    document.addEventListener('DOMContentLoaded', fetchLicenseStatus);
+        async function submitModalActivation() {
+            const key = document.getElementById('modalLicenseKey').value.trim();
+            if (!key) return alert('Masukkan License Key!');
+            const btn = document.getElementById('btnModalActivate');
+            btn.disabled = true;
+            btn.innerText = 'Memproses...';
+
+            try {
+                const res = await fetch('/api/activate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ license_key: key })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('Aktivasi Berhasil! Halaman akan dimuat ulang.');
+                    window.location.reload();
+                } else {
+                    alert('Gagal: ' + (data.message || 'Key tidak valid'));
+                }
+            } catch (err) {
+                alert('Terjadi kesalahan server.');
+            }
+            btn.disabled = false;
+            btn.innerText = 'Aktivasi';
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchLicenseStatus);
     </script>
 </body>
+
 </html>

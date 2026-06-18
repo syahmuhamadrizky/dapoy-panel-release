@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terminal - Dapoy Panel</title>
-    
+
     <!-- Xterm.js -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css">
     <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xterm-addon-web-links@0.9.0/lib/xterm-addon-web-links.js"></script>
-    
+
     <link rel="stylesheet" href="/global.css?v=1781811911861">
     <style>
         .terminal-container {
@@ -22,7 +23,8 @@
             box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             display: flex;
-            min-height: 500px; /* fallback */
+            min-height: 500px;
+            /* fallback */
         }
 
         #terminal {
@@ -67,6 +69,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="layout-wrapper">
         <!-- SIDEBAR -->
@@ -75,7 +78,7 @@
                 <div class="logo sidebar-brand-logo">🚀</div>
                 <div class="title sidebar-brand-h1">Dapoy Panel</div>
             </div>
-            
+
             <nav class="sidebar-nav">
                 <a href="/dashboard" class="nav-item"><span class="icon">📊</span> Dashboard</a>
                 <a href="/tunnelmanager" class="nav-item"><span class="icon">☁️</span> Tunneling</a>
@@ -85,28 +88,35 @@
                 <a href="/filemanager" class="nav-item"><span class="icon">📁</span> File Manager</a>
                 <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span> phpMyAdmin</a>
                 <a href="/terminal" class="nav-item active"><span class="icon">🔧</span> Terminal SSH</a>
-                
+
                 <div style="flex: 1;"></div> <!-- Spacer -->
-                
+
                 <!-- Trial & Donate -->
-                <div id="trialIndicator" style="display: none; justify-content: center; align-items: center; gap: 8px; margin-top: auto; margin-bottom: 10px; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px dashed rgba(239, 68, 68, 0.3); padding: 12px; border-radius: var(--radius-sm); font-weight: bold; font-size: 12px;">
+                <div id="trialIndicator"
+                    style="display: none; justify-content: center; align-items: center; gap: 8px; margin-top: auto; margin-bottom: 10px; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px dashed rgba(239, 68, 68, 0.3); padding: 12px; border-radius: var(--radius-sm); font-weight: bold; font-size: 12px;">
                     ⏱️ Trial: <span id="trialCountdown" style="font-family: monospace; font-size: 13px;">--:--:--</span>
                 </div>
-                <a href="javascript:void(0)" onclick="showDonateModal()" class="nav-item" style="margin-top: 0; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.3);" id="btnDonateOrReg">
+                <a href="javascript:void(0)" onclick="showDonateModal()" class="nav-item"
+                    style="margin-top: 0; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.3);"
+                    id="btnDonateOrReg">
                     <span class="icon">💖</span> Donate
                 </a>
-                
+
                 <a href="/settings" class="nav-item"><span class="icon">⚙️</span> Pengaturan Sistem</a>
             </nav>
-            
-            <div class="sidebar-header" style="border-top: 1px solid var(--sidebar-border); border-bottom: none; margin-top: 10px; padding-bottom: 0;">
+
+            <div class="sidebar-header"
+                style="border-top: 1px solid var(--sidebar-border); border-bottom: none; margin-top: 10px; padding-bottom: 0;">
                 <div class="flex align-center gap-3" style="width: 100%;">
-                    <div style="width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">👤</div>
+                    <div
+                        style="width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                        👤</div>
                     <div style="flex: 1;">
                         <div id="username" style="font-size: 13px; font-weight: 600; color: white;">Admin</div>
                         <div style="font-size: 11px; color: var(--text-sidebar);">Administrator</div>
                     </div>
-                    <a href="/logout" title="Logout" style="color: var(--danger); font-size: 18px; text-decoration: none;">🚪</a>
+                    <a href="/logout" title="Logout"
+                        style="color: var(--danger); font-size: 18px; text-decoration: none;">🚪</a>
                 </div>
             </div>
         </aside>
@@ -129,11 +139,38 @@
                     <div id="terminal"></div>
                 </div>
             </div>
-            
-            <div style="text-align: center; padding: 20px; color: var(--text-muted); font-size: 12px; margin-top: auto; border-top: 1px solid var(--border-color);">
+
+            <div
+                style="text-align: center; padding: 20px; color: var(--text-muted); font-size: 12px; margin-top: auto; border-top: 1px solid var(--border-color);">
                 &copy; 2025 SMR Dapoy Panel - Sistem Management Server. All rights reserved.
             </div>
         </main>
+
+        <!-- BOTTOM NAVIGATION - Mobile Only -->
+        <nav class="bottom-nav">
+            <ul class="bottom-nav-items">
+                <a href="/dashboard" class="bottom-nav-item">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/tunnelmanager" class="bottom-nav-item">
+                    <span class="nav-icon">☁️</span>
+                    <span>Tunnel</span>
+                </a>
+                <a href="/webmanager" class="bottom-nav-item">
+                    <span class="nav-icon">🌐</span>
+                    <span>Website</span>
+                </a>
+                <a href="/filemanager" class="bottom-nav-item">
+                    <span class="nav-icon">📁</span>
+                    <span>File</span>
+                </a>
+                <a href="/settings" class="bottom-nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </a>
+            </ul>
+        </nav>
     </div>
 
     <!-- SCRIPTS ASLI -->
@@ -224,119 +261,135 @@
     </script>
 
     <!-- DONATE MODAL -->
-    <div id="donateModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-        <div style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+    <div id="donateModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div
+            style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
             <div style="font-size: 40px; margin-bottom: 16px;">💖</div>
             <h2 style="margin-top: 0; color: var(--text-main); font-size: 20px;">Support Dapoy Panel</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px; line-height: 1.5;">Dukung pengembangan panel ini dengan berdonasi via Gopay / Dana ke nomor berikut atas nama <strong>Syah Muhamad Rizky</strong></p>
-            
-            <div style="display: flex; align-items: center; justify-content: center; background: #f1f5f9; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 20px;">
-                <code style="font-size: 18px; color: var(--secondary); letter-spacing: 2px; font-weight: bold; margin-right: 15px;">087777999907</code>
-                <button onclick="navigator.clipboard.writeText('087777999907'); this.innerText='Disalin!'; setTimeout(()=>this.innerText='Copy', 2000);" class="btn btn-secondary" style="padding: 6px 12px; font-size: 11px;">Copy</button>
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px; line-height: 1.5;">Dukung
+                pengembangan panel ini dengan berdonasi via Gopay / Dana ke nomor berikut atas nama <strong>Syah Muhamad
+                    Rizky</strong></p>
+
+            <div
+                style="display: flex; align-items: center; justify-content: center; background: #f1f5f9; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 20px;">
+                <code
+                    style="font-size: 18px; color: var(--secondary); letter-spacing: 2px; font-weight: bold; margin-right: 15px;">087777999907</code>
+                <button
+                    onclick="navigator.clipboard.writeText('087777999907'); this.innerText='Disalin!'; setTimeout(()=>this.innerText='Copy', 2000);"
+                    class="btn btn-secondary" style="padding: 6px 12px; font-size: 11px;">Copy</button>
             </div>
-            
-            <button onclick="document.getElementById('donateModal').style.display='none'" class="btn btn-outline" style="width: 100%;">Tutup</button>
+
+            <button onclick="document.getElementById('donateModal').style.display='none'" class="btn btn-outline"
+                style="width: 100%;">Tutup</button>
         </div>
     </div>
     <script>
-    function showDonateModal() {
-        document.getElementById('donateModal').style.display = 'flex';
-    }
+        function showDonateModal() {
+            document.getElementById('donateModal').style.display = 'flex';
+        }
     </script>
 
     <!-- REGISTRASI MODAL -->
-    <div id="trialRegModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-        <div style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+    <div id="trialRegModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div
+            style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
             <div style="font-size: 40px; margin-bottom: 16px;">🔑</div>
             <h2 style="margin-top: 0; color: var(--text-main); font-size: 20px;">Aktivasi Dapoy Panel</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px;">Waktu Free Trial (2 Jam) sedang berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
-            <input type="text" id="modalLicenseKey" placeholder="DP-XXXX-XXXX" class="form-control" style="text-align: center; font-family: monospace; font-size: 15px; margin-bottom: 15px; text-transform: uppercase;">
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px;">Waktu Free Trial (2 Jam) sedang
+                berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
+            <input type="text" id="modalLicenseKey" placeholder="DP-XXXX-XXXX" class="form-control"
+                style="text-align: center; font-family: monospace; font-size: 15px; margin-bottom: 15px; text-transform: uppercase;">
             <div style="display: flex; gap: 10px;">
-                <button onclick="document.getElementById('trialRegModal').style.display='none'" class="btn btn-outline" style="flex: 1;">Batal</button>
-                <button onclick="submitModalActivation()" id="btnModalActivate" class="btn btn-primary" style="flex: 1;">Aktivasi</button>
+                <button onclick="document.getElementById('trialRegModal').style.display='none'" class="btn btn-outline"
+                    style="flex: 1;">Batal</button>
+                <button onclick="submitModalActivation()" id="btnModalActivate" class="btn btn-primary"
+                    style="flex: 1;">Aktivasi</button>
             </div>
         </div>
     </div>
 
     <script>
-    let trialInterval;
-    async function fetchLicenseStatus() {
-        try {
-            const res = await fetch('/api/license-status');
-            const data = await res.json();
-            const btnDonate = document.getElementById('btnDonateOrReg');
-            const trialIndicator = document.getElementById('trialIndicator');
-            const trialCountdown = document.getElementById('trialCountdown');
-            
-            if (data.status === 'registered') {
-                if (trialIndicator) trialIndicator.style.display = 'none';
-                if (btnDonate) {
-                    btnDonate.innerHTML = '<span class="icon">💎</span> Registered';
-                    btnDonate.style.color = 'var(--secondary)';
-                    btnDonate.style.borderColor = 'rgba(59, 130, 246, 0.3)';
-                    btnDonate.style.background = 'rgba(59, 130, 246, 0.1)';
-                }
-            } else if (data.status === 'trial') {
-                if (btnDonate) {
-                    btnDonate.innerHTML = '<span class="icon">🔑</span> Registrasi';
-                    btnDonate.style.color = 'var(--warning)';
-                    btnDonate.style.borderColor = 'rgba(245, 158, 11, 0.3)';
-                    btnDonate.style.background = 'rgba(245, 158, 11, 0.1)';
-                    btnDonate.onclick = function() {
-                        document.getElementById('trialRegModal').style.display = 'flex';
-                    };
-                }
-                if (trialIndicator && data.trialEndsAt) {
-                    trialIndicator.style.display = 'flex';
-                    
-                    trialInterval = setInterval(() => {
-                        const now = Date.now();
-                        const diff = data.trialEndsAt - now;
-                        if (diff <= 0) {
-                            clearInterval(trialInterval);
-                            window.location.reload();
-                        } else {
-                            const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
-                            const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
-                            const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
-                            trialCountdown.innerText = h + ':' + m + ':' + s;
-                        }
-                    }, 1000);
-                }
-            } else if (data.status === 'expired') {
-                window.location.reload();
-            }
-        } catch (err) {}
-    }
+        let trialInterval;
+        async function fetchLicenseStatus() {
+            try {
+                const res = await fetch('/api/license-status');
+                const data = await res.json();
+                const btnDonate = document.getElementById('btnDonateOrReg');
+                const trialIndicator = document.getElementById('trialIndicator');
+                const trialCountdown = document.getElementById('trialCountdown');
 
-    async function submitModalActivation() {
-        const key = document.getElementById('modalLicenseKey').value.trim();
-        if (!key) return alert('Masukkan License Key!');
-        const btn = document.getElementById('btnModalActivate');
-        btn.disabled = true;
-        btn.innerText = 'Memproses...';
-        
-        try {
-            const res = await fetch('/api/activate', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ license_key: key })
-            });
-            const data = await res.json();
-            if (data.success) {
-                alert('Aktivasi Berhasil! Halaman akan dimuat ulang.');
-                window.location.reload();
-            } else {
-                alert('Gagal: ' + (data.message || 'Key tidak valid'));
-            }
-        } catch (err) {
-            alert('Terjadi kesalahan server.');
+                if (data.status === 'registered') {
+                    if (trialIndicator) trialIndicator.style.display = 'none';
+                    if (btnDonate) {
+                        btnDonate.innerHTML = '<span class="icon">💎</span> Registered';
+                        btnDonate.style.color = 'var(--secondary)';
+                        btnDonate.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+                        btnDonate.style.background = 'rgba(59, 130, 246, 0.1)';
+                    }
+                } else if (data.status === 'trial') {
+                    if (btnDonate) {
+                        btnDonate.innerHTML = '<span class="icon">🔑</span> Registrasi';
+                        btnDonate.style.color = 'var(--warning)';
+                        btnDonate.style.borderColor = 'rgba(245, 158, 11, 0.3)';
+                        btnDonate.style.background = 'rgba(245, 158, 11, 0.1)';
+                        btnDonate.onclick = function () {
+                            document.getElementById('trialRegModal').style.display = 'flex';
+                        };
+                    }
+                    if (trialIndicator && data.trialEndsAt) {
+                        trialIndicator.style.display = 'flex';
+
+                        trialInterval = setInterval(() => {
+                            const now = Date.now();
+                            const diff = data.trialEndsAt - now;
+                            if (diff <= 0) {
+                                clearInterval(trialInterval);
+                                window.location.reload();
+                            } else {
+                                const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
+                                const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+                                const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+                                trialCountdown.innerText = h + ':' + m + ':' + s;
+                            }
+                        }, 1000);
+                    }
+                } else if (data.status === 'expired') {
+                    window.location.reload();
+                }
+            } catch (err) { }
         }
-        btn.disabled = false;
-        btn.innerText = 'Aktivasi';
-    }
 
-    document.addEventListener('DOMContentLoaded', fetchLicenseStatus);
+        async function submitModalActivation() {
+            const key = document.getElementById('modalLicenseKey').value.trim();
+            if (!key) return alert('Masukkan License Key!');
+            const btn = document.getElementById('btnModalActivate');
+            btn.disabled = true;
+            btn.innerText = 'Memproses...';
+
+            try {
+                const res = await fetch('/api/activate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ license_key: key })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('Aktivasi Berhasil! Halaman akan dimuat ulang.');
+                    window.location.reload();
+                } else {
+                    alert('Gagal: ' + (data.message || 'Key tidak valid'));
+                }
+            } catch (err) {
+                alert('Terjadi kesalahan server.');
+            }
+            btn.disabled = false;
+            btn.innerText = 'Aktivasi';
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchLicenseStatus);
     </script>
 </body>
+
 </html>

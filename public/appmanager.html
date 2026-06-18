@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,6 +60,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="layout-wrapper">
         <!-- SIDEBAR -->
@@ -67,7 +69,7 @@
                 <div class="logo sidebar-brand-logo">🚀</div>
                 <div class="title sidebar-brand-h1">Dapoy Panel</div>
             </div>
-            
+
             <nav class="sidebar-nav">
                 <a href="/dashboard" class="nav-item"><span class="icon">📊</span> Dashboard</a>
                 <a href="/tunnelmanager" class="nav-item"><span class="icon">☁️</span> Tunneling</a>
@@ -77,28 +79,35 @@
                 <a href="/filemanager" class="nav-item"><span class="icon">📁</span> File Manager</a>
                 <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span> phpMyAdmin</a>
                 <a href="/terminal" class="nav-item"><span class="icon">🔧</span> Terminal SSH</a>
-                
+
                 <div style="flex: 1;"></div> <!-- Spacer -->
-                
+
                 <!-- Trial & Donate -->
-                <div id="trialIndicator" style="display: none; justify-content: center; align-items: center; gap: 8px; margin-top: auto; margin-bottom: 10px; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px dashed rgba(239, 68, 68, 0.3); padding: 12px; border-radius: var(--radius-sm); font-weight: bold; font-size: 12px;">
+                <div id="trialIndicator"
+                    style="display: none; justify-content: center; align-items: center; gap: 8px; margin-top: auto; margin-bottom: 10px; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px dashed rgba(239, 68, 68, 0.3); padding: 12px; border-radius: var(--radius-sm); font-weight: bold; font-size: 12px;">
                     ⏱️ Trial: <span id="trialCountdown" style="font-family: monospace; font-size: 13px;">--:--:--</span>
                 </div>
-                <a href="javascript:void(0)" onclick="showDonateModal()" class="nav-item" style="margin-top: 0; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.3);" id="btnDonateOrReg">
+                <a href="javascript:void(0)" onclick="showDonateModal()" class="nav-item"
+                    style="margin-top: 0; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.3);"
+                    id="btnDonateOrReg">
                     <span class="icon">💖</span> Donate
                 </a>
-                
+
                 <a href="/settings" class="nav-item"><span class="icon">⚙️</span> Pengaturan Sistem</a>
             </nav>
-            
-            <div class="sidebar-header" style="border-top: 1px solid var(--sidebar-border); border-bottom: none; margin-top: 10px; padding-bottom: 0;">
+
+            <div class="sidebar-header"
+                style="border-top: 1px solid var(--sidebar-border); border-bottom: none; margin-top: 10px; padding-bottom: 0;">
                 <div class="flex align-center gap-3" style="width: 100%;">
-                    <div style="width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">👤</div>
+                    <div
+                        style="width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                        👤</div>
                     <div style="flex: 1;">
                         <div id="username" style="font-size: 13px; font-weight: 600; color: white;">Admin</div>
                         <div style="font-size: 11px; color: var(--text-sidebar);">Administrator</div>
                     </div>
-                    <a href="/logout" title="Logout" style="color: var(--danger); font-size: 18px; text-decoration: none;">🚪</a>
+                    <a href="/logout" title="Logout"
+                        style="color: var(--danger); font-size: 18px; text-decoration: none;">🚪</a>
                 </div>
             </div>
         </aside>
@@ -127,17 +136,23 @@
                         <div class="flex flex-between align-center">
                             <div>
                                 <h3 class="card-title">🚀 Setup New Node.js App</h3>
-                                <p class="text-muted" style="font-size: 13px;">Konfigurasi dan jalankan aplikasi Node.js baru layaknya di cPanel.</p>
+                                <p class="text-muted" style="font-size: 13px;">Konfigurasi dan jalankan aplikasi Node.js
+                                    baru layaknya di cPanel.</p>
                             </div>
-                            <button class="btn btn-outline" onclick="toggleSetupForm('setupNodeFormContainer', 'btnToggleNodeSetup')" id="btnToggleNodeSetup">Tampilkan Formulir</button>
+                            <button class="btn btn-outline"
+                                onclick="toggleSetupForm('setupNodeFormContainer', 'btnToggleNodeSetup')"
+                                id="btnToggleNodeSetup">Tampilkan Formulir</button>
                         </div>
 
-                        <div id="setupNodeFormContainer" style="display: none; margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 24px;">
+                        <div id="setupNodeFormContainer"
+                            style="display: none; margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 24px;">
                             <form id="setupNodeForm">
-                                <div class="grid-stats" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 16px;">
+                                <div class="grid-stats"
+                                    style="grid-template-columns: repeat(3, 1fr); margin-bottom: 16px;">
                                     <div class="form-group">
                                         <label class="form-label">Nama Aplikasi (PM2 Process)</label>
-                                        <input class="form-control" type="text" id="nodeAppName" placeholder="my-app" required="">
+                                        <input class="form-control" type="text" id="nodeAppName" placeholder="my-app"
+                                            required="">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Environment</label>
@@ -161,15 +176,18 @@
                                             <option value="/www/app/">/www/app/</option>
                                             <option value="/www/project/">/www/project/</option>
                                         </select>
-                                        <input class="form-control" type="text" id="nodeAppFolderName" placeholder="nama-folder-aplikasi" required="" style="flex: 2;">
+                                        <input class="form-control" type="text" id="nodeAppFolderName"
+                                            placeholder="nama-folder-aplikasi" required="" style="flex: 2;">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Startup Script / Command</label>
-                                    <input class="form-control" type="text" id="nodeAppScript" placeholder="app.js ATAU npm -- start" required="">
+                                    <input class="form-control" type="text" id="nodeAppScript"
+                                        placeholder="app.js ATAU npm -- start" required="">
                                 </div>
                                 <div class="text-right mt-4">
-                                    <button type="submit" class="btn btn-primary" id="btnCreateNodeApp">➕ Buat &amp; Jalankan Aplikasi</button>
+                                    <button type="submit" class="btn btn-primary" id="btnCreateNodeApp">➕ Buat &amp;
+                                        Jalankan Aplikasi</button>
                                 </div>
                             </form>
                         </div>
@@ -180,9 +198,11 @@
                         <div class="flex flex-between align-center mb-4">
                             <div>
                                 <h3 class="card-title">🟩 Manajemen Versi Node.js (NVM)</h3>
-                                <p class="text-muted" style="font-size: 13px;">Install dan atur berbagai versi Node.js di server Anda.</p>
+                                <p class="text-muted" style="font-size: 13px;">Install dan atur berbagai versi Node.js
+                                    di server Anda.</p>
                             </div>
-                            <button class="btn btn-primary" onclick="installNvm()" id="btnInstallNvm" style="display: none;">Install NVM</button>
+                            <button class="btn btn-primary" onclick="installNvm()" id="btnInstallNvm"
+                                style="display: none;">Install NVM</button>
                         </div>
 
                         <div id="nvmContainer" style="display: none;">
@@ -191,14 +211,16 @@
                             </div>
 
                             <div class="flex gap-2 align-center">
-                                <select class="form-control" id="nvmInstallVersion" onchange="checkNvmInstallBtn()" style="width: 280px;">
+                                <select class="form-control" id="nvmInstallVersion" onchange="checkNvmInstallBtn()"
+                                    style="width: 280px;">
                                     <option value="22">v22.x (Current Latest)</option>
                                     <option value="20" selected="">v20.x (LTS - Recommended)</option>
                                     <option value="18">v18.x (LTS)</option>
                                     <option value="16">v16.x (LTS)</option>
                                     <option value="14">v14.x (LTS)</option>
                                 </select>
-                                <button class="btn btn-secondary" onclick="installNodeVersion()" id="btnInstallNodeVer">⬇️ Install Versi Baru</button>
+                                <button class="btn btn-secondary" onclick="installNodeVersion()"
+                                    id="btnInstallNodeVer">⬇️ Install Versi Baru</button>
                                 <button class="btn btn-outline" onclick="loadNvmData()">🔄 Refresh Data</button>
                             </div>
                         </div>
@@ -212,17 +234,23 @@
                         <div class="flex flex-between align-center">
                             <div>
                                 <h3 class="card-title">🐍 Setup New Python App</h3>
-                                <p class="text-muted" style="font-size: 13px;">Jalankan aplikasi Python (Flask, Django, FastAPI, Bot) secara background menggunakan PM2.</p>
+                                <p class="text-muted" style="font-size: 13px;">Jalankan aplikasi Python (Flask, Django,
+                                    FastAPI, Bot) secara background menggunakan PM2.</p>
                             </div>
-                            <button class="btn btn-outline" onclick="toggleSetupForm('setupPythonFormContainer', 'btnTogglePythonSetup')" id="btnTogglePythonSetup">Tampilkan Formulir</button>
+                            <button class="btn btn-outline"
+                                onclick="toggleSetupForm('setupPythonFormContainer', 'btnTogglePythonSetup')"
+                                id="btnTogglePythonSetup">Tampilkan Formulir</button>
                         </div>
 
-                        <div id="setupPythonFormContainer" style="display: none; margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 24px;">
+                        <div id="setupPythonFormContainer"
+                            style="display: none; margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 24px;">
                             <form id="setupPythonForm">
-                                <div class="grid-stats" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 16px;">
+                                <div class="grid-stats"
+                                    style="grid-template-columns: repeat(2, 1fr); margin-bottom: 16px;">
                                     <div class="form-group">
                                         <label class="form-label">Nama Aplikasi (PM2 Process)</label>
-                                        <input class="form-control" type="text" id="pythonAppName" placeholder="my-bot" required="">
+                                        <input class="form-control" type="text" id="pythonAppName" placeholder="my-bot"
+                                            required="">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Versi Python</label>
@@ -239,16 +267,21 @@
                                             <option value="/www/app/">/www/app/</option>
                                             <option value="/www/project/">/www/project/</option>
                                         </select>
-                                        <input class="form-control" type="text" id="pythonAppFolderName" placeholder="nama-folder-aplikasi" required="" style="flex: 2;">
+                                        <input class="form-control" type="text" id="pythonAppFolderName"
+                                            placeholder="nama-folder-aplikasi" required="" style="flex: 2;">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Startup Script / File</label>
-                                    <input class="form-control" type="text" id="pythonAppScript" placeholder="main.py" required="">
-                                    <p class="text-muted" style="font-size: 12px; margin-top: 6px;">File utama python yang akan dieksekusi (contoh: <code>main.py</code> atau <code>bot.py</code>).</p>
+                                    <input class="form-control" type="text" id="pythonAppScript" placeholder="main.py"
+                                        required="">
+                                    <p class="text-muted" style="font-size: 12px; margin-top: 6px;">File utama python
+                                        yang akan dieksekusi (contoh: <code>main.py</code> atau <code>bot.py</code>).
+                                    </p>
                                 </div>
                                 <div class="text-right mt-4">
-                                    <button type="submit" class="btn btn-primary" id="btnCreatePythonApp">➕ Buat &amp; Jalankan Aplikasi Python</button>
+                                    <button type="submit" class="btn btn-primary" id="btnCreatePythonApp">➕ Buat &amp;
+                                        Jalankan Aplikasi Python</button>
                                 </div>
                             </form>
                         </div>
@@ -259,9 +292,11 @@
                         <div class="flex flex-between align-center mb-4">
                             <div>
                                 <h3 class="card-title">🟦 Manajemen Versi Python (pyenv)</h3>
-                                <p class="text-muted" style="font-size: 13px;">Install dan atur berbagai versi Python untuk aplikasi terisolasi.</p>
+                                <p class="text-muted" style="font-size: 13px;">Install dan atur berbagai versi Python
+                                    untuk aplikasi terisolasi.</p>
                             </div>
-                            <button class="btn btn-primary" onclick="installPyenv()" id="btnInstallPyenv" style="display: none;">Install Pyenv</button>
+                            <button class="btn btn-primary" onclick="installPyenv()" id="btnInstallPyenv"
+                                style="display: none;">Install Pyenv</button>
                         </div>
 
                         <div id="pyenvContainer" style="display: none;">
@@ -270,17 +305,21 @@
                             </div>
 
                             <div class="flex gap-2 align-center">
-                                <select class="form-control" id="pyenvInstallVersion" onchange="checkPyenvInstallBtn()" style="width: 280px;">
+                                <select class="form-control" id="pyenvInstallVersion" onchange="checkPyenvInstallBtn()"
+                                    style="width: 280px;">
                                     <option value="3.12.2">3.12.2 (Current Latest)</option>
                                     <option value="3.11.8" selected="">3.11.8 (Stable - Recommended)</option>
                                     <option value="3.10.13">3.10.13 (Stable)</option>
                                     <option value="3.9.18">3.9.18 (Legacy)</option>
                                     <option value="3.8.18">3.8.18 (Legacy)</option>
                                 </select>
-                                <button class="btn btn-secondary" onclick="installPythonVersion()" id="btnInstallPythonVer">⬇️ Install Versi Python Baru</button>
+                                <button class="btn btn-secondary" onclick="installPythonVersion()"
+                                    id="btnInstallPythonVer">⬇️ Install Versi Python Baru</button>
                                 <button class="btn btn-outline" onclick="loadPyenvData()">🔄 Refresh Data</button>
                             </div>
-                            <p class="text-muted" style="font-size: 12px; margin-top: 8px;">Ketik versi spesifik (misal: 3.9.18, 3.10.12, 3.11.6, 3.12.0). Proses build memakan waktu beberapa menit di latar belakang.</p>
+                            <p class="text-muted" style="font-size: 12px; margin-top: 8px;">Ketik versi spesifik (misal:
+                                3.9.18, 3.10.12, 3.11.6, 3.12.0). Proses build memakan waktu beberapa menit di latar
+                                belakang.</p>
                         </div>
                     </div>
                 </div>
@@ -314,26 +353,61 @@
                 </div>
 
                 <!-- NPM/PIP Log Modal -->
-                <div id="npmLogModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+                <div id="npmLogModal"
+                    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
                     <div class="modal-content">
-                        <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-                            <h3 style="margin: 0; font-size: 18px; color: var(--text-main);" id="npmLogTitle">📦 Installation Log</h3>
-                            <button id="btnNPMClose" class="btn btn-outline btn-sm" onclick="document.getElementById('npmLogModal').style.display='none'">Tutup</button>
+                        <div
+                            style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="margin: 0; font-size: 18px; color: var(--text-main);" id="npmLogTitle">📦
+                                Installation Log</h3>
+                            <button id="btnNPMClose" class="btn btn-outline btn-sm"
+                                onclick="document.getElementById('npmLogModal').style.display='none'">Tutup</button>
                         </div>
                         <div style="padding: 16px; background: #1e293b; height: 400px; overflow-y: auto;">
-                            <pre id="npmLogContent" style="color: #e2e8f0; font-family: monospace; font-size: 13px; white-space: pre-wrap; margin: 0;"></pre>
+                            <pre id="npmLogContent"
+                                style="color: #e2e8f0; font-family: monospace; font-size: 13px; white-space: pre-wrap; margin: 0;"></pre>
                         </div>
-                        <div style="padding: 16px; border-top: 1px solid var(--border-color); text-align: right; background: var(--bg-card);">
-                            <span id="npmLogStatus" style="font-weight: bold; color: var(--warning); margin-right: 16px;">⏳ Memproses...</span>
+                        <div
+                            style="padding: 16px; border-top: 1px solid var(--border-color); text-align: right; background: var(--bg-card);">
+                            <span id="npmLogStatus"
+                                style="font-weight: bold; color: var(--warning); margin-right: 16px;">⏳
+                                Memproses...</span>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div style="text-align: center; padding: 20px; color: var(--text-muted); font-size: 12px; margin-top: auto; border-top: 1px solid var(--border-color);">
+
+            <div
+                style="text-align: center; padding: 20px; color: var(--text-muted); font-size: 12px; margin-top: auto; border-top: 1px solid var(--border-color);">
                 &copy; 2025 SMR Dapoy Panel - Sistem Management Server. All rights reserved.
             </div>
         </main>
+
+        <!-- BOTTOM NAVIGATION - Mobile Only -->
+        <nav class="bottom-nav">
+            <ul class="bottom-nav-items">
+                <a href="/dashboard" class="bottom-nav-item">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/tunnelmanager" class="bottom-nav-item">
+                    <span class="nav-icon">☁️</span>
+                    <span>Tunnel</span>
+                </a>
+                <a href="/webmanager" class="bottom-nav-item">
+                    <span class="nav-icon">🌐</span>
+                    <span>Website</span>
+                </a>
+                <a href="/appmanager" class="bottom-nav-item active">
+                    <span class="nav-icon">📦</span>
+                    <span>App</span>
+                </a>
+                <a href="/settings" class="bottom-nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </a>
+            </ul>
+        </nav>
     </div>
 
     <!-- SEMUA SCRIPT JS ASLI -->
@@ -563,7 +637,7 @@
                             logStatus.style.color = 'var(--success)';
                             btnClose.style.display = 'inline-block';
                         }
-                    } catch (e) {}
+                    } catch (e) { }
                 }, 1500);
 
             } catch (e) {
@@ -741,7 +815,7 @@
                     list.innerHTML = '<span class="badge badge-warning">Belum ada versi Python terinstal</span>';
                 }
                 checkPyenvInstallBtn();
-            } catch (e) {}
+            } catch (e) { }
         }
 
         async function installPyenv() {
@@ -868,119 +942,135 @@
     </script>
 
     <!-- DONATE MODAL -->
-    <div id="donateModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-        <div style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+    <div id="donateModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div
+            style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
             <div style="font-size: 40px; margin-bottom: 16px;">💖</div>
             <h2 style="margin-top: 0; color: var(--text-main); font-size: 20px;">Support Dapoy Panel</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px; line-height: 1.5;">Dukung pengembangan panel ini dengan berdonasi via Gopay / Dana ke nomor berikut atas nama <strong>Syah Muhamad Rizky</strong></p>
-            
-            <div style="display: flex; align-items: center; justify-content: center; background: #f1f5f9; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 20px;">
-                <code style="font-size: 18px; color: var(--secondary); letter-spacing: 2px; font-weight: bold; margin-right: 15px;">087777999907</code>
-                <button onclick="navigator.clipboard.writeText('087777999907'); this.innerText='Disalin!'; setTimeout(()=>this.innerText='Copy', 2000);" class="btn btn-secondary" style="padding: 6px 12px; font-size: 11px;">Copy</button>
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px; line-height: 1.5;">Dukung
+                pengembangan panel ini dengan berdonasi via Gopay / Dana ke nomor berikut atas nama <strong>Syah Muhamad
+                    Rizky</strong></p>
+
+            <div
+                style="display: flex; align-items: center; justify-content: center; background: #f1f5f9; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 20px;">
+                <code
+                    style="font-size: 18px; color: var(--secondary); letter-spacing: 2px; font-weight: bold; margin-right: 15px;">087777999907</code>
+                <button
+                    onclick="navigator.clipboard.writeText('087777999907'); this.innerText='Disalin!'; setTimeout(()=>this.innerText='Copy', 2000);"
+                    class="btn btn-secondary" style="padding: 6px 12px; font-size: 11px;">Copy</button>
             </div>
-            
-            <button onclick="document.getElementById('donateModal').style.display='none'" class="btn btn-outline" style="width: 100%;">Tutup</button>
+
+            <button onclick="document.getElementById('donateModal').style.display='none'" class="btn btn-outline"
+                style="width: 100%;">Tutup</button>
         </div>
     </div>
     <script>
-    function showDonateModal() {
-        document.getElementById('donateModal').style.display = 'flex';
-    }
+        function showDonateModal() {
+            document.getElementById('donateModal').style.display = 'flex';
+        }
     </script>
 
     <!-- REGISTRASI MODAL -->
-    <div id="trialRegModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-        <div style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+    <div id="trialRegModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div
+            style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
             <div style="font-size: 40px; margin-bottom: 16px;">🔑</div>
             <h2 style="margin-top: 0; color: var(--text-main); font-size: 20px;">Aktivasi Dapoy Panel</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px;">Waktu Free Trial (2 Jam) sedang berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
-            <input type="text" id="modalLicenseKey" placeholder="DP-XXXX-XXXX" class="form-control" style="text-align: center; font-family: monospace; font-size: 15px; margin-bottom: 15px; text-transform: uppercase;">
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px;">Waktu Free Trial (2 Jam) sedang
+                berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
+            <input type="text" id="modalLicenseKey" placeholder="DP-XXXX-XXXX" class="form-control"
+                style="text-align: center; font-family: monospace; font-size: 15px; margin-bottom: 15px; text-transform: uppercase;">
             <div style="display: flex; gap: 10px;">
-                <button onclick="document.getElementById('trialRegModal').style.display='none'" class="btn btn-outline" style="flex: 1;">Batal</button>
-                <button onclick="submitModalActivation()" id="btnModalActivate" class="btn btn-primary" style="flex: 1;">Aktivasi</button>
+                <button onclick="document.getElementById('trialRegModal').style.display='none'" class="btn btn-outline"
+                    style="flex: 1;">Batal</button>
+                <button onclick="submitModalActivation()" id="btnModalActivate" class="btn btn-primary"
+                    style="flex: 1;">Aktivasi</button>
             </div>
         </div>
     </div>
 
     <script>
-    let trialInterval;
-    async function fetchLicenseStatus() {
-        try {
-            const res = await fetch('/api/license-status');
-            const data = await res.json();
-            const btnDonate = document.getElementById('btnDonateOrReg');
-            const trialIndicator = document.getElementById('trialIndicator');
-            const trialCountdown = document.getElementById('trialCountdown');
-            
-            if (data.status === 'registered') {
-                if (trialIndicator) trialIndicator.style.display = 'none';
-                if (btnDonate) {
-                    btnDonate.innerHTML = '<span class="icon">💎</span> Registered';
-                    btnDonate.style.color = 'var(--secondary)';
-                    btnDonate.style.borderColor = 'rgba(59, 130, 246, 0.3)';
-                    btnDonate.style.background = 'rgba(59, 130, 246, 0.1)';
-                }
-            } else if (data.status === 'trial') {
-                if (btnDonate) {
-                    btnDonate.innerHTML = '<span class="icon">🔑</span> Registrasi';
-                    btnDonate.style.color = 'var(--warning)';
-                    btnDonate.style.borderColor = 'rgba(245, 158, 11, 0.3)';
-                    btnDonate.style.background = 'rgba(245, 158, 11, 0.1)';
-                    btnDonate.onclick = function() {
-                        document.getElementById('trialRegModal').style.display = 'flex';
-                    };
-                }
-                if (trialIndicator && data.trialEndsAt) {
-                    trialIndicator.style.display = 'flex';
-                    
-                    trialInterval = setInterval(() => {
-                        const now = Date.now();
-                        const diff = data.trialEndsAt - now;
-                        if (diff <= 0) {
-                            clearInterval(trialInterval);
-                            window.location.reload();
-                        } else {
-                            const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
-                            const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
-                            const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
-                            trialCountdown.innerText = h + ':' + m + ':' + s;
-                        }
-                    }, 1000);
-                }
-            } else if (data.status === 'expired') {
-                window.location.reload();
-            }
-        } catch (err) {}
-    }
+        let trialInterval;
+        async function fetchLicenseStatus() {
+            try {
+                const res = await fetch('/api/license-status');
+                const data = await res.json();
+                const btnDonate = document.getElementById('btnDonateOrReg');
+                const trialIndicator = document.getElementById('trialIndicator');
+                const trialCountdown = document.getElementById('trialCountdown');
 
-    async function submitModalActivation() {
-        const key = document.getElementById('modalLicenseKey').value.trim();
-        if (!key) return alert('Masukkan License Key!');
-        const btn = document.getElementById('btnModalActivate');
-        btn.disabled = true;
-        btn.innerText = 'Memproses...';
-        
-        try {
-            const res = await fetch('/api/activate', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ license_key: key })
-            });
-            const data = await res.json();
-            if (data.success) {
-                alert('Aktivasi Berhasil! Halaman akan dimuat ulang.');
-                window.location.reload();
-            } else {
-                alert('Gagal: ' + (data.message || 'Key tidak valid'));
-            }
-        } catch (err) {
-            alert('Terjadi kesalahan server.');
+                if (data.status === 'registered') {
+                    if (trialIndicator) trialIndicator.style.display = 'none';
+                    if (btnDonate) {
+                        btnDonate.innerHTML = '<span class="icon">💎</span> Registered';
+                        btnDonate.style.color = 'var(--secondary)';
+                        btnDonate.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+                        btnDonate.style.background = 'rgba(59, 130, 246, 0.1)';
+                    }
+                } else if (data.status === 'trial') {
+                    if (btnDonate) {
+                        btnDonate.innerHTML = '<span class="icon">🔑</span> Registrasi';
+                        btnDonate.style.color = 'var(--warning)';
+                        btnDonate.style.borderColor = 'rgba(245, 158, 11, 0.3)';
+                        btnDonate.style.background = 'rgba(245, 158, 11, 0.1)';
+                        btnDonate.onclick = function () {
+                            document.getElementById('trialRegModal').style.display = 'flex';
+                        };
+                    }
+                    if (trialIndicator && data.trialEndsAt) {
+                        trialIndicator.style.display = 'flex';
+
+                        trialInterval = setInterval(() => {
+                            const now = Date.now();
+                            const diff = data.trialEndsAt - now;
+                            if (diff <= 0) {
+                                clearInterval(trialInterval);
+                                window.location.reload();
+                            } else {
+                                const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
+                                const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+                                const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+                                trialCountdown.innerText = h + ':' + m + ':' + s;
+                            }
+                        }, 1000);
+                    }
+                } else if (data.status === 'expired') {
+                    window.location.reload();
+                }
+            } catch (err) { }
         }
-        btn.disabled = false;
-        btn.innerText = 'Aktivasi';
-    }
 
-    document.addEventListener('DOMContentLoaded', fetchLicenseStatus);
+        async function submitModalActivation() {
+            const key = document.getElementById('modalLicenseKey').value.trim();
+            if (!key) return alert('Masukkan License Key!');
+            const btn = document.getElementById('btnModalActivate');
+            btn.disabled = true;
+            btn.innerText = 'Memproses...';
+
+            try {
+                const res = await fetch('/api/activate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ license_key: key })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('Aktivasi Berhasil! Halaman akan dimuat ulang.');
+                    window.location.reload();
+                } else {
+                    alert('Gagal: ' + (data.message || 'Key tidak valid'));
+                }
+            } catch (err) {
+                alert('Terjadi kesalahan server.');
+            }
+            btn.disabled = false;
+            btn.innerText = 'Aktivasi';
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchLicenseStatus);
     </script>
 </body>
+
 </html>
