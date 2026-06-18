@@ -1,3 +1,7 @@
+v1.7.28 (Patch Update)
+- [Peningkatan UI] Memperbaiki tampilan Modal Donate yang rusak pada beberapa halaman dengan memastikan gaya CSS tetap absolut di tengah layar, tidak terpengaruh tema halaman.
+- [Perbaikan Bug] Memperbaiki masalah logo kustom tidak tampil di Modal Donate dan `index.html` (untuk web baru) dengan mengintegrasikan sistem agar membaca logo dari identitas panel.
+
 v1.7.27 (Patch Update)
 - [Peningkatan UI] Mengubah pop-up (alert standar browser) untuk menu Donate menjadi Modal interaktif yang lebih modern dan elegan. Modal ini dilengkapi dengan tombol "Copy" khusus dan menampilkan logo sistem agar terlihat lebih premium.
 
