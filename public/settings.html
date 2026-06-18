@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Dapoy Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ef4444;
+            --secondary: #3b82f6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border: rgba(148, 163, 184, 0.1);
+            --gray: #64748b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: #e2e8f0;
+            min-height: 100vh;
+            line-height: 1.6;
+            display: flex;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .sidebar-footer {
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 14px;
+            margin-bottom: 16px;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .user-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .user-info p {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 10px;
+            color: #ef4444;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            border-right: 1px solid var(--border);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            padding: 0 12px;
+        }
+
+        .sidebar-brand .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .sidebar-brand h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .sidebar-brand p {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(59, 130, 246, 0.1));
+            color: var(--primary);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 32px 40px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .header-left h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+
+        .header-left p {
+            color: var(--gray);
+            font-size: 15px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-time {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .header-time .icon {
+            margin-right: 8px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-card .icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card .icon.blue {
+            background: rgba(99, 102, 241, 0.15);
+        }
+
+        .stat-card .icon.green {
+            background: rgba(16, 185, 129, 0.15);
+        }
+
+        .stat-card .icon.purple {
+            background: rgba(139, 92, 246, 0.15);
+        }
+
+        .stat-card .icon.orange {
+            background: rgba(245, 158, 11, 0.15);
+        }
+
+        .stat-card h3 {
+            font-size: 32px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .stat-card p {
+            color: var(--gray);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .stat-card .trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 12px;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .stat-card .trend.up {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .section-title h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 550px;
+            padding: 30px;
+            transform: translateY(20px);
+            transition: 0.3s;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 24px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-btn:hover {
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .section-title .badge {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .card-header .icon-wrap {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .card-header .icon-wrap.blue {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+        }
+
+        .card-header .icon-wrap.green {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+        }
+
+        .card-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .card-header p {
+            color: var(--gray);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status-badge.online {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .status-badge.offline {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        .status-badge.checking {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        .status-badge.online .status-dot {
+            background: var(--success);
+        }
+
+        .status-badge.offline .status-dot {
+            background: var(--danger);
+            animation: none;
+        }
+
+        .status-badge.checking .status-dot {
+            background: var(--warning);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(148, 163, 184, 0.1);
+            color: #e2e8f0;
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(148, 163, 184, 0.2);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-sm {
+            padding: 10px 16px;
+            font-size: 13px;
+        }
+
+        .btn.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .quick-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 18px;
+            background: rgba(148, 163, 184, 0.08);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: #e2e8f0;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .quick-action-btn:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .info-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px 20px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #a5b4fc;
+        }
+
+        .info-box .icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .card-full {
+            grid-column: 1 / -1;
+        }
+
+        .tunnel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .tunnel-form {
+            display: flex;
+            gap: 16px;
+            align-items: flex-end;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .form-group input::placeholder {
+            color: var(--gray);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            text-align: left;
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table td {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .table tbody tr {
+            transition: background 0.2s;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .table .service-tag {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(148, 163, 184, 0.1);
+            border-radius: 6px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+            color: #e2e8f0;
+        }
+
+        .table-empty {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+        }
+
+        .settings-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .settings-form input {
+            width: 100%;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 14px;
+            color: white;
+            font-family: 'Monaco', 'Consolas', monospace;
+            transition: all 0.2s;
+        }
+
+        .settings-form input::placeholder {
+            color: var(--gray);
+        }
+
+        .settings-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+        }
+
+        .settings-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                padding-bottom: 70px;
+                overflow-x: hidden;
+            }
+
+            .sidebar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 70px;
+                flex-direction: row;
+                padding: 0;
+                background: #0f172a;
+                border-right: none;
+                border-top: 1px solid var(--border);
+                z-index: 1000;
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+
+            .sidebar-brand, .sidebar-footer {
+                display: none !important;
+            }
+
+            .sidebar-nav {
+                flex-direction: row;
+                width: 100%;
+                gap: 0;
+                padding: 0 10px;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .nav-item {
+                flex-direction: column;
+                padding: 8px 12px;
+                font-size: 10px;
+                gap: 4px;
+                border-radius: 8px;
+                min-width: 60px;
+                justify-content: center;
+                white-space: nowrap;
+            }
+
+            .nav-item .icon {
+                font-size: 20px;
+                margin: 0;
+            }
+
+            .main-content {
+                padding: 16px;
+                height: auto;
+                min-height: calc(100vh - 70px);
+                margin-left: 0;
+                max-width: 100vw;
+                overflow-x: hidden;
+            }
+
+            /* Fix Header */
+            .header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 16px;
+            }
+            .header-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            .header-actions button {
+                flex: 1;
+            }
+
+            /* Fix Modals */
+            .modal {
+                width: 95% !important;
+                padding: 16px !important;
+            }
+            .modal-header h3 {
+                font-size: 18px;
+            }
+            .form-group > div[style*="display: flex"],
+            .form-group > div[style*="display: grid"] {
+                flex-direction: column !important;
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Fix Tables */
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                width: 100%;
+            }
+            
+            table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table th, table td {
+                white-space: nowrap;
+                padding: 12px;
+            }
+            
+            pre {
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                overflow-x: auto;
+            }
+
+            /* Override all inline grid-template-columns */
+            div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            /* Form inside cards */
+            div[style*="display: grid"][style*="gap"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            
+            /* Fix Website Modal Flex wrap issue */
+            #hostnameAutoGroup > div,
+            #hostnameAutoGroup + div + div > div {
+                flex-direction: column !important;
+                align-items: stretch !important;
+            }
+            #hostnameAutoGroup > div > span {
+                display: none !important;
+            }
+            #webSubdomain, #webDomainSelect, #webBaseDir, #webDirName {
+                height: 44px !important;
+                width: 100% !important;
+            }
+
+            /* Override inline flex layouts */
+            div[style*="display: flex"] {
+                flex-wrap: wrap !important;
+            }
+            div[style*="justify-content: space-between"] {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 12px !important;
+            }
+            
+            /* Tabs */
+            .tabs {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .tab-btn {
+                flex: 1;
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+
+            /* Other Grids */
+            .stats-grid,
+            .cards-grid,
+            .settings-grid {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .card {
+                max-width: 100%;
+                overflow-x: auto;
+            }
+
+            .tunnel-form,
+            .settings-form {
+                flex-direction: column;
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo">🚀</div>
+            <div>
+                <h1>Dapoy Panel</h1>
+                <p>Server Management</p>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="nav-item "><span class="icon">📊</span>Dashboard</a>
+            <a href="/tunnelmanager" class="nav-item "><span class="icon">☁️</span>Tunneling</a>
+            <a href="/webmanager" class="nav-item "><span class="icon">🌐</span>Website</a>
+            <a href="/appmanager" class="nav-item "><span class="icon">📦</span>Node & Pyth</a>
+            <a href="/databasemanager" class="nav-item "><span class="icon">🗄️</span>Database</a>
+            <a href="/filemanager" class="nav-item "><span class="icon">📁</span>File Manager</a>
+            <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span>phpMyAdmin</a>
+            <a href="/terminal" class="nav-item "><span class="icon">🔧</span>Terminal SSH</a>
+            <a href="javascript:void(0)"
+                onclick="navigator.clipboard.writeText('087777999907'); alert('Donate dengan Gopay / Dana 087777999907 atas nama Syah Muhamad Rizky\n\n(Nomor otomatis disalin ke clipboard!)');"
+                class="nav-item"
+                style="margin-top: auto; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.5);"><span
+                    class="icon">💖</span>Donate</a>
+            <a href="/settings" class="nav-item active"><span class="icon">⚙️</span>Pengaturan Sistem</a>
+
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-card">
+                <div class="user-avatar">👤</div>
+                <div class="user-info">
+                    <h4 id="username">Admin</h4>
+                    <p>Administrator</p>
+                </div>
+            </div>
+            <a href="/logout" class="btn-logout"><span>🚪</span>Logout</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <div class="header-left">
+                <h1>Pengaturan Sistem</h1>
+                <p>Konfigurasi identitas aplikasi, kredensial login, dan SSH.</p>
+            </div>
+            <div class="header-right">
+                <div class="header-time"><span class="icon">🕐</span><span id="currentTime">Memuat...</span></div>
+            </div>
+        </header>
+
+        <div class="cards-grid">
+            <!-- Card: Identitas Aplikasi -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="icon-wrap blue">🎨</div>
+                        <h3>Identitas Aplikasi</h3>
+                        <p>Atur nama, domain, dan logo yang tampil di Dapoy Panel.</p>
+                    </div>
+                </div>
+                <div style="display: grid; gap: 16px;">
+
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px;">Domain
+                            Aplikasi</label>
+                        <input type="text" id="settingAppDomain" placeholder="panel.dapoy.net"
+                            style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px;">Domain
+                            FTP/SFTP</label>
+                        <input type="text" id="settingFtpDomain" placeholder="sftp.dapoy.net"
+                            style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                    </div>
+                    <div class="form-group">
+                        <label>Logo (URL, Emoji, atau Upload File)</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="settingAppLogo" placeholder="🚀"
+                                style="flex: 1; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                            <input type="file" id="settingAppLogoFile" accept="image/*" style="display: none;"
+                                onchange="handleLogoUpload(this)">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="document.getElementById('settingAppLogoFile').click()"
+                                style="padding: 0 20px; white-space: nowrap;">📁 Upload Logo</button>
+                        </div>
+                        <p style="font-size: 12px; color: var(--gray); margin-top: 8px;">Upload file gambar akan
+                            otomatis terpasang sebagai Favicon web. Format: PNG/JPG. Max 5MB.</p>
+                    </div>
+                    <div style="text-align: right; margin-top: 8px;">
+                        <button onclick="saveAppIdentity()" class="btn btn-primary" id="btnSaveAppIdentity"
+                            style="padding: 10px 20px;">💾 Simpan Identitas</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Kredensial Login -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="icon-wrap green">🔑</div>
+                        <h3>Kredensial Login</h3>
+                        <p>Ubah username dan password untuk login ke Dapoy Panel.</p>
+                    </div>
+                </div>
+                <div style="display: grid; gap: 16px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px;">Username
+                            Baru</label>
+                        <input type="text" id="settingUsername" placeholder="admin"
+                            style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px;">Password
+                            Baru</label>
+                        <input type="password" id="settingPassword" placeholder="Minimal 6 karakter"
+                            style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                    </div>
+                    <div>
+                        <label
+                            style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px;">Konfirmasi
+                            Password Baru</label>
+                        <input type="password" id="settingConfirmPassword" placeholder="Ulangi password baru"
+                            style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                    </div>
+                    <div style="text-align: right; margin-top: 8px;">
+                        <button onclick="saveCredentials()" class="btn btn-success" id="btnSaveCredentials"
+                            style="padding: 10px 20px;">💾 Ubah Kredensial</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Pengaturan SSH -->
+            <div class="card card-full">
+                <div class="card-header">
+                    <div>
+                        <div class="icon-wrap purple">🔒</div>
+                        <h3>Pengaturan SSH</h3>
+                        <p>Konfigurasi akses SSH Web dan sinkronisasi server ke VPS.</p>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px;">SSH
+                            Host</label>
+                        <input type="text" id="settingSshHost" placeholder="ssh.dapoy.net"
+                            style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px;">SSH
+                            User</label>
+                        <input type="text" id="settingSshUser" placeholder="sdntating1"
+                            style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px;">Path
+                            Private Key</label>
+                        <input type="text" id="settingSshKey" placeholder="~/.ssh/id_rsa"
+                            style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                    </div>
+                </div>
+                <div style="text-align: right; margin-top: 16px;">
+                    <button onclick="saveSshSettings()" class="btn btn-primary" id="btnSaveSsh"
+                        style="padding: 10px 20px;">💾 Simpan Pengaturan SSH</button>
+                </div>
+            </div>
+
+
+
+            <!-- Card: Update Sistem -->
+            <div class="card card-full">
+                <div class="card-header">
+                    <div>
+                        <div class="icon-wrap blue">🔄</div>
+                        <h3>Pembaruan Sistem (Auto-Update)</h3>
+                        <p>Cek versi terbaru dari Github dan lakukan update otomatis secara langsung.</p>
+                    </div>
+                </div>
+                <div
+                    style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border);">
+                    <div>
+                        <h4 style="color: white; margin-bottom: 4px;">Update Dapoy Panel</h4>
+                        <p style="color: var(--gray); font-size: 13px;">Tarik fitur terbaru dan perbaikan bug
+                            (membutuhkan restart otomatis).</p>
+                    </div>
+                    <button onclick="checkUpdate()" class="btn btn-primary" id="btnUpdateSystem"
+                        style="padding: 12px 24px;">
+                        <span id="btnUpdateText">🔄 Cek & Update Sekarang</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="footer">&copy; 2025 SMR Dapoy Panel - Sistem Management Server. <span
+                style="color: var(--success); font-weight: bold;">(Auto-Deploy Active 🚀 V2)</span> All rights reserved.
+        </footer>
+    </main>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('currentTime').textContent = now.toLocaleDateString('id-ID', options);
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            loadAppIdentity();
+            loadSshSettings();
+        });
+
+
+
+        async function loadAppIdentity() {
+            try {
+                const response = await fetch('/api/system/settings');
+                const data = await response.json();
+                if (data.success) {
+                    // document.getElementById('settingAppName').value = data.appName;
+                    document.getElementById('settingAppDomain').value = data.appDomain;
+                    document.getElementById('settingAppLogo').value = data.appLogo;
+                    if (document.getElementById('settingFtpDomain')) {
+                        document.getElementById('settingFtpDomain').value = data.ftpDomain || 'localhost';
+                    }
+
+                    // Update current page title
+                    document.title = 'Pengaturan Sistem - ' + data.appName;
+                    const brandH1 = document.querySelector('.sidebar-brand h1');
+                    const brandP = document.querySelector('.sidebar-brand p');
+                    const brandLogo = document.querySelector('.sidebar-brand .logo');
+                    if (brandH1) brandH1.textContent = data.appName;
+                    if (brandP) brandP.textContent = data.appDomain;
+                    if (brandLogo) {
+                        if (data.appLogo.startsWith('http') || data.appLogo.startsWith('/') || data.appLogo.startsWith('data:image')) {
+                            brandLogo.innerHTML = '<img src="' + data.appLogo + '" style="width:100%;height:100%;border-radius:12px;object-fit:cover;">';
+                        } else {
+                            brandLogo.textContent = data.appLogo;
+                        }
+                    }
+                }
+            } catch (error) { console.error('Failed to load identity:', error); }
+        }
+
+        function handleLogoUpload(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('settingAppLogo').value = e.target.result;
+                    // preview
+                    const brandLogo = document.querySelector('.sidebar-brand .logo');
+                    if (brandLogo) {
+                        brandLogo.innerHTML = '<img src="' + e.target.result + '" style="width:100%;height:100%;border-radius:12px;object-fit:cover;">';
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        async function saveAppIdentity() {
+            const appName = 'Dapoy Panel';
+            const appDomain = document.getElementById('settingAppDomain').value.trim();
+            const appLogo = document.getElementById('settingAppLogo').value.trim();
+            const ftpDomain = document.getElementById('settingFtpDomain') ? document.getElementById('settingFtpDomain').value.trim() : 'localhost';
+            const btn = document.getElementById('btnSaveAppIdentity');
+
+            btn.disabled = true;
+            btn.innerHTML = 'Menyimpan...';
+            try {
+                const response = await fetch('/api/system/settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ appName, appDomain, appLogo, ftpDomain })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert(data.message);
+                    loadAppIdentity(); // Reload view
+                } else {
+                    alert('Gagal: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '💾 Simpan Identitas';
+            }
+        }
+
+        async function saveCredentials() {
+            const username = document.getElementById('settingUsername').value.trim();
+            const password = document.getElementById('settingPassword').value;
+            const confirmPassword = document.getElementById('settingConfirmPassword').value;
+            const btn = document.getElementById('btnSaveCredentials');
+
+            if (!username || !password || !confirmPassword) return alert('Semua kolom kredensial harus diisi!');
+            if (password !== confirmPassword) return alert('Password dan konfirmasi tidak cocok!');
+
+            btn.disabled = true;
+            btn.innerHTML = 'Menyimpan...';
+            try {
+                const response = await fetch('/api/system/credentials', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password, confirmPassword })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert(data.message);
+                    document.getElementById('settingPassword').value = '';
+                    document.getElementById('settingConfirmPassword').value = '';
+                } else {
+                    alert('Gagal: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '💾 Ubah Kredensial';
+            }
+        }
+
+        async function loadSshSettings() {
+            try {
+                const response = await fetch('/api/settings/ssh');
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('settingSshHost').value = data.sshHost;
+                    document.getElementById('settingSshUser').value = data.sshUser;
+                    document.getElementById('settingSshKey').value = data.sshKey;
+                }
+            } catch (error) { console.error('Failed to load ssh settings:', error); }
+        }
+
+        async function saveSshSettings() {
+            const host = document.getElementById('settingSshHost').value.trim();
+            const user = document.getElementById('settingSshUser').value.trim();
+            const key = document.getElementById('settingSshKey').value.trim();
+            const btn = document.getElementById('btnSaveSsh');
+
+            if (!host || !user) return alert('Host dan User SSH tidak boleh kosong!');
+
+            btn.disabled = true;
+            btn.innerHTML = 'Menyimpan...';
+            try {
+                const response = await fetch('/api/settings/ssh', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sshHost: host, sshUser: user, sshKey: key })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert('Gagal: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '💾 Simpan Pengaturan SSH';
+            }
+        }
+
+        async function checkUpdate() {
+            var btn = document.getElementById('btnUpdateSystem');
+            var text = document.getElementById('btnUpdateText');
+            btn.disabled = true;
+            text.innerHTML = '<div class="spinner" style="display:inline-block; vertical-align:middle; margin-right:8px;"></div> Checking...';
+
+            try {
+                var response = await fetch('/api/system/update/check');
+                var data = await response.json();
+
+                if (data.success) {
+                    showUpdateModal(data);
+                } else {
+                    alert('Gagal mengecek update: ' + data.message);
+                }
+            } catch (e) {
+                alert('Terjadi kesalahan jaringan: ' + e.message);
+            } finally {
+                text.innerHTML = '🔄 Cek & Update Sekarang';
+                btn.disabled = false;
+            }
+        }
+
+        function showUpdateModal(data) {
+            const modal = document.getElementById('updateModal');
+            const header = document.getElementById('updateHeader');
+            const icon = document.getElementById('updateIcon');
+            const title = document.getElementById('updateTitle');
+            const desc = document.getElementById('updateDesc');
+            const currentTxt = document.getElementById('currentVersionTxt');
+            const releaseTxt = document.getElementById('releaseTimeTxt');
+            const actionDiv = document.getElementById('updateAction');
+
+            currentTxt.innerHTML = `Current version: <span style="color: #ec4899;">${data.currentVersion}</span>`;
+            releaseTxt.innerHTML = `Release time: ${data.releaseTime}`;
+
+            if (data.isLatest) {
+                header.style.background = 'linear-gradient(135deg, #ef4444 0%, #3b82f6 100%)';
+                icon.innerHTML = '✅';
+                title.innerHTML = 'It is currently the latest version';
+                desc.innerHTML = `The latest version is ${data.latestVersion} Release: ${data.releaseTime}<br><br>You are already using the most advanced version. Have a great day using Dapoy Panel!`;
+                actionDiv.style.display = 'none';
+            } else {
+                header.style.background = 'linear-gradient(135deg, #ef4444 0%, #3b82f6 100%)';
+                icon.innerHTML = '🚀';
+                title.innerHTML = 'A new version is available!';
+                desc.innerHTML = `The latest version is <strong style="color: #60a5fa;">${data.latestVersion}</strong> Release: ${data.releaseTime}<br><br>Your system is behind by <strong>${data.commitsBehind} update(s)</strong>.<br>Please update to enjoy new features and security patches!`;
+                actionDiv.style.display = 'block';
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeUpdateModal() {
+            document.getElementById('updateModal').classList.remove('active');
+        }
+
+        async function executeUpdate() {
+            var btn = document.getElementById('btnExecuteUpdate');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner" style="display:inline-block; vertical-align:middle; margin-right:8px;"></div> Updating... Please wait';
+
+            try {
+                var response = await fetch('/api/system/update', { method: 'POST' });
+                var data = await response.json();
+                if (data.success) {
+                    btn.innerHTML = '✅ Update Accepted! Restarting...';
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 5000);
+                } else {
+                    alert('Gagal Update: ' + data.message);
+                    btn.disabled = false;
+                    btn.innerHTML = 'Update to Latest Version';
+                }
+            } catch (e) {
+                alert('Terjadi kesalahan jaringan atau server sedang me-restart: ' + e.message);
+                btn.disabled = false;
+                btn.innerHTML = 'Update to Latest Version';
+            }
+        }
+    </script>
+    <!-- Update Modal -->
+    <div class="modal-overlay" id="updateModal">
+        <div class="modal" style="padding: 0; overflow: hidden; max-width: 550px; background: var(--card-bg);">
+            <!-- Wave Header -->
+            <div id="updateHeader"
+                style="background: linear-gradient(135deg, #ef4444 0%, #3b82f6 100%); padding: 40px 30px; text-align: center; position: relative;">
+                <h3
+                    style="color: white; margin: 0; font-size: 14px; font-weight: normal; text-align: left; position: relative; z-index: 2;">
+                    [Dapoy Panel] - Version update</h3>
+                <button class="close-btn" onclick="closeUpdateModal()"
+                    style="position: absolute; top: 15px; right: 15px; color: white; background: rgba(0,0,0,0.2); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; z-index: 2;">&times;</button>
+
+                <div
+                    style="margin-top: 30px; position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 12px;">
+                    <div id="updateIcon"
+                        style="font-size: 36px; background: white; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #ef4444;">
+                        ✅</div>
+                    <h2 id="updateTitle" style="color: white; font-size: 24px; margin: 0; font-weight: 600;">It is
+                        currently the latest version</h2>
+                </div>
+
+                <!-- Wave SVG -->
+                <svg viewBox="0 0 500 150" preserveAspectRatio="none"
+                    style="height: 60px; width: 100%; position: absolute; bottom: -1px; left: 0; right: 0;">
+                    <path d="M0.00,49.98 C150.00,150.00 350.00,-49.98 500.00,49.98 L500.00,150.00 L0.00,150.00 Z"
+                        style="stroke: none; fill: var(--card-bg);"></path>
+                </svg>
+            </div>
+
+            <div style="padding: 30px; background: var(--card-bg);">
+                <div
+                    style="display: flex; justify-content: space-between; color: var(--gray); font-size: 14px; margin-bottom: 25px;">
+                    <span id="currentVersionTxt">Current version: <span style="color: #ec4899;">Dapoy Panel
+                            1.0.0</span></span>
+                    <span id="releaseTimeTxt">Release time: 2026-06-16</span>
+                </div>
+
+                <div
+                    style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 10px; padding: 20px; font-size: 13px; color: var(--gray); line-height: 1.8;">
+                    <div id="updateDesc">
+                        You are already using the most advanced version.<br>
+                        Have a great day using Dapoy Panel!
+                    </div>
+                </div>
+
+                <div id="updateAction" style="margin-top: 25px; text-align: center; display: none;">
+                    <button class="btn btn-primary" onclick="executeUpdate()" id="btnExecuteUpdate"
+                        style="padding: 12px 35px; font-size: 15px; font-weight: 600; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);">Update
+                        to Latest Version</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

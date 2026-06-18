@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Manager - Dapoy Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ef4444;
+            --secondary: #3b82f6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border: rgba(148, 163, 184, 0.1);
+            --gray: #64748b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        option {
+            background-color: var(--bg);
+            color: #fff;
+        }
+
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            border-right: 1px solid var(--border);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            padding: 0 12px;
+        }
+
+        .sidebar-brand .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .sidebar-brand h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .sidebar-brand p {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(59, 130, 246, 0.1));
+            color: var(--primary);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .header h2 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            margin-bottom: 24px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-action {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid var(--border);
+        }
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        /* Breadcrumb & Path Selector */
+        .path-container {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .path-container select {
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: #fff;
+            font-family: monospace;
+            outline: none;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb span {
+            cursor: pointer;
+            color: var(--secondary);
+            transition: 0.2s;
+        }
+
+        .breadcrumb span:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
+
+        .breadcrumb .separator {
+            color: var(--gray);
+            cursor: default;
+            text-decoration: none !important;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--gray);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .file-icon {
+            font-size: 18px;
+            margin-right: 8px;
+        }
+
+        .file-link {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .file-link:hover {
+            color: var(--secondary);
+        }
+
+        .dir-link {
+            font-weight: 600;
+            color: #60a5fa;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content.editor {
+            max-width: 1000px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: #fff;
+            font-family: monospace;
+        }
+
+        textarea.form-control {
+            flex: 1;
+            resize: none;
+            min-height: 300px;
+        }
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                padding-bottom: 70px;
+                overflow-x: hidden;
+            }
+
+            .sidebar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 70px;
+                flex-direction: row;
+                padding: 0;
+                background: #0f172a;
+                border-right: none;
+                border-top: 1px solid var(--border);
+                z-index: 1000;
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+
+            .sidebar-brand, .sidebar-footer {
+                display: none !important;
+            }
+
+            .sidebar-nav {
+                flex-direction: row;
+                width: 100%;
+                gap: 0;
+                padding: 0 10px;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .nav-item {
+                flex-direction: column;
+                padding: 8px 12px;
+                font-size: 10px;
+                gap: 4px;
+                border-radius: 8px;
+                min-width: 60px;
+                justify-content: center;
+                white-space: nowrap;
+            }
+
+            .nav-item .icon {
+                font-size: 20px;
+                margin: 0;
+            }
+
+            .main-content {
+                padding: 16px;
+                height: auto;
+                min-height: calc(100vh - 70px);
+                margin-left: 0;
+                max-width: 100vw;
+                overflow-x: hidden;
+            }
+
+            /* Fix Header */
+            .header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 16px;
+            }
+            .header-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            .header-actions button {
+                flex: 1;
+            }
+
+            /* Fix Modals */
+            .modal {
+                width: 95% !important;
+                padding: 16px !important;
+            }
+            .modal-header h3 {
+                font-size: 18px;
+            }
+            .form-group > div[style*="display: flex"],
+            .form-group > div[style*="display: grid"] {
+                flex-direction: column !important;
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Fix Tables */
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                width: 100%;
+            }
+            
+            table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table th, table td {
+                white-space: nowrap;
+                padding: 12px;
+            }
+            
+            pre {
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                overflow-x: auto;
+            }
+
+            /* Override all inline grid-template-columns */
+            div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            /* Form inside cards */
+            div[style*="display: grid"][style*="gap"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            
+            /* Fix Website Modal Flex wrap issue */
+            #hostnameAutoGroup > div,
+            #hostnameAutoGroup + div + div > div {
+                flex-direction: column !important;
+                align-items: stretch !important;
+            }
+            #hostnameAutoGroup > div > span {
+                display: none !important;
+            }
+            #webSubdomain, #webDomainSelect, #webBaseDir, #webDirName {
+                height: 44px !important;
+                width: 100% !important;
+            }
+
+            /* Override inline flex layouts */
+            div[style*="display: flex"] {
+                flex-wrap: wrap !important;
+            }
+            div[style*="justify-content: space-between"] {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 12px !important;
+            }
+            
+            /* Tabs */
+            .tabs {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .tab-btn {
+                flex: 1;
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+
+            /* Other Grids */
+            .stats-grid,
+            .cards-grid,
+            .settings-grid {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .card {
+                max-width: 100%;
+                overflow-x: auto;
+            }
+
+            .tunnel-form,
+            .settings-form {
+                flex-direction: column;
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo" id="logoContainer">🚀</div>
+            <div>
+                <h1>Dapoy Panel</h1>
+                <p>Advanced Manager</p>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="nav-item "><span class="icon">📊</span>Dashboard</a>
+            <a href="/tunnelmanager" class="nav-item "><span class="icon">☁️</span>Tunneling</a>
+            <a href="/webmanager" class="nav-item "><span class="icon">🌐</span>Website</a>
+            <a href="/appmanager" class="nav-item "><span class="icon">📦</span>Node & Pyth</a>
+            <a href="/databasemanager" class="nav-item "><span class="icon">🗄️</span>Database</a>
+            <a href="/filemanager" class="nav-item active"><span class="icon">📁</span>File Manager</a>
+            <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span>phpMyAdmin</a>
+            <a href="/terminal" class="nav-item "><span class="icon">🔧</span>Terminal SSH</a>
+            <a href="javascript:void(0)"
+                onclick="navigator.clipboard.writeText('087777999907'); alert('Donate dengan Gopay / Dana 087777999907 atas nama Syah Muhamad Rizky\n\n(Nomor otomatis disalin ke clipboard!)');"
+                class="nav-item"
+                style="margin-top: auto; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.5);"><span
+                    class="icon">💖</span>Donate</a>
+            <a href="/settings" class="nav-item "><span class="icon">⚙️</span>Pengaturan Sistem</a>
+            <a href="/logout" class="nav-item" style="color: #ef4444;"><span class="icon">🚪</span>Logout</a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h2>📁 File Manager</h2>
+            <div class="header-actions">
+                <button class="btn btn-action" onclick="loadFiles()">🔄 Refresh</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="path-container">
+                <select id="baseDirSelector" onchange="navigateTo(this.value)">
+                    <option value="/www/dp/">/www/dp/</option>
+                    <option value="/www/app/">/www/app/</option>
+                    <option value="/www/project/">/www/project/</option>
+                </select>
+                <div class="breadcrumb" id="breadcrumbPath">
+                    <!-- Dinamis -->
+                </div>
+            </div>
+
+            <div class="toolbar">
+                <button class="btn btn-primary" onclick="showModal('uploadModal')">📤 Upload File</button>
+                <button class="btn btn-action" onclick="showModal('newFolderModal')">📁 Folder Baru</button>
+                <button class="btn btn-action" onclick="showModal('newFileModal')">📄 File Baru</button>
+                <div id="bulkActions" style="display: none; margin-left: auto; gap: 8px;">
+                    <button class="btn btn-action" onclick="bulkAction('copy')">📋 Copy Terpilih</button>
+                    <button class="btn btn-action" onclick="bulkAction('move')">✂️ Move Terpilih</button>
+                    <button class="btn btn-danger" onclick="bulkAction('delete')">🗑️ Hapus Terpilih</button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;"><input type="checkbox" id="selectAll"
+                                    onclick="toggleSelectAll(this)"></th>
+                            <th>Nama File</th>
+                            <th>Permissions</th>
+                            <th>Owner</th>
+                            <th>Size</th>
+                            <th>Modified Time</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fileList">
+                        <tr>
+                            <td colspan="7" style="text-align:center; padding: 30px;">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">📤 Upload File</h3>
+                <button class="close-modal" onclick="closeModal('uploadModal')">×</button>
+            </div>
+            <form id="uploadForm">
+                <div class="form-group">
+                    <label>Pilih File</label>
+                    <input type="file" id="uploadFile" class="form-control">
+                </div>
+                <div id="uploadProgressContainer" style="display: none; margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                        <span>Progress Upload</span>
+                        <span id="uploadProgressText">0%</span>
+                    </div>
+                    <div
+                        style="width: 100%; background: rgba(255,255,255,0.1); border-radius: 8px; height: 10px; overflow: hidden;">
+                        <div id="uploadProgressBar"
+                            style="width: 0%; height: 100%; background: var(--primary); transition: width 0.2s;"></div>
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <button type="submit" class="btn btn-primary" id="btnUpload">Upload Sekarang</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- New Folder Modal -->
+    <div class="modal" id="newFolderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">📁 Buat Folder Baru</h3>
+                <button class="close-modal" onclick="closeModal('newFolderModal')">×</button>
+            </div>
+            <form id="newFolderForm">
+                <div class="form-group">
+                    <label>Nama Folder</label>
+                    <input type="text" id="newFolderName" class="form-control" required placeholder="folder-baru">
+                </div>
+                <div style="text-align: right;">
+                    <button type="submit" class="btn btn-primary">Buat Folder</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- New File / Editor Modal -->
+    <div class="modal" id="editorModal">
+        <div class="modal-content editor">
+            <div class="modal-header">
+                <h3 class="modal-title" id="editorTitle">📄 Text Editor</h3>
+                <button class="close-modal" onclick="closeModal('editorModal')">×</button>
+            </div>
+            <div class="form-group">
+                <input type="text" id="editorFileName" class="form-control" placeholder="nama-file.txt">
+            </div>
+            <div class="form-group" style="flex: 1; display: flex;">
+                <textarea id="editorContent" class="form-control" spellcheck="false"></textarea>
+            </div>
+            <div style="text-align: right;">
+                <button class="btn btn-primary" onclick="saveFile()" id="btnSaveFile">💾 Simpan File</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Destination Modal for Copy/Move -->
+    <div class="modal" id="destinationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="destModalTitle">Pilih Direktori Tujuan</h3>
+                <button class="close-modal" onclick="closeModal('destinationModal')">×</button>
+            </div>
+            <form id="destinationForm">
+                <div class="form-group">
+                    <label>Path Tujuan</label>
+                    <input type="text" id="destinationPath" class="form-control" required placeholder="/var/www/baru">
+                </div>
+                <div style="text-align: right;">
+                    <button type="submit" class="btn btn-primary" id="btnConfirmDest">Konfirmasi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentPath = '/www/dp/';
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('path')) {
+            currentPath = urlParams.get('path');
+        }
+        let isEditingNewFile = false;
+
+        window.onload = () => {
+            loadLogo();
+            loadFiles(currentPath);
+        };
+
+        async function loadLogo() {
+            try {
+                const res = await fetch('/api/settings');
+                const data = await res.json();
+                if (data.success && data.settings.logo) {
+                    const logoStr = data.settings.logo;
+                    const c = document.getElementById('logoContainer');
+                    if (logoStr.startsWith('http') || logoStr.startsWith('/') || logoStr.startsWith('data:image')) {
+                        c.innerHTML = `<img src="${logoStr}" style="width:100%; height:100%; border-radius:12px; object-fit:cover;">`;
+                    } else {
+                        c.innerHTML = logoStr;
+                    }
+                }
+            } catch (e) { }
+        }
+
+        function updateBreadcrumb(path) {
+            const sel = document.getElementById('baseDirSelector');
+            let baseDir = sel.value;
+            let normBase = baseDir.endsWith('/') && baseDir.length > 1 ? baseDir.slice(0, -1) : baseDir;
+
+            const parts = path.split('/').filter(p => p);
+            const breadcrumb = document.getElementById('breadcrumbPath');
+            breadcrumb.innerHTML = `<span style="cursor:default;color:var(--gray)">Root</span>`;
+
+            let accumPath = '';
+            parts.forEach(part => {
+                accumPath += '/' + part;
+                if (accumPath === normBase || accumPath.startsWith(normBase + '/')) {
+                    breadcrumb.innerHTML += `<span class="separator">/</span><span onclick="loadFiles('${accumPath}')" style="cursor:pointer; color:var(--secondary)">${part}</span>`;
+                } else {
+                    breadcrumb.innerHTML += `<span class="separator">/</span><span style="cursor:default; color:var(--gray)">${part}</span>`;
+                }
+            });
+        }
+
+        let currentFiles = [];
+
+        async function loadFiles(path = currentPath) {
+            currentPath = path;
+            updateBreadcrumb(path);
+
+            // Sync dropdown if it matches
+            const sel = document.getElementById('baseDirSelector');
+            let found = false;
+            for (let i = 0; i < sel.options.length; i++) {
+                if (sel.options[i].value === path) {
+                    sel.selectedIndex = i;
+                    found = true; break;
+                }
+            }
+
+            // Ensure toolbar is always visible
+            document.querySelector('.toolbar').style.display = 'flex';
+
+            const tbody = document.getElementById('fileList');
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 30px;">Loading...</td></tr>';
+            if (document.getElementById('selectAll')) document.getElementById('selectAll').checked = false;
+            updateBulkActions();
+
+            try {
+                const res = await fetch('/api/file/list', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ dir: currentPath })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    tbody.innerHTML = '';
+                    currentFiles = data.files ? data.files.map(f => f.name) : [];
+
+                    // Add parent folder ".."
+                    let normCurrentPath = currentPath.endsWith('/') && currentPath.length > 1 ? currentPath.slice(0, -1) : currentPath;
+                    let normBase = document.getElementById('baseDirSelector').value;
+                    normBase = normBase.endsWith('/') && normBase.length > 1 ? normBase.slice(0, -1) : normBase;
+
+                    if (normCurrentPath !== normBase && normCurrentPath !== '/') {
+                        const parentPath = currentPath.split('/').slice(0, -1).join('/') || '/';
+                        tbody.innerHTML += `
+                            <tr>
+                                <td></td>
+                                <td><a class="file-link dir-link" onclick="loadFiles('${parentPath}')"><span class="file-icon">📁</span>..</a></td>
+                                <td></td><td></td><td></td><td></td><td></td>
+                            </tr>
+                        `;
+                    }
+
+                    if (data.files.length === 0) {
+                        tbody.innerHTML += '<tr><td colspan="7" style="text-align:center; padding: 30px; color:var(--gray);">Folder kosong</td></tr>';
+                        return;
+                    }
+
+                    data.files.forEach(f => {
+                        const icon = f.isDir ? '📁' : '📄';
+                        const fullPath = (currentPath === '/' ? '' : currentPath) + '/' + f.name;
+                        const linkClass = f.isDir ? 'file-link dir-link' : 'file-link';
+                        const onClick = f.isDir ? `loadFiles('${fullPath}')` : `openEditor('${fullPath}', false)`;
+
+                        let actions = ``;
+                        if (!f.isDir) {
+                            actions += `<button class="btn btn-action" style="padding:4px 8px; font-size:12px; margin-right:4px;" onclick="openEditor('${fullPath}', false)">Edit</button>`;
+                            if (f.name.endsWith('.zip') || f.name.endsWith('.tar.gz') || f.name.endsWith('.tar')) {
+                                actions += `<button class="btn btn-action" style="padding:4px 8px; font-size:12px; margin-right:4px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: var(--secondary);" onclick="extractFile('${fullPath}')">🗜️ Ekstrak</button>`;
+                            }
+                        }
+                        actions += `<button class="btn btn-danger" style="padding:4px 8px; font-size:12px;" onclick="deletePath('${fullPath}')">Delete</button>`;
+
+                        tbody.innerHTML += `
+                            <tr>
+                                <td><input type="checkbox" class="file-checkbox" value="${fullPath}" onclick="updateBulkActions()"></td>
+                                <td><a class="${linkClass}" onclick="${onClick}"><span class="file-icon">${icon}</span>${f.name}</a></td>
+                                <td style="font-family:monospace; color:var(--gray);">${f.perms}</td>
+                                <td style="color:var(--gray);">${f.owner}</td>
+                                <td>${f.size}</td>
+                                <td style="color:var(--gray);">${f.modifiedTime}</td>
+                                <td>${actions}</td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 30px; color:var(--danger);">${data.message}</td></tr>`;
+                }
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 30px; color:var(--danger);">${e.message}</td></tr>`;
+            }
+        }
+
+        function navigateTo(val) {
+            loadFiles(val);
+        }
+
+        // Modals
+        function showModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        // Upload
+        async function extractFile(filePath) {
+            if (!confirm(`Ekstrak file ${filePath} ke folder ini?`)) return;
+            try {
+                const res = await fetch('/api/file/extract', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filePath })
+                });
+                const result = await res.json();
+                alert(result.message);
+                if (result.success) loadFiles();
+            } catch (e) { alert(e.message); }
+        }
+
+        function handleFileUpload(file) {
+            if (!file) return;
+            if (currentFiles.includes(file.name)) {
+                if (!confirm(`File "${file.name}" sudah ada di folder ini. Ingin menimpanya?`)) return;
+            }
+
+            showModal('uploadModal');
+            const btn = document.getElementById('btnUpload');
+            const progressContainer = document.getElementById('uploadProgressContainer');
+            const progressBar = document.getElementById('uploadProgressBar');
+            const progressText = document.getElementById('uploadProgressText');
+
+            btn.disabled = true; btn.textContent = '⏳ Mengunggah...';
+            progressContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressText.textContent = '0%';
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('path', currentPath);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/file/upload', true);
+
+            xhr.upload.addEventListener('progress', (e) => {
+                if (e.lengthComputable) {
+                    const percentComplete = Math.round((e.loaded / e.total) * 100);
+                    progressBar.style.width = percentComplete + '%';
+                    progressText.textContent = percentComplete + '%';
+                }
+            });
+
+            xhr.onload = () => {
+                btn.disabled = false; btn.textContent = 'Upload Sekarang';
+                try {
+                    const result = JSON.parse(xhr.responseText);
+                    alert(result.message);
+                    if (result.success) {
+                        closeModal('uploadModal');
+                        loadFiles();
+                        document.getElementById('uploadForm').reset();
+                        progressContainer.style.display = 'none';
+                    }
+                } catch (err) { alert('Error response server'); }
+            };
+
+            xhr.onerror = () => {
+                btn.disabled = false; btn.textContent = 'Upload Sekarang';
+                alert('Gagal mengunggah file (Jaringan error)');
+            };
+
+            xhr.send(formData);
+        }
+
+        document.getElementById('uploadForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const file = document.getElementById('uploadFile').files[0];
+            handleFileUpload(file);
+        });
+
+        // Drag and drop upload
+        const dropZone = document.querySelector('.main-content');
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.border = '2px dashed var(--secondary)';
+            dropZone.style.background = 'rgba(59, 130, 246, 0.05)';
+        });
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.style.border = 'none';
+            dropZone.style.background = 'transparent';
+        });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.border = 'none';
+            dropZone.style.background = 'transparent';
+            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                handleFileUpload(e.dataTransfer.files[0]);
+            }
+        });
+
+        // Mkdir
+        document.getElementById('newFolderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('newFolderName').value.trim();
+            if (!name) return;
+            const target = (currentPath === '/' ? '' : currentPath) + '/' + name;
+
+            try {
+                const res = await fetch('/api/file/mkdir', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filePath: target })
+                });
+                const result = await res.json();
+                if (result.success) { closeModal('newFolderModal'); loadFiles(); document.getElementById('newFolderForm').reset(); }
+                else alert(result.message);
+            } catch (e) { alert(e.message); }
+        });
+
+        // Delete
+        async function deletePath(path) {
+            if (!confirm(`Yakin ingin menghapus secara permanen:\n${path} ?`)) return;
+            try {
+                const res = await fetch('/api/file/delete', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filePath: path })
+                });
+                const result = await res.json();
+                if (result.success) loadFiles();
+                else alert(result.message);
+            } catch (e) { alert(e.message); }
+        }
+
+        // Editor
+        document.getElementById('newFileModal') && document.getElementById('newFileModal').addEventListener('click', () => { });
+        // using showModal for new file means opening editor in "New File" mode
+        const originalShowModal = showModal;
+        showModal = function (id) {
+            if (id === 'newFileModal') {
+                openEditor('', true);
+            } else {
+                originalShowModal(id);
+            }
+        }
+
+        async function openEditor(path, isNew) {
+            isEditingNewFile = isNew;
+            document.getElementById('editorFileName').value = isNew ? '' : path;
+            document.getElementById('editorFileName').disabled = !isNew;
+            document.getElementById('editorContent').value = 'Loading...';
+            document.getElementById('editorTitle').textContent = isNew ? '📄 Buat File Baru' : '📄 Edit File';
+            originalShowModal('editorModal');
+
+            if (!isNew) {
+                try {
+                    const res = await fetch('/api/file/read', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ filePath: path })
+                    });
+                    const result = await res.json();
+                    if (result.success) {
+                        document.getElementById('editorContent').value = result.content;
+                    } else {
+                        document.getElementById('editorContent').value = 'Error: ' + result.message;
+                    }
+                } catch (e) {
+                    document.getElementById('editorContent').value = 'Error: ' + e.message;
+                }
+            } else {
+                document.getElementById('editorContent').value = '';
+            }
+        }
+
+        async function saveFile() {
+            let path = document.getElementById('editorFileName').value.trim();
+            if (!path) return alert('Nama/Path file kosong!');
+
+            // Jika isNew, pastikan path absolute
+            if (isEditingNewFile && !path.startsWith('/')) {
+                path = (currentPath === '/' ? '' : currentPath) + '/' + path;
+            }
+
+            const content = document.getElementById('editorContent').value;
+            const btn = document.getElementById('btnSaveFile');
+            btn.disabled = true; btn.textContent = '⏳ Menyimpan...';
+
+            try {
+                const res = await fetch('/api/file/write', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filePath: path, content: content })
+                });
+                const result = await res.json();
+                alert(result.message);
+                if (result.success) {
+                    closeModal('editorModal');
+                    loadFiles();
+                }
+            } catch (e) { alert(e.message); }
+            btn.disabled = false; btn.textContent = '💾 Simpan File';
+        }
+
+        async function logout() {
+            await fetch('/api/logout', { method: 'POST' });
+            window.location.href = '/login';
+        }
+
+        let currentBulkAction = null;
+
+        function toggleSelectAll(checkbox) {
+            const checkboxes = document.querySelectorAll('.file-checkbox');
+            checkboxes.forEach(cb => cb.checked = checkbox.checked);
+            updateBulkActions();
+        }
+
+        function updateBulkActions() {
+            const checkboxes = document.querySelectorAll('.file-checkbox:checked');
+            const bulkActions = document.getElementById('bulkActions');
+            if (bulkActions) {
+                if (checkboxes.length > 0) {
+                    bulkActions.style.display = 'flex';
+                } else {
+                    bulkActions.style.display = 'none';
+                    const selectAllCb = document.getElementById('selectAll');
+                    if (selectAllCb) selectAllCb.checked = false;
+                }
+            }
+        }
+
+        function getSelectedFiles() {
+            const checkboxes = document.querySelectorAll('.file-checkbox:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        async function bulkAction(action) {
+            const selectedFiles = getSelectedFiles();
+            if (selectedFiles.length === 0) return;
+
+            if (action === 'delete') {
+                if (!confirm(`Yakin ingin menghapus ${selectedFiles.length} file/folder terpilih secara permanen?`)) return;
+                try {
+                    const res = await fetch('/api/file/delete', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ filePaths: selectedFiles })
+                    });
+                    const result = await res.json();
+                    if (result.success) loadFiles();
+                    else alert(result.message);
+                } catch (e) { alert(e.message); }
+            } else if (action === 'copy' || action === 'move') {
+                currentBulkAction = action;
+                document.getElementById('destModalTitle').textContent = action === 'copy' ? '📋 Copy ke Direktori' : '✂️ Move ke Direktori';
+                document.getElementById('destinationPath').value = currentPath;
+                showModal('destinationModal');
+            }
+        }
+
+        document.getElementById('destinationForm') && document.getElementById('destinationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const destDir = document.getElementById('destinationPath').value.trim();
+            if (!destDir) return;
+
+            const selectedFiles = getSelectedFiles();
+            if (selectedFiles.length === 0) return closeModal('destinationModal');
+
+            const btn = document.getElementById('btnConfirmDest');
+            btn.disabled = true; btn.textContent = '⏳ Memproses...';
+
+            try {
+                const res = await fetch(`/api/file/${currentBulkAction}`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filePaths: selectedFiles, destDir: destDir })
+                });
+                const result = await res.json();
+                alert(result.message);
+                if (result.success) {
+                    closeModal('destinationModal');
+                    loadFiles();
+                }
+            } catch (e) { alert(e.message); }
+
+            btn.disabled = false; btn.textContent = 'Konfirmasi';
+        });
+    </script>
+</body>
+
+</html>

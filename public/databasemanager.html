@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Manager - Dapoy Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #ef4444; --secondary: #3b82f6; --success: #10b981; 
+            --warning: #f59e0b; --danger: #ef4444; --bg: #0f172a; 
+            --card-bg: rgba(30, 41, 59, 0.7); --border: rgba(148, 163, 184, 0.1); --gray: #64748b;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #e2e8f0; min-height: 100vh; display: flex; }
+        option { background-color: var(--bg); color: #fff; }
+        
+        /* SIDEBAR (Diambil dari aslinya) */
+        .sidebar { width: 280px; height: 100vh; background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); border-right: 1px solid var(--border); padding: 24px 16px; display: flex; flex-direction: column; }
+        .sidebar-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; padding: 0 12px; }
+        .sidebar-brand .logo { width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px; }
+        .sidebar-brand h1 { font-size: 18px; font-weight: 700; color: #fff; }
+        .sidebar-brand p { font-size: 12px; color: var(--gray); }
+        .sidebar-nav { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: var(--gray); text-decoration: none; font-weight: 500; transition: all 0.3s ease; }
+        .nav-item:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
+        .nav-item.active { background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(59, 130, 246, 0.1)); color: var(--primary); border: 1px solid rgba(239, 68, 68, 0.2); }
+        
+        .main-content { flex: 1; padding: 32px; overflow-y: auto; height: 100vh; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .header h2 { font-size: 24px; font-weight: 700; }
+        .header-actions { display: flex; gap: 12px; }
+        
+        .card { background: var(--card-bg); border-radius: 20px; padding: 24px; border: 1px solid var(--border); backdrop-filter: blur(10px); }
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 16px; border-bottom: 1px solid var(--border); }
+        th { font-weight: 600; color: var(--gray); font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+        tr:last-child td { border-bottom: none; }
+        
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge.online { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        
+        .btn { padding: 8px 16px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; transition: 0.3s; color: #fff; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-action { padding: 6px 12px; background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid var(--border); font-size: 13px; margin-right: 6px; }
+        .btn-action:hover { background: rgba(255, 255, 255, 0.1); }
+        .btn-action.delete:hover { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        
+        .empty-state { text-align: center; padding: 40px; color: var(--gray); }
+        
+        .tabs { display: flex; gap: 16px; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+        .tab-btn { background: transparent; color: var(--gray); border: none; font-size: 16px; font-weight: 600; cursor: pointer; padding: 8px 16px; border-radius: 12px; transition: 0.3s; }
+        .tab-btn:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
+        .tab-btn.active { background: rgba(59, 130, 246, 0.1); color: var(--secondary); border: 1px solid rgba(59, 130, 246, 0.2); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                padding-bottom: 70px;
+                overflow-x: hidden;
+            }
+
+            .sidebar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 70px;
+                flex-direction: row;
+                padding: 0;
+                background: #0f172a;
+                border-right: none;
+                border-top: 1px solid var(--border);
+                z-index: 1000;
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+
+            .sidebar-brand, .sidebar-footer {
+                display: none !important;
+            }
+
+            .sidebar-nav {
+                flex-direction: row;
+                width: 100%;
+                gap: 0;
+                padding: 0 10px;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .nav-item {
+                flex-direction: column;
+                padding: 8px 12px;
+                font-size: 10px;
+                gap: 4px;
+                border-radius: 8px;
+                min-width: 60px;
+                justify-content: center;
+                white-space: nowrap;
+            }
+
+            .nav-item .icon {
+                font-size: 20px;
+                margin: 0;
+            }
+
+            .main-content {
+                padding: 16px;
+                height: auto;
+                min-height: calc(100vh - 70px);
+                margin-left: 0;
+                max-width: 100vw;
+                overflow-x: hidden;
+            }
+
+            /* Fix Header */
+            .header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 16px;
+            }
+            .header-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            .header-actions button {
+                flex: 1;
+            }
+
+            /* Fix Modals */
+            .modal {
+                width: 95% !important;
+                padding: 16px !important;
+            }
+            .modal-header h3 {
+                font-size: 18px;
+            }
+            .form-group > div[style*="display: flex"],
+            .form-group > div[style*="display: grid"] {
+                flex-direction: column !important;
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Fix Tables */
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                width: 100%;
+            }
+            
+            table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table th, table td {
+                white-space: nowrap;
+                padding: 12px;
+            }
+            
+            pre {
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                overflow-x: auto;
+            }
+
+            /* Override all inline grid-template-columns */
+            div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            /* Form inside cards */
+            div[style*="display: grid"][style*="gap"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            
+            /* Fix Website Modal Flex wrap issue */
+            #hostnameAutoGroup > div,
+            #hostnameAutoGroup + div + div > div {
+                flex-direction: column !important;
+                align-items: stretch !important;
+            }
+            #hostnameAutoGroup > div > span {
+                display: none !important;
+            }
+            #webSubdomain, #webDomainSelect, #webBaseDir, #webDirName {
+                height: 44px !important;
+                width: 100% !important;
+            }
+
+            /* Override inline flex layouts */
+            div[style*="display: flex"] {
+                flex-wrap: wrap !important;
+            }
+            div[style*="justify-content: space-between"] {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 12px !important;
+            }
+            
+            /* Tabs */
+            .tabs {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .tab-btn {
+                flex: 1;
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+
+            /* Other Grids */
+            .stats-grid,
+            .cards-grid,
+            .settings-grid {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .card {
+                max-width: 100%;
+                overflow-x: auto;
+            }
+
+            .tunnel-form,
+            .settings-form {
+                flex-direction: column;
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo">D</div>
+            <div class="text">
+                <h1>Dapoy Panel</h1>
+                <p>Server Management</p>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="nav-item "><span class="icon">📊</span>Dashboard</a>
+            <a href="/tunnelmanager" class="nav-item "><span class="icon">☁️</span>Tunneling</a>
+            <a href="/webmanager" class="nav-item "><span class="icon">🌐</span>Website</a>
+            <a href="/appmanager" class="nav-item "><span class="icon">📦</span>Node & Pyth</a>
+            <a href="/databasemanager" class="nav-item active"><span class="icon">🗄️</span>Database</a>
+            <a href="/filemanager" class="nav-item "><span class="icon">📁</span>File Manager</a>
+            <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span>phpMyAdmin</a>
+            <a href="/terminal" class="nav-item "><span class="icon">🔧</span>Terminal SSH</a>
+            <a href="javascript:void(0)"
+                onclick="navigator.clipboard.writeText('087777999907'); alert('Donate dengan Gopay / Dana 087777999907 atas nama Syah Muhamad Rizky\n\n(Nomor otomatis disalin ke clipboard!)');"
+                class="nav-item"
+                style="margin-top: auto; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.5);"><span
+                    class="icon">💖</span>Donate</a>
+            <a href="/settings" class="nav-item "><span class="icon">⚙️</span>Pengaturan Sistem</a>
+            <a href="/logout" class="nav-item" style="color: #ef4444;"><span class="icon">🚪</span>Logout</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="header">
+            <h2>🗄️ Database Manager</h2>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="loadDatabases()">🔄 Refresh List</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('mysql')">🐳 MySQL / MariaDB (Docker)</button>
+        </div>
+
+        <!-- PHPMyAdmin Section -->
+        <div class="card" style="margin-bottom: 24px; border: 1px solid rgba(59, 130, 246, 0.3); background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(30, 41, 59, 0.7) 100%);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">🐳 phpMyAdmin (Docker)</h3>
+                    <p style="font-size: 13px; color: var(--gray);">Interface web untuk mengelola database Docker Anda.</p>
+                </div>
+                <div id="pmaStatusContainer">
+                    <span id="pmaStatusBadge" class="badge" style="background: rgba(100, 100, 100, 0.3); color: #94a3b8;">Memuat...</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; padding: 16px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 6px; color: var(--gray); font-size: 12px; font-weight: 600;">🌐 Domain Tunnel (Akses phpMyAdmin)</label>
+                    <div id="activePmaDomainContainer" style="display: none; margin-bottom: 10px; padding: 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; color: #10b981; font-size: 13px;">
+                        Domain Aktif: <strong id="activePmaDomainText">-</strong>
+                    </div>
+                    <div style="display: flex; gap: 0;">
+                        <input type="text" id="pmaTunnelSubdomain" placeholder="Subdomain (contoh: pma)" style="flex: 1; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-right: none; border-radius: 8px 0 0 8px; color: #fff; font-family: monospace; font-size: 13px;">
+                        <select id="pmaTunnelZone" style="flex: 1; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 0; color: #fff; font-family: monospace; font-size: 13px;">
+                            <option value="">-- Loading Domain... --</option>
+                        </select>
+                        <button onclick="setupPmaTunnel()" id="btnSetupTunnel" class="btn" style="padding: 10px 20px; background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 0 8px 8px 0; cursor: pointer; border-left: none;">⚡ Setup Route</button>
+                    </div>
+                    <p style="font-size: 11px; color: var(--gray); margin-top: 6px;">Sistem akan otomatis membuat rute Tunnel dan mendaftarkan CNAME DNS.</p>
+                </div>
+
+                <div style="display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap;">
+                    <button onclick="uninstallPma()" class="btn" style="padding: 10px 20px; background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; cursor: pointer;">🗑️ Uninstall</button>
+                    <button onclick="installPma()" id="btnInstallPma" class="btn btn-primary" style="padding: 10px 20px;">🚀 Install phpMyAdmin</button>
+                    <button onclick="openPmaLogin()" id="btnOpenPma" class="btn" style="padding: 10px 20px; background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; cursor: pointer; display: none;">🌐 Buka phpMyAdmin</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-mysql" class="tab-content active">
+            <!-- Card: Status & Install MySQL -->
+            <div class="card" style="margin-bottom: 24px; border: 1px solid rgba(139, 92, 246, 0.3); background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(30, 41, 59, 0.7) 100%);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="display: inline-block; background: rgba(139, 92, 246, 0.2); padding: 8px; border-radius: 8px; margin-bottom: 8px; font-size: 20px;">🗄️</div>
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">Database MySQL/MariaDB</h3>
+                        <p id="mysqlStatusText" style="font-size: 13px; color: var(--gray);">Memeriksa status MySQL...</p>
+                    </div>
+                </div>
+                <div id="mysqlNotInstalled"
+                    style="display: none; background: rgba(255,71,87,0.1); padding: 20px; border-radius: 12px; border: 1px solid var(--danger); text-align: center; margin-top: 16px;">
+                    <p style="color: var(--danger); margin-bottom: 16px; font-weight: 500;">⚠️ MySQL/MariaDB belum terinstall. Pilih versi dan klik install.</p>
+                    <div style="display: flex; justify-content: center; gap: 12px; max-width: 400px; margin: 0 auto;">
+                        <select id="mysqlVersionSelect" style="flex: 1; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--danger); border-radius: 10px; color: #fff; font-family: monospace; font-size: 14px;">
+                            <option value="mariadb:10.11">MariaDB 10.11 (LTS - Disarankan)</option>
+                            <option value="mariadb:10.6">MariaDB 10.6</option>
+                            <option value="mariadb:11.4">MariaDB 11.4</option>
+                            <option value="mysql:8.0">MySQL 8.0</option>
+                            <option value="mysql:latest">MySQL Latest</option>
+                        </select>
+                        <button onclick="installMysql()" class="btn btn-primary" style="background: linear-gradient(135deg, #ef4444, #b91c1c); padding: 12px 24px; white-space: nowrap;" id="btnInstallMysql">📦 Install</button>
+                    </div>
+                </div>
+                <div id="mysqlInstalled" style="display: none; margin-top: 16px; border-top: 1px solid var(--border); padding-top: 16px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px;">Host MySQL</label>
+                            <input type="text" id="settingDbHost" placeholder="127.0.0.1" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px;">Port MySQL</label>
+                            <input type="text" id="settingDbPort" placeholder="3306" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px;">Username</label>
+                            <input type="text" id="settingDbUser" placeholder="root" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px;">Password</label>
+                            <input type="password" id="settingDbPass" placeholder="Password MySQL" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                        </div>
+                    </div>
+                    <div style="text-align: right; margin-top: 16px;">
+                        <button onclick="saveDbSettings()" class="btn btn-primary" id="btnSaveDbSettings">💾 Simpan Database</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Setup MySQL Database Card -->
+            <div class="card" style="margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">➕ Buat Database MySQL Baru</h3>
+                        <p style="font-size: 13px; color: var(--gray);">Buat database dan user baru di MySQL Server VPS Anda.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="toggleSetupForm('setupMysqlFormContainer', 'btnToggleMysqlSetup')" id="btnToggleMysqlSetup">Tampilkan Formulir</button>
+                </div>
+
+                <div id="setupMysqlFormContainer" style="display: none; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 24px;">
+                    <form id="setupMysqlForm" onsubmit="event.preventDefault(); installDatabase();">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px; font-weight: 600;">Nama Database Baru</label>
+                                <input type="text" id="mysqlDbName" placeholder="db_aplikasi" required style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px; font-weight: 600;">Username Baru</label>
+                                <input type="text" id="mysqlDbUser" placeholder="user_aplikasi" required style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 24px;">
+                            <label style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px; font-weight: 600;">Password User</label>
+                            <input type="text" id="mysqlDbPass" placeholder="Masukkan password yang kuat" required style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                        </div>
+                        <div style="text-align: right;">
+                            <button type="submit" class="btn btn-primary" id="btnCreateDb" style="padding: 12px 24px;">➕ Buat Database</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- List MySQL Card -->
+            <div class="card">
+                <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px;">Daftar Database MySQL</h3>
+                <div class="table-container">
+                    <table id="mysqlTable">
+                        <thead>
+                            <tr>
+                                <th>NAMA DATABASE</th>
+                                <th>STATUS</th>
+                                <th>AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mysqlTableBody">
+                            <tr>
+                                <td colspan="3" class="empty-state">Memuat data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Install Log Modal -->
+        <div id="installLogModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;">
+            <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; width: 800px; max-width: 90%; display: flex; flex-direction: column;">
+                <div style="padding: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; font-size: 18px;" id="installLogTitle">📦 Installation Log</h3>
+                    <button id="btnInstallClose" class="btn btn-action" style="background: transparent; color: var(--gray);" onclick="document.getElementById('installLogModal').style.display='none'; window.location.reload();">Tutup</button>
+                </div>
+                <div style="padding: 16px; background: #000; height: 400px; overflow-y: auto;">
+                    <pre id="installLogContent" style="color: #e2e8f0; font-family: monospace; font-size: 13px; white-space: pre-wrap; margin: 0;"></pre>
+                </div>
+                <div style="padding: 16px; border-top: 1px solid var(--border); text-align: right;">
+                    <span id="installLogStatus" style="font-weight: bold; color: var(--warning); margin-right: 16px;">⏳ Memproses...</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            event.currentTarget.classList.add('active');
+            loadDatabases();
+        }
+
+        function toggleSetupForm(containerId, btnId) {
+            const container = document.getElementById(containerId);
+            const btn = document.getElementById(btnId);
+            if (container.style.display === 'none') {
+                container.style.display = 'block';
+                btn.innerHTML = 'Tutup Formulir';
+                btn.style.background = 'var(--gray)';
+            } else {
+                container.style.display = 'none';
+                btn.innerHTML = 'Tampilkan Formulir';
+                btn.style.background = '';
+            }
+        }
+
+        async function loadDatabases() {
+            document.getElementById('mysqlTableBody').innerHTML = '<tr><td colspan="3" class="empty-state">Memuat data...</td></tr>';
+
+            try {
+                const res = await fetch('/api/database/list-native');
+                const data = await res.json();
+
+                if (data.success) {
+                    renderTable('mysql', data.databases);
+                } else {
+                    document.getElementById('mysqlTableBody').innerHTML = '<tr><td colspan="3" class="empty-state">Error: ' + data.message + '</td></tr>';
+                }
+            } catch (e) {
+                document.getElementById('mysqlTableBody').innerHTML = '<tr><td colspan="3" class="empty-state">Error mengambil data.</td></tr>';
+            }
+
+            loadPmaStatus();
+        }
+
+        async function loadPmaStatus() {
+            try {
+                const res = await fetch('/api/pma/status');
+                const data = await res.json();
+                const statusBadge = document.getElementById('pmaStatusBadge');
+                const btnInstall = document.getElementById('btnInstallPma');
+                const btnOpen = document.getElementById('btnOpenPma');
+
+                if (data.pmaRunning) {
+                    statusBadge.textContent = '🟢 Aktif (Port 8099)';
+                    statusBadge.style.background = 'rgba(16, 185, 129, 0.2)';
+                    statusBadge.style.color = '#10b981';
+                    btnInstall.style.display = 'none';
+                    btnOpen.style.display = 'inline-block';
+                } else {
+                    statusBadge.textContent = '🔴 Tidak Aktif';
+                    statusBadge.style.background = 'rgba(239, 68, 68, 0.2)';
+                    statusBadge.style.color = '#ef4444';
+                    btnInstall.style.display = 'inline-block';
+                    btnOpen.style.display = 'none';
+                }
+            } catch (e) {
+                document.getElementById('pmaStatusBadge').textContent = '⚠️ Error';
+            }
+            loadTunnelDomains();
+        }
+
+        async function loadTunnelDomains() {
+            try {
+                // Load active PMA domain
+                const pmaRes = await fetch('/api/pma/tunnel-domains');
+                const pmaData = await pmaRes.json();
+                
+                const activeContainer = document.getElementById('activePmaDomainContainer');
+                const activeText = document.getElementById('activePmaDomainText');
+                if (pmaData.success && pmaData.pmaDomain && pmaData.domains && pmaData.domains.includes(pmaData.pmaDomain)) {
+                    activeContainer.style.display = 'block';
+                    activeText.textContent = pmaData.pmaDomain;
+                } else {
+                    activeContainer.style.display = 'none';
+                    activeText.textContent = '-';
+                }
+
+                // Load Cloudflare Zones
+                const select = document.getElementById('pmaTunnelZone');
+                const zoneRes = await fetch('/api/cloudflare/zones');
+                const zoneData = await zoneRes.json();
+                
+                select.innerHTML = '';
+                if (zoneData.success && zoneData.zones && zoneData.zones.length > 0) {
+                    zoneData.zones.forEach(zone => {
+                        const opt = document.createElement('option');
+                        opt.value = zone;
+                        opt.textContent = '.' + zone;
+                        select.appendChild(opt);
+                    });
+                } else {
+                    select.innerHTML = '<option value="">-- Setup API Token Dulu --</option>';
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        async function setupPmaTunnel() {
+            const subdomain = document.getElementById('pmaTunnelSubdomain').value.trim();
+            const zone = document.getElementById('pmaTunnelZone').value;
+            
+            if (!subdomain || !zone) return alert('⚠️ Masukkan subdomain dan pilih domain!');
+            const domain = subdomain + '.' + zone;
+
+            const btn = document.getElementById('btnSetupTunnel');
+            btn.disabled = true;
+            btn.textContent = '⚡ Setup...';
+            try {
+                const res = await fetch('/api/pma/setup-tunnel', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ domain })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('✅ ' + data.message);
+                    loadTunnelDomains();
+                } else {
+                    alert('❌ Gagal: ' + data.message);
+                }
+            } catch (e) { alert('❌ Error: ' + e.message); }
+            btn.disabled = false;
+            btn.textContent = '⚡ Setup Route';
+        }
+
+        let installLogInterval = null;
+
+        async function startInstallLogPolling(endpoint, reqBody, title) {
+            const modal = document.getElementById('installLogModal');
+            const logTitle = document.getElementById('installLogTitle');
+            const logContent = document.getElementById('installLogContent');
+            const logStatus = document.getElementById('installLogStatus');
+            const btnClose = document.getElementById('btnInstallClose');
+
+            logTitle.innerHTML = `📦 ${title} Log`;
+            modal.style.display = 'flex';
+            logContent.textContent = `Memulai proses ${title}...`;
+            logStatus.textContent = '⏳ Sedang mengeksekusi...';
+            logStatus.style.color = 'var(--warning)';
+            btnClose.style.display = 'none';
+
+            try {
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(reqBody)
+                });
+                const result = await res.json();
+
+                if (!result.success) {
+                    logContent.textContent += '\n\nError: ' + result.message;
+                    logStatus.textContent = '❌ Gagal memulai';
+                    logStatus.style.color = 'var(--danger)';
+                    btnClose.style.display = 'inline-block';
+                    return;
+                }
+
+                if (result.taskId) {
+                    // Mulai polling
+                    if (installLogInterval) clearInterval(installLogInterval);
+                    installLogInterval = setInterval(async () => {
+                        try {
+                            const logRes = await fetch(`/api/install/log?taskId=${result.taskId}`);
+                            const logData = await logRes.json();
+                            if (logData.success) {
+                                logContent.textContent = logData.log || '';
+                                logContent.parentElement.scrollTop = logContent.parentElement.scrollHeight;
+                                if (!logData.isRunning) {
+                                    clearInterval(installLogInterval);
+                                    logStatus.textContent = '✅ Selesai';
+                                    logStatus.style.color = 'var(--success)';
+                                    btnClose.style.display = 'inline-block';
+                                    if (result.controlPassword) {
+                                        alert('✅ Instalasi selesai! Password Control: ' + result.controlPassword);
+                                    }
+                                }
+                            }
+                        } catch (e) {
+                            console.error('Polling error', e);
+                        }
+                    }, 1500);
+                } else {
+                    logContent.textContent += '\n\n' + result.message;
+                    logStatus.textContent = '✅ Selesai';
+                    logStatus.style.color = 'var(--success)';
+                    btnClose.style.display = 'inline-block';
+                }
+            } catch (error) {
+                logContent.textContent += '\n\nError koneksi: ' + error.message;
+                logStatus.textContent = '❌ Gagal';
+                logStatus.style.color = 'var(--danger)';
+                btnClose.style.display = 'inline-block';
+            }
+        }
+
+        async function installPma() {
+            if (!confirm(`Proses instalasi phpMyAdmin via Docker akan dilakukan. Lanjutkan?`)) return;
+            startInstallLogPolling('/api/pma/install', {}, 'Install phpMyAdmin');
+        }
+
+        async function uninstallPma() {
+            if (!confirm('Yakin hapus phpMyAdmin?')) return;
+            try {
+                const res = await fetch('/api/pma/uninstall', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) { alert('✅ Terhapus'); loadPmaStatus(); }
+                else alert('❌ Gagal: ' + data.message);
+            } catch (e) { alert('❌ Error: ' + e.message); }
+        }
+
+        function openPmaLogin() {
+            window.open('/api/pma-login', '_blank');
+        }
+
+        function renderTable(type, list) {
+            const tbody = document.getElementById('mysqlTableBody');
+            if (!list || list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="empty-state">Tidak ada database.</td></tr>`;
+                return;
+            }
+            let html = '';
+            list.forEach(db => {
+                // Avoid dropping default mysql schemas
+                const isSystem = ['information_schema', 'mysql', 'performance_schema', 'sys'].includes(db);
+                const deleteBtn = isSystem ? '' : `<button class="btn btn-action delete" onclick="deleteDatabase('${db}')" title="Hapus Database">🗑️</button>`;
+                html += `
+                <tr>
+                    <td><strong>${db}</strong> ${isSystem ? '<span style="font-size:11px;color:var(--warning)">(System)</span>' : ''}</td>
+                    <td><span class="badge online">Aktif</span></td>
+                    <td>${deleteBtn}</td>
+                </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        async function installDatabase() {
+            const dbName = document.getElementById('mysqlDbName').value.trim();
+            const dbUser = document.getElementById('mysqlDbUser').value.trim();
+            const dbPass = document.getElementById('mysqlDbPass').value;
+
+            if (!dbName || !dbUser || !dbPass) return alert('Semua field wajib diisi!');
+            
+            // validasi nama db dan user (hanya alphanumeric dan underscore)
+            if (!/^[a-zA-Z0-9_]+$/.test(dbName) || !/^[a-zA-Z0-9_]+$/.test(dbUser)) {
+                return alert('Nama database dan username hanya boleh berisi huruf, angka, dan underscore (_).');
+            }
+
+            const btn = document.getElementById('btnCreateDb');
+            btn.disabled = true;
+            btn.innerHTML = '⏳ Sedang Membuat...';
+
+            try {
+                const res = await fetch('/api/database/create-native', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ dbName, dbUser, dbPass })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    alert('✅ Database dan User berhasil dibuat!');
+                    document.getElementById('setupMysqlForm').reset();
+                    loadDatabases();
+                } else {
+                    alert('❌ Gagal: ' + data.message);
+                }
+            } catch (e) {
+                alert('❌ Error system: ' + e.message);
+            }
+            
+            btn.disabled = false;
+            btn.innerHTML = '➕ Buat Database';
+        }
+
+        async function deleteDatabase(dbName) {
+            if (!confirm(`Yakin ingin MENGHAPUS database '${dbName}' secara permanen? Semua data di dalamnya akan hilang!`)) return;
+
+            try {
+                const res = await fetch('/api/database/delete-native', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ dbName })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    loadDatabases();
+                } else {
+                    alert('Gagal: ' + data.message);
+                }
+            } catch (e) {
+                alert('Error sistem: ' + e.message);
+            }
+        }
+
+        // INIT
+        window.onload = () => { 
+            loadDatabases(); 
+            checkMysqlStatus();
+        };
+
+        async function checkMysqlStatus() {
+            try {
+                const res = await fetch('/api/mysql/status');
+                const data = await res.json();
+                const statusText = document.getElementById('mysqlStatusText');
+                const notInstalled = document.getElementById('mysqlNotInstalled');
+                const installed = document.getElementById('mysqlInstalled');
+
+                if (data.installed) {
+                    statusText.textContent = '✅ MySQL/MariaDB sudah terinstall (' + (data.version || 'Unknown') + ')';
+                    statusText.style.color = 'var(--success)';
+                    notInstalled.style.display = 'none';
+                    installed.style.display = 'block';
+                    loadDbSettings();
+                } else {
+                    statusText.textContent = '❌ MySQL/MariaDB belum terinstall';
+                    statusText.style.color = 'var(--danger)';
+                    notInstalled.style.display = 'block';
+                    installed.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Failed to check MySQL status:', error);
+            }
+        }
+
+        async function installMysql() {
+            const version = document.getElementById('mysqlVersionSelect').value;
+            if (!confirm(`Proses instalasi MySQL/MariaDB (${version}) via Docker akan memakan waktu 2-5 menit. Lanjutkan?`)) return;
+            startInstallLogPolling('/api/mysql/install', { version }, 'Install Database MySQL/MariaDB');
+        }
+
+        async function loadDbSettings() {
+            try {
+                const response = await fetch('/api/settings/native-pma');
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('settingDbHost').value = data.host || '127.0.0.1';
+                    document.getElementById('settingDbPort').value = data.port || '3306';
+                    document.getElementById('settingDbUser').value = data.user || 'root';
+                    document.getElementById('settingDbPass').value = data.password ? '********' : '';
+                }
+            } catch (error) { console.error('Failed to load DB settings:', error); }
+        }
+
+        async function saveDbSettings() {
+            const host = document.getElementById('settingDbHost').value.trim() || '127.0.0.1';
+            const port = document.getElementById('settingDbPort').value.trim() || '3306';
+            const user = document.getElementById('settingDbUser').value.trim() || 'root';
+            const password = document.getElementById('settingDbPass').value;
+            const btn = document.getElementById('btnSaveDbSettings');
+
+            btn.disabled = true;
+            btn.innerHTML = 'Menyimpan...';
+            try {
+                const response = await fetch('/api/settings/native-pma', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ host, port, user, password })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert(data.message);
+                    document.getElementById('settingDbPass').value = '';
+                    loadDbSettings();
+                } else {
+                    alert('Gagal: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '💾 Simpan Database';
+            }
+        }
+
+        // Global App Identity Loader
+        document.addEventListener('DOMContentLoaded', async function () {
+            try {
+                const res = await fetch('/api/system/settings');
+                const data = await res.json();
+                if (data.success) {
+                    document.title = document.title.split('-')[0].trim() + ' - ' + data.appName;
+                    const brandH1 = document.querySelector('.sidebar-brand h1');
+                    const brandP = document.querySelector('.sidebar-brand p');
+                    const brandLogo = document.querySelector('.sidebar-brand .logo');
+                    if (brandH1) brandH1.textContent = data.appName;
+                    if (brandP) brandP.textContent = data.appDomain;
+                    if (brandLogo) {
+                        if (data.appLogo.startsWith('http') || data.appLogo.startsWith('/') || data.appLogo.startsWith('data:image')) {
+                            brandLogo.innerHTML = '<img src="' + data.appLogo + '" style="width:100%;height:100%;border-radius:12px;object-fit:cover;">';
+                        } else {
+                            brandLogo.textContent = data.appLogo;
+                        }
+                    }
+                }
+            } catch (e) { }
+        });
+    </script>
+</body>
+</html>

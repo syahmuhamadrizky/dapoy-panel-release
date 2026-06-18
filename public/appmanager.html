@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Manager - Dapoy Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ef4444;
+            --secondary: #3b82f6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border: rgba(148, 163, 184, 0.1);
+            --gray: #64748b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        option {
+            background-color: var(--bg);
+            color: #fff;
+        }
+
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            border-right: 1px solid var(--border);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            padding: 0 12px;
+        }
+
+        .sidebar-brand .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .sidebar-brand h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .sidebar-brand p {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(59, 130, 246, 0.1));
+            color: var(--primary);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .header h2 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--gray);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge.online {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .badge.stopped {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .badge.errored {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            color: #fff;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-action {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid var(--border);
+            font-size: 13px;
+            margin-right: 6px;
+        }
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-action.delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+        }
+
+        /* TABS CSS */
+        .tabs {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: var(--gray);
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .tab-btn.active {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--secondary);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        
+
+    
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                padding-bottom: 70px;
+                overflow-x: hidden;
+            }
+
+            .sidebar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 70px;
+                flex-direction: row;
+                padding: 0;
+                background: #0f172a;
+                border-right: none;
+                border-top: 1px solid var(--border);
+                z-index: 1000;
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+
+            .sidebar-brand, .sidebar-footer {
+                display: none !important;
+            }
+
+            .sidebar-nav {
+                flex-direction: row;
+                width: 100%;
+                gap: 0;
+                padding: 0 10px;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .nav-item {
+                flex-direction: column;
+                padding: 8px 12px;
+                font-size: 10px;
+                gap: 4px;
+                border-radius: 8px;
+                min-width: 60px;
+                justify-content: center;
+                white-space: nowrap;
+            }
+
+            .nav-item .icon {
+                font-size: 20px;
+                margin: 0;
+            }
+
+            .main-content {
+                padding: 16px;
+                height: auto;
+                min-height: calc(100vh - 70px);
+                margin-left: 0;
+                max-width: 100vw;
+                overflow-x: hidden;
+            }
+
+            /* Fix Header */
+            .header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 16px;
+            }
+            .header-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            .header-actions button {
+                flex: 1;
+            }
+
+            /* Fix Modals */
+            .modal {
+                width: 95% !important;
+                padding: 16px !important;
+            }
+            .modal-header h3 {
+                font-size: 18px;
+            }
+            .form-group > div[style*="display: flex"],
+            .form-group > div[style*="display: grid"] {
+                flex-direction: column !important;
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Fix Tables */
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                width: 100%;
+            }
+            
+            table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table th, table td {
+                white-space: nowrap;
+                padding: 12px;
+            }
+            
+            pre {
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                overflow-x: auto;
+            }
+
+            /* Override all inline grid-template-columns */
+            div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            /* Form inside cards */
+            div[style*="display: grid"][style*="gap"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            
+            /* Fix Website Modal Flex wrap issue */
+            #hostnameAutoGroup > div,
+            #hostnameAutoGroup + div + div > div {
+                flex-direction: column !important;
+                align-items: stretch !important;
+            }
+            #hostnameAutoGroup > div > span {
+                display: none !important;
+            }
+            #webSubdomain, #webDomainSelect, #webBaseDir, #webDirName {
+                height: 44px !important;
+                width: 100% !important;
+            }
+
+            /* Override inline flex layouts */
+            div[style*="display: flex"] {
+                flex-wrap: wrap !important;
+            }
+            div[style*="justify-content: space-between"] {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 12px !important;
+            }
+            
+            /* Tabs */
+            .tabs {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .tab-btn {
+                flex: 1;
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+
+            /* Other Grids */
+            .stats-grid,
+            .cards-grid,
+            .settings-grid {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .card {
+                max-width: 100%;
+                overflow-x: auto;
+            }
+
+            .tunnel-form,
+            .settings-form {
+                flex-direction: column;
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo">D</div>
+            <div class="text">
+                <h1>Dapoy Panel</h1>
+                <p>Server Management</p>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="nav-item "><span class="icon">📊</span>Dashboard</a>
+            <a href="/tunnelmanager" class="nav-item "><span class="icon">☁️</span>Tunneling</a>
+            <a href="/webmanager" class="nav-item "><span class="icon">🌐</span>Website</a>
+            <a href="/appmanager" class="nav-item active"><span class="icon">📦</span>Node & Pyth</a>
+            <a href="/databasemanager" class="nav-item "><span class="icon">🗄️</span>Database</a>
+            <a href="/filemanager" class="nav-item "><span class="icon">📁</span>File Manager</a>
+            <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span>phpMyAdmin</a>
+            <a href="/terminal" class="nav-item "><span class="icon">🔧</span>Terminal SSH</a>
+            <a href="javascript:void(0)"
+                onclick="navigator.clipboard.writeText('087777999907'); alert('Donate dengan Gopay / Dana 087777999907 atas nama Syah Muhamad Rizky\n\n(Nomor otomatis disalin ke clipboard!)');"
+                class="nav-item"
+                style="margin-top: auto; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.5);"><span
+                    class="icon">💖</span>Donate</a>
+            <a href="/settings" class="nav-item "><span class="icon">⚙️</span>Pengaturan Sistem</a>
+            <a href="/logout" class="nav-item" style="color: #ef4444;"><span class="icon">🚪</span>Logout</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="header">
+            <h2>📦 App Manager</h2>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="loadNodeList()">🔄 Refresh List</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('node')">🟩 Node.js Apps</button>
+            <button class="tab-btn" onclick="switchTab('python')">🟦 Python Apps</button>
+        </div>
+
+        <!-- TAB NODE JS -->
+        <div id="tab-node" class="tab-content active">
+            <!-- Setup Node.js App Card -->
+            <div class="card" style="margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">🚀 Setup New Node.js App</h3>
+                        <p style="font-size: 13px; color: var(--gray);">Konfigurasi dan jalankan aplikasi Node.js baru
+                            layaknya di cPanel.</p>
+                    </div>
+                    <button class="btn btn-primary"
+                        onclick="toggleSetupForm('setupNodeFormContainer', 'btnToggleNodeSetup')"
+                        id="btnToggleNodeSetup">Tampilkan Formulir</button>
+                </div>
+
+                <div id="setupNodeFormContainer"
+                    style="display: none; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 24px;">
+                    <form id="setupNodeForm">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                            <div>
+                                <label
+                                    style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px; font-weight: 600;">Nama
+                                    Aplikasi (PM2 Process)</label>
+                                <input type="text" id="nodeAppName" placeholder="my-app" required
+                                    style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px; font-weight: 600;">Environment</label>
+                                <select id="nodeAppEnv"
+                                    style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                                    <option value="production">Production</option>
+                                    <option value="development">Development</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px; font-weight: 600;">Versi
+                                    Node.js</label>
+                                <select id="nodeAppVersion"
+                                    style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                                    <option value="system">System Default</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label
+                                style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px; font-weight: 600;">Application
+                                Root Directory</label>
+                            <div style="display: flex; gap: 8px;">
+                                <select id="nodeAppBaseDir"
+                                    style="flex: 1; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                                    <option value="/www/dp/">/www/dp/</option>
+                                    <option value="/var/www/html/">/var/www/html/</option>
+                                    <option value="/opt/">/opt/ (Sistem Root)</option>
+                                </select>
+                                <input type="text" id="nodeAppFolderName" placeholder="nama-folder-aplikasi" required
+                                    style="flex: 2; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 24px;">
+                            <label
+                                style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px; font-weight: 600;">Startup
+                                Script / Command</label>
+                            <input type="text" id="nodeAppScript" placeholder="app.js ATAU npm -- start" required
+                                style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                        </div>
+                        <div style="text-align: right;">
+                            <button type="submit" class="btn btn-primary" id="btnCreateNodeApp"
+                                style="padding: 12px 24px;">➕ Buat & Jalankan Aplikasi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Manajemen Versi Node.js Card -->
+            <div class="card" style="margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <div>
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">🟩 Manajemen Versi Node.js
+                            (NVM)</h3>
+                        <p style="font-size: 13px; color: var(--gray);">Install dan atur berbagai versi Node.js di
+                            server Anda.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="installNvm()" id="btnInstallNvm"
+                        style="display: none;">Install NVM</button>
+                </div>
+
+                <div id="nvmContainer" style="display: none;">
+                    <div style="display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap;" id="nvmVersionList">
+                        <span class="badge online">Memuat versi...</span>
+                    </div>
+
+                    <div style="display: flex; gap: 12px;">
+                        <select id="nvmInstallVersion" onchange="checkNvmInstallBtn()"
+                            style="padding: 10px 16px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace; width: 280px;">
+                            <option value="22">v22.x (Current Latest)</option>
+                            <option value="20" selected>v20.x (LTS - Recommended)</option>
+                            <option value="18">v18.x (LTS)</option>
+                            <option value="16">v16.x (LTS)</option>
+                            <option value="14">v14.x (LTS)</option>
+                        </select>
+                        <button class="btn btn-action" onclick="installNodeVersion()" id="btnInstallNodeVer">⬇️ Install
+                            Versi Baru</button>
+                        <button class="btn btn-action" onclick="loadNvmData()">🔄 Refresh Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB PYTHON -->
+        <div id="tab-python" class="tab-content">
+            <!-- Setup Python App Card -->
+            <div class="card" style="margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">🐍 Setup New Python App</h3>
+                        <p style="font-size: 13px; color: var(--gray);">Jalankan aplikasi Python (Flask, Django,
+                            FastAPI, Bot) secara background menggunakan PM2.</p>
+                    </div>
+                    <button class="btn btn-primary"
+                        onclick="toggleSetupForm('setupPythonFormContainer', 'btnTogglePythonSetup')"
+                        id="btnTogglePythonSetup">Tampilkan Formulir</button>
+                </div>
+
+                <div id="setupPythonFormContainer"
+                    style="display: none; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 24px;">
+                    <form id="setupPythonForm">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                            <div>
+                                <label
+                                    style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px; font-weight: 600;">Nama
+                                    Aplikasi (PM2 Process)</label>
+                                <input type="text" id="pythonAppName" placeholder="my-bot" required
+                                    style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px; font-weight: 600;">Versi
+                                    Python</label>
+                                <select id="pythonAppVersion"
+                                    style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                                    <option value="system">System Default (python3)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label
+                                style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px; font-weight: 600;">Application
+                                Root Directory</label>
+                            <div style="display: flex; gap: 8px;">
+                                <select id="pythonAppBaseDir"
+                                    style="flex: 1; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                                    <option value="/www/dp/">/www/dp/</option>
+                                    <option value="/var/www/html/">/var/www/html/</option>
+                                    <option value="/opt/">/opt/ (Sistem Root)</option>
+                                </select>
+                                <input type="text" id="pythonAppFolderName" placeholder="nama-folder-aplikasi" required
+                                    style="flex: 2; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 24px;">
+                            <label
+                                style="display: block; margin-bottom: 8px; color: var(--gray); font-size: 14px; font-weight: 600;">Startup
+                                Script / File</label>
+                            <input type="text" id="pythonAppScript" placeholder="main.py" required
+                                style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace;">
+                            <p style="font-size: 12px; color: var(--gray); margin-top: 6px;">File utama python yang akan
+                                dieksekusi (contoh: <code>main.py</code> atau <code>bot.py</code>).</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <button type="submit" class="btn btn-primary" id="btnCreatePythonApp"
+                                style="padding: 12px 24px;">➕ Buat & Jalankan Aplikasi Python</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Manajemen Versi Python Card -->
+            <div class="card" style="margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <div>
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">🟦 Manajemen Versi Python
+                            (pyenv)</h3>
+                        <p style="font-size: 13px; color: var(--gray);">Install dan atur berbagai versi Python untuk
+                            aplikasi terisolasi.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="installPyenv()" id="btnInstallPyenv"
+                        style="display: none;">Install Pyenv</button>
+                </div>
+
+                <div id="pyenvContainer" style="display: none;">
+                    <div style="display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap;" id="pyenvVersionList">
+                        <span class="badge online">Memuat versi...</span>
+                    </div>
+
+                    <div style="display: flex; gap: 12px;">
+                        <select id="pyenvInstallVersion" onchange="checkPyenvInstallBtn()"
+                            style="padding: 10px 16px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: monospace; width: 280px;">
+                            <option value="3.12.2">3.12.2 (Current Latest)</option>
+                            <option value="3.11.8" selected>3.11.8 (Stable - Recommended)</option>
+                            <option value="3.10.13">3.10.13 (Stable)</option>
+                            <option value="3.9.18">3.9.18 (Legacy)</option>
+                            <option value="3.8.18">3.8.18 (Legacy)</option>
+                        </select>
+                        <button class="btn btn-action" onclick="installPythonVersion()" id="btnInstallPythonVer">⬇️
+                            Install Versi Python Baru</button>
+                        <button class="btn btn-action" onclick="loadPyenvData()">🔄 Refresh Data</button>
+                    </div>
+                    <p style="font-size: 12px; color: var(--gray); margin-top: 8px;">Ketik versi spesifik (misal:
+                        3.9.18, 3.10.12, 3.11.6, 3.12.0). Proses build memakan waktu beberapa menit di latar belakang.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SHARED PM2 APP LIST -->
+        <div class="card">
+            <div style="margin-bottom: 16px;">
+                <h3 style="font-size: 18px; font-weight: 700;">📡 Process List (PM2)</h3>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nama Aplikasi</th>
+                            <th>Status</th>
+                            <th>Port</th>
+                            <th>Tipe</th>
+                            <th>CPU</th>
+                            <th>RAM</th>
+                            <th>Uptime</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="nodeTableBody">
+                        <tr>
+                            <td colspan="8" class="empty-state">⏳ Memuat data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- NPM/PIP Log Modal -->
+        <div id="npmLogModal"
+            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;">
+            <div
+                style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; width: 800px; max-width: 90%; display: flex; flex-direction: column;">
+                <div
+                    style="padding: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; font-size: 18px;" id="npmLogTitle">📦 Installation Log</h3>
+                    <button id="btnNPMClose" class="btn btn-action" style="background: transparent; color: var(--gray);"
+                        onclick="document.getElementById('npmLogModal').style.display='none'">Tutup</button>
+                </div>
+                <div style="padding: 16px; background: #000; height: 400px; overflow-y: auto;">
+                    <pre id="npmLogContent"
+                        style="color: #e2e8f0; font-family: monospace; font-size: 13px; white-space: pre-wrap; margin: 0;"></pre>
+                </div>
+                <div style="padding: 16px; border-top: 1px solid var(--border); text-align: right;">
+                    <span id="npmLogStatus" style="font-weight: bold; color: var(--warning); margin-right: 16px;">⏳
+                        Memproses...</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            if (tab === 'node') {
+                document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+                document.getElementById('tab-node').classList.add('active');
+            } else {
+                document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+                document.getElementById('tab-python').classList.add('active');
+            }
+        }
+
+        // Format memory
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Format uptime
+        function formatUptime(pmUptime) {
+            if (!pmUptime) return '-';
+            const diff = Date.now() - pmUptime;
+            const seconds = Math.floor((diff / 1000) % 60);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+            if (days > 0) return `${days}h ${hours}j`;
+            if (hours > 0) return `${hours}j ${minutes}m`;
+            return `${minutes}m ${seconds}s`;
+        }
+
+        // Load data dari API PM2 (Mencakup Node dan Python)
+        async function loadNodeList() {
+            const tbody = document.getElementById('nodeTableBody');
+            tbody.innerHTML = '<tr><td colspan="8" class="empty-state">⏳ Memuat data...</td></tr>';
+
+            try {
+                const res = await fetch('/api/node/list');
+                const result = await res.json();
+
+                if (result.success && result.data && result.data.length > 0) {
+                    tbody.innerHTML = '';
+                    result.data.forEach(proc => {
+                        const statusClass = proc.pm2_env.status === 'online' ? 'online' :
+                            (proc.pm2_env.status === 'stopped' ? 'stopped' : 'errored');
+
+                        const cpu = proc.monit ? proc.monit.cpu + '%' : '0%';
+                        const mem = proc.monit ? formatBytes(proc.monit.memory) : '0 B';
+                        const uptime = proc.pm2_env.pm_uptime ? formatUptime(proc.pm2_env.pm_uptime) : '-';
+
+                        // Menentukan tipe interpreter
+                        const interpreter = proc.pm2_env.exec_interpreter || '';
+                        let typeBadge = '<span class="badge" style="background: rgba(100,116,139,0.2); color: #94a3b8">Lainnya</span>';
+                        let isPython = false;
+                        if (interpreter.includes('node')) {
+                            typeBadge = '<span class="badge online">Node.js</span>';
+                        } else if (interpreter.includes('python')) {
+                            typeBadge = '<span class="badge" style="background: rgba(59, 130, 246, 0.1); color: var(--secondary)">Python</span>';
+                            isPython = true;
+                        }
+
+                        const toggleBtn = proc.pm2_env.status === 'online'
+                            ? `<button class="btn btn-action" onclick="nodeAction('${proc.name}', 'stop')">⏸️ Stop</button>`
+                            : `<button class="btn btn-action" onclick="nodeAction('${proc.name}', 'start')">▶️ Start</button>`;
+
+                        // Jika python, munculkan tombol pip, kalau node, munculkan npm
+                        const packageBtn = isPython
+                            ? `<button class="btn btn-action" onclick="pipInstall('${proc.name}')" style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: var(--secondary);">📦 Pip Install</button>`
+                            : `<button class="btn btn-action" onclick="npmInstall('${proc.name}')" style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: var(--secondary);">📦 NPM Install</button>`;
+
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td><strong>${proc.name}</strong><br><small style="color:var(--gray)">ID: ${proc.pm_id}</small></td>
+                            <td><span class="badge ${statusClass}">${proc.pm2_env.status}</span></td>
+                            <td><strong>${proc.active_port || '-'}</strong></td>
+                            <td>${typeBadge}</td>
+                            <td>${cpu}</td>
+                            <td>${mem}</td>
+                            <td>${uptime}</td>
+                            <td>
+                                ${toggleBtn}
+                                <button class="btn btn-action" onclick="nodeAction('${proc.name}', 'restart')">🔄 Restart</button>
+                                ${packageBtn}
+                                <button class="btn btn-action" onclick="viewAppLog('${proc.name}')" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); color: var(--warning);">📜 Log</button>
+                                <button class="btn btn-action delete" onclick="nodeAction('${proc.name}', 'delete')">🗑️ Hapus</button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="8" class="empty-state">TIDAK ADA APP PM2 YANG BERJALAN</td></tr>';
+                }
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="8" class="empty-state" style="color:var(--danger)">Gagal memuat data: ${err.message}</td></tr>`;
+            }
+        }
+
+        // Aksi Start/Stop/Restart/Delete
+        async function nodeAction(processName, action) {
+            if (action === 'delete') {
+                if (!confirm(`Yakin ingin MENGHAPUS proses "${processName}" dari PM2?`)) return;
+            }
+
+            try {
+                const res = await fetch('/api/node/action', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ processName, action })
+                });
+                const result = await res.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    loadNodeList(); // Refresh
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (e) {
+                alert('Gagal menghubungi server: ' + e.message);
+            }
+        }
+
+        let npmLogInterval = null;
+
+        async function viewAppLog(processName) {
+            const modal = document.getElementById('npmLogModal');
+            const logTitle = document.getElementById('npmLogTitle');
+            const logContent = document.getElementById('npmLogContent');
+            const logStatus = document.getElementById('npmLogStatus');
+            const btnClose = document.getElementById('btnNPMClose');
+
+            logTitle.innerHTML = `📜 Log Aplikasi: ${processName}`;
+            modal.style.display = 'flex';
+            logContent.textContent = 'Mengambil log dari server...';
+            logStatus.textContent = '⏳ Loading...';
+            logStatus.style.color = 'var(--warning)';
+            btnClose.style.display = 'none';
+
+            try {
+                const res = await fetch(`/api/node/app-log?processName=${encodeURIComponent(processName)}`);
+                const result = await res.json();
+
+                if (result.success) {
+                    logContent.textContent = result.log || 'Log kosong.';
+                    logStatus.textContent = '✅ Berhasil memuat log';
+                    logStatus.style.color = 'var(--success)';
+                } else {
+                    logContent.textContent = 'Gagal mengambil log: ' + result.log;
+                    logStatus.textContent = '❌ Gagal';
+                    logStatus.style.color = 'var(--danger)';
+                }
+            } catch (e) {
+                logContent.textContent = 'Error koneksi: ' + e.message;
+                logStatus.textContent = '❌ Gagal';
+                logStatus.style.color = 'var(--danger)';
+            }
+
+            logContent.parentElement.scrollTop = logContent.parentElement.scrollHeight;
+            btnClose.style.display = 'inline-block';
+        }
+
+        async function npmInstall(processName) {
+            if (!confirm(`Jalankan 'npm install' untuk aplikasi ${processName}?`)) return;
+            startPackageLogPolling('/api/node/npm-install', '/api/node/npm-log', { processName }, 'NPM Install', processName);
+        }
+
+        async function pipInstall(processName) {
+            if (!confirm(`Jalankan 'pip install -r requirements.txt' untuk aplikasi ${processName}?`)) return;
+            startPackageLogPolling('/api/python/pip-install', '/api/node/npm-log', { processName }, 'PIP Install', processName);
+        }
+
+        async function startPackageLogPolling(installEndpoint, logEndpoint, reqBody, title, taskIdForLog) {
+            const modal = document.getElementById('npmLogModal');
+            const logTitle = document.getElementById('npmLogTitle');
+            const logContent = document.getElementById('npmLogContent');
+            const logStatus = document.getElementById('npmLogStatus');
+            const btnClose = document.getElementById('btnNPMClose');
+
+            logTitle.innerHTML = `📦 ${title} Log`;
+            modal.style.display = 'flex';
+            logContent.textContent = `Memulai proses ${title}...`;
+            logStatus.textContent = '⏳ Sedang mengeksekusi...';
+            logStatus.style.color = 'var(--warning)';
+            btnClose.style.display = 'none';
+
+            try {
+                const res = await fetch(installEndpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(reqBody)
+                });
+                const result = await res.json();
+
+                if (!result.success) {
+                    logContent.textContent += '\n\nError: ' + result.message;
+                    logStatus.textContent = '❌ Gagal memulai';
+                    logStatus.style.color = 'var(--danger)';
+                    btnClose.style.display = 'inline-block';
+                    return;
+                }
+
+                // Mulai polling log
+                if (npmLogInterval) clearInterval(npmLogInterval);
+                npmLogInterval = setInterval(async () => {
+                    try {
+                        const logRes = await fetch(`${logEndpoint}?processName=${encodeURIComponent(taskIdForLog)}`);
+                        const logData = await logRes.json();
+
+                        if (logData.log) {
+                            logContent.textContent = logData.log;
+                            logContent.parentElement.scrollTop = logContent.parentElement.scrollHeight;
+                        }
+
+                        if (!logData.isRunning) {
+                            clearInterval(npmLogInterval);
+                            logStatus.textContent = '✅ Selesai';
+                            logStatus.style.color = 'var(--success)';
+                            btnClose.style.display = 'inline-block';
+                        }
+                    } catch (e) {
+                        // ignore error
+                    }
+                }, 1500);
+
+            } catch (e) {
+                logContent.textContent += '\n\nGagal menghubungi server: ' + e.message;
+                logStatus.textContent = '❌ Gagal';
+                logStatus.style.color = 'var(--danger)';
+                btnClose.style.display = 'inline-block';
+            }
+        }
+
+        // Load saat pertama buka
+        window.onload = () => {
+            loadNodeList();
+            loadNvmData();
+            loadPyenvData();
+        };
+
+        window.installedNodeVersions = [];
+        window.installedPythonVersions = [];
+
+        function checkNvmInstallBtn() {
+            const ver = document.getElementById('nvmInstallVersion').value;
+            const btn = document.getElementById('btnInstallNodeVer');
+            const isInstalled = window.installedNodeVersions.some(v => v === ver || v.startsWith(ver + '.'));
+
+            if (isInstalled) {
+                btn.textContent = '🗑️ Hapus Versi';
+                btn.style.background = 'var(--danger)';
+                btn.onclick = uninstallNodeVersion;
+            } else {
+                btn.textContent = '⬇️ Install Versi Baru';
+                btn.style.background = '';
+                btn.onclick = installNodeVersion;
+            }
+        }
+
+        async function uninstallNodeVersion() {
+            const ver = document.getElementById('nvmInstallVersion').value;
+            if (!confirm(`Hapus Node.js v${ver} dari sistem? Aplikasi yang menggunakan versi ini mungkin akan terhenti.`)) return;
+
+            const btn = document.getElementById('btnInstallNodeVer');
+            btn.disabled = true;
+            btn.textContent = '⏳ Menghapus...';
+
+            try {
+                const res = await fetch('/api/nvm/uninstall', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ version: ver })
+                });
+                const result = await res.json();
+                alert(result.message);
+                loadNvmData();
+            } catch (e) { alert(e.message); }
+
+            btn.disabled = false;
+        }
+
+        // ========================== NODE.JS NVM MANAGEMENT ==========================
+        async function loadNvmData() {
+            try {
+                const res = await fetch('/api/nvm/list');
+                const data = await res.json();
+
+                const btnNvm = document.getElementById('btnInstallNvm');
+                const container = document.getElementById('nvmContainer');
+                const list = document.getElementById('nvmVersionList');
+                const selectDropdown = document.getElementById('nodeAppVersion');
+
+                if (!data.installed) {
+                    btnNvm.style.display = 'block';
+                    container.style.display = 'none';
+                    return;
+                }
+
+                btnNvm.style.display = 'none';
+                container.style.display = 'block';
+
+                list.innerHTML = '';
+                selectDropdown.innerHTML = '<option value="system">System Default</option>';
+
+                if (data.versions && data.versions.length > 0) {
+                    window.installedNodeVersions = data.versions;
+                    data.versions.forEach(ver => {
+                        list.innerHTML += `<span class="badge online">v${ver}</span>`;
+                        selectDropdown.innerHTML += `<option value="${ver}">v${ver}</option>`;
+                    });
+                } else {
+                    window.installedNodeVersions = [];
+                    list.innerHTML = '<span class="badge errored">Belum ada versi Node terinstal</span>';
+                }
+                checkNvmInstallBtn();
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function installNvm() {
+            if (!confirm('Ini akan menginstal Node Version Manager. Lanjutkan?')) return;
+            startPackageLogPolling('/api/nvm/install', '/api/node/npm-log', { version: 'nvm-setup' }, 'Install NVM', 'nvm_nvm_setup');
+        }
+
+        async function installNodeVersion() {
+            const ver = document.getElementById('nvmInstallVersion').value;
+            if (!ver) return alert('Pilih versi Node.js!');
+            startPackageLogPolling('/api/nvm/install', '/api/node/npm-log', { version: ver }, `Install Node v${ver}`, `nvm_${ver.replace(/[^a-zA-Z0-9]/g, '_')}`);
+        }
+
+        function checkPyenvInstallBtn() {
+            const ver = document.getElementById('pyenvInstallVersion').value.trim();
+            const btn = document.getElementById('btnInstallPythonVer');
+            const isInstalled = window.installedPythonVersions.includes(ver);
+
+            if (isInstalled) {
+                btn.textContent = '🗑️ Hapus Versi';
+                btn.style.background = 'var(--danger)';
+                btn.onclick = uninstallPythonVersion;
+            } else {
+                btn.textContent = '⬇️ Install Versi Python Baru';
+                btn.style.background = '';
+                btn.onclick = installPythonVersion;
+            }
+        }
+
+        async function uninstallPythonVersion() {
+            const ver = document.getElementById('pyenvInstallVersion').value.trim();
+            if (!confirm(`Hapus Python ${ver} dari sistem pyenv? Lingkungan virtual yang menggunakannya mungkin akan rusak.`)) return;
+
+            const btn = document.getElementById('btnInstallPythonVer');
+            btn.disabled = true;
+            btn.textContent = '⏳ Menghapus...';
+
+            try {
+                const res = await fetch('/api/pyenv/uninstall', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ version: ver })
+                });
+                const result = await res.json();
+                alert(result.message);
+                loadPyenvData();
+            } catch (e) { alert(e.message); }
+
+            btn.disabled = false;
+        }
+
+        // ========================== PYTHON PYENV MANAGEMENT ==========================
+        async function loadPyenvData() {
+            try {
+                const res = await fetch('/api/pyenv/list');
+                const data = await res.json();
+
+                const btnPyenv = document.getElementById('btnInstallPyenv');
+                const container = document.getElementById('pyenvContainer');
+                const list = document.getElementById('pyenvVersionList');
+                const selectDropdown = document.getElementById('pythonAppVersion');
+
+                if (!data.installed) {
+                    btnPyenv.style.display = 'block';
+                    container.style.display = 'none';
+                    return;
+                }
+
+                btnPyenv.style.display = 'none';
+                container.style.display = 'block';
+
+                list.innerHTML = '';
+                selectDropdown.innerHTML = '<option value="system">System Default (python3)</option>';
+
+                if (data.versions && data.versions.length > 0) {
+                    window.installedPythonVersions = data.versions;
+                    data.versions.forEach(ver => {
+                        list.innerHTML += `<span class="badge online">Python ${ver}</span>`;
+                        selectDropdown.innerHTML += `<option value="${ver}">Python ${ver}</option>`;
+                    });
+                } else {
+                    window.installedPythonVersions = [];
+                    list.innerHTML = '<span class="badge errored">Belum ada versi Python terinstal</span>';
+                }
+                checkPyenvInstallBtn();
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function installPyenv() {
+            if (!confirm('Ini akan menginstal pyenv (Python Version Manager) untuk multi versi Python. Lanjutkan?')) return;
+            startPackageLogPolling('/api/pyenv/install', '/api/node/npm-log', { version: 'pyenv-setup' }, 'Install Pyenv', 'pyenv_pyenv_setup');
+        }
+
+        async function installPythonVersion() {
+            const ver = document.getElementById('pyenvInstallVersion').value.trim();
+            if (!ver) return alert('Pilih versi Python!');
+            startPackageLogPolling('/api/pyenv/install', '/api/node/npm-log', { version: ver }, `Install Python ${ver}`, `pyenv_${ver.replace(/[^a-zA-Z0-9]/g, '_')}`);
+        }
+
+        // ========================== FORM TOGGLES & SUBMITS ==========================
+        function toggleSetupForm(containerId, btnId) {
+            const container = document.getElementById(containerId);
+            const btn = document.getElementById(btnId);
+            if (container.style.display === 'none') {
+                container.style.display = 'block';
+                btn.textContent = 'Sembunyikan Formulir';
+                btn.style.background = 'rgba(255,255,255,0.1)';
+            } else {
+                container.style.display = 'none';
+                btn.textContent = 'Tampilkan Formulir';
+                btn.style.background = '';
+            }
+        }
+
+        document.getElementById('setupNodeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnCreateNodeApp');
+            const appName = document.getElementById('nodeAppName').value.trim();
+            const baseDir = document.getElementById('nodeAppBaseDir').value;
+            let folderName = document.getElementById('nodeAppFolderName').value.trim();
+            if (folderName.startsWith('/')) folderName = folderName.substring(1);
+            const appCwd = baseDir + folderName;
+
+            const appScript = document.getElementById('nodeAppScript').value.trim();
+            const appEnv = document.getElementById('nodeAppEnv').value;
+            const nodeVersion = document.getElementById('nodeAppVersion').value;
+
+            if (!appName || !appCwd || !appScript) return alert('Lengkapi semua data!');
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Memproses...';
+
+            try {
+                const res = await fetch('/api/node/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ appName, cwd: appCwd, script: appScript, env: appEnv, nodeVersion })
+                });
+                const result = await res.json();
+
+                if (result.success) {
+                    alert('Aplikasi Node berhasil dibuat!');
+                    document.getElementById('setupNodeForm').reset();
+                    toggleSetupForm('setupNodeFormContainer', 'btnToggleNodeSetup');
+                    loadNodeList();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (err) { alert('Error: ' + err.message); }
+            finally { btn.disabled = false; btn.textContent = '➕ Buat & Jalankan Aplikasi'; }
+        });
+
+        document.getElementById('setupPythonForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnCreatePythonApp');
+            const appName = document.getElementById('pythonAppName').value.trim();
+            const baseDir = document.getElementById('pythonAppBaseDir').value;
+            let folderName = document.getElementById('pythonAppFolderName').value.trim();
+            if (folderName.startsWith('/')) folderName = folderName.substring(1);
+            const appCwd = baseDir + folderName;
+
+            const appScript = document.getElementById('pythonAppScript').value.trim();
+            const pythonVersion = document.getElementById('pythonAppVersion').value;
+
+            if (!appName || !appCwd || !appScript) return alert('Lengkapi semua data!');
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Memproses...';
+
+            try {
+                const res = await fetch('/api/python/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ appName, cwd: appCwd, script: appScript, pythonVersion })
+                });
+                const result = await res.json();
+
+                if (result.success) {
+                    alert('Aplikasi Python berhasil dibuat!');
+                    document.getElementById('setupPythonForm').reset();
+                    toggleSetupForm('setupPythonFormContainer', 'btnTogglePythonSetup');
+                    loadNodeList();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (err) { alert('Error: ' + err.message); }
+            finally { btn.disabled = false; btn.textContent = '➕ Buat & Jalankan Aplikasi Python'; }
+        });
+
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            try {
+                const res = await fetch('/api/system/settings');
+                const data = await res.json();
+                if (data.success) {
+                    document.title = document.title.split('-')[0].trim() + ' - ' + data.appName;
+                    const brandH1 = document.querySelector('.sidebar-brand h1');
+                    const brandP = document.querySelector('.sidebar-brand p');
+                    if (brandH1) brandH1.textContent = data.appName;
+                    if (brandP) brandP.textContent = data.appDomain;
+                }
+            } catch (e) { }
+        });
+    </script>
+</body>
+
+</html>

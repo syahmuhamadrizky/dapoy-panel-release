@@ -1,0 +1,264 @@
+v1.7.24 (Patch Update)
+- [Peningkatan Keamanan] Menambahkan "Peringatan Keras" pada Web Manager saat pengguna mencoba menghapus website/subdomain yang saat ini terhubung langsung ke Port 3000 (port utama Dapoy Panel). Ini untuk mencegah pengguna terputus dari akses Panel secara tidak sengaja.
+
+v1.7.23 (Patch Update)
+- [Peningkatan UI & Keamanan] Pada menu File Manager, pilihan dropdown shortcut direktori sekarang telah disesuaikan menjadi `/www/dp/`, `/www/app/`, dan `/www/project/`. Direktori root `/opt/` dan `/var/www/html/` telah dihapus agar mencegah pencampuran dengan file sistem.
+
+v1.7.22 (Patch Update)
+- [Peningkatan Sistem] Menambahkan sanitasi otomatis pada kolom input pembuatan Website: penulisan subdomain otomatis dipaksa huruf kecil tanpa simbol, dan spasi pada nama folder otomatis diubah menjadi tanda hubung (-).
+- [Peningkatan Sistem] Mencegah duplikasi: Sistem akan menolak pembuatan website baru jika domain/website tersebut sudah pernah dibuat atau terdaftar di sistem sebelumnya.
+
+v1.7.21 (Patch Update)
+- [Perbaikan UI] Kolom form pada Modal Tambah Website kini otomatis tersusun vertikal (stack) di HP agar tidak kekecilan dan lebih nyaman diketik.
+- [Fitur Baru] Sistem kini akan otomatis mengambil \`logo.png\` dari folder \`public\` Dapoy Panel dan menyalinkannya ke folder website baru yang terbuat, sehingga logo otomatis terpasang di \`index.html\`.
+
+v1.7.20 (Patch Update)
+- [Perbaikan UI] Memperbaiki form di dalam modal Tambah Website agar form isian domain tidak bertumpuk/hancur pada tampilan Mobile.
+- [Fitur Baru] Mengganti template default `index.html` yang ter-generate otomatis saat membuat website baru menjadi desain futuristik (dark theme, animasi, efek glassmorphism) dengan placeholder logo.
+
+v1.7.19 (Patch Update)
+- [Perbaikan UI] Menghapus 3 bagian kartu rekap (Aplikasi PM2, Database, Cloudflare Tunnel) di bagian paling bawah Dashboard.
+- [Perbaikan UI] Mengubah tahun lisensi pada footer (bagian paling bawah halaman) menjadi tahun 2025 SMR.
+
+v1.7.18 (Patch Update)
+- [Perbaikan UI] Mengubah penamaan menu navigasi agar lebih ringkas (Tunneling, Website, Node & Pyth, Database).
+
+v1.7.17 (Patch Update)
+- [Perbaikan UI] Menyempurnakan tampilan tombol dan form (kotak isian) di dalam App Manager, Tunnel Manager, Web Manager, dan Database Manager agar tertata rapi secara vertikal di perangkat Mobile.
+- [Fitur Baru] Mengubah tombol Gopay di navigasi menjadi tombol Donate yang lebih rapi beserta pop-up informasi donasi.
+
+v1.7.16 (Patch Update)
+- [Perbaikan UI] Menambahkan scrollbar horizontal (`overflow-x: auto`) pada list, log terminal, kartu (card), dan tabel di tampilan Mobile agar tidak melebar keluar batas layar.
+
+v1.7.15 (Patch Update)
+- [Peningkatan UI] Optimalisasi total tampilan mobile/HP untuk seluruh konten dashboard.
+- [Peningkatan UI] Form input, tabel, modal (pop-up), dan header actions kini di-resize proporsional tanpa terpotong di layar HP.
+
+v1.7.14 (Patch Update)
+- [Perbaikan UI] Memperbaiki tampilan halaman login agar isian tidak melebihi batas kotak.
+- [Peningkatan UI] Menambahkan responsivitas Mobile (Bottom Navigation Bar) untuk semua halaman dashboard panel.
+
+v1.7.13 (Patch Update)
+- [Perbaikan UI] Menghapus tombol "Logout" ganda yang tidak sengaja muncul di area menu navigasi pada halaman Dashboard dan Pengaturan Sistem.
+
+v1.7.12 (Patch Update)
+- [Perbaikan Bug Kritis] Memperbaiki isu phpMyAdmin menampilkan error "Cannot connect: invalid settings" atau "Connection refused" saat auto-login. Bug ini terjadi karena phpMyAdmin di-set untuk mencari MySQL di host 127.0.0.1, padahal keduanya sekarang berjalan di dalam container Docker yang terisolasi. Kini phpMyAdmin sudah diarahkan dengan benar ke container 'dapoy-db'.
+
+v1.7.11 (Feature Update)
+- [Fitur Baru] Menambahkan pemantauan status Nginx (Web Server) secara langsung di halaman Dashboard utama. Dilengkapi juga dengan fitur "Auto-Start" canggih yang akan otomatis menjalankan kembali Nginx jika terdeteksi mati atau offline saat Dashboard dibuka.
+
+v1.7.10 (Patch Update)
+- [Perbaikan Bug Kritis] Memperbaiki isu di mana pembuatan atau pembaruan konfigurasi Tunnel menyebabkan "Error Invalid JSON" di browser akibat service Cloudflared di-restart sebelum Dapoy Panel sempat mengirimkan respon ke browser.
+- [Perbaikan Bug] Memperbaiki isu di mana pembaruan rute pada Tunnel Manager tidak secara otomatis me-restart service Cloudflared, yang menyebabkan perubahan rute tidak segera berlaku dan menyebabkan error NXDOMAIN atau 404 pada website biasa.
+
+v1.7.9 (Patch Update)
+- [Perbaikan Bug] Memperbaiki "Domain Aktif" pada menu Database Manager yang masih menampilkan domain lama meskipun tunnel-nya sudah dihapus dari Cloudflare Tunnel Manager.
+
+v1.7.8 (Patch Update)
+- [Peningkatan UI] Mengubah tampilan form Setup Tunnel phpMyAdmin di menu Database Manager agar lebih mudah digunakan. Kini pengguna dapat mengetikkan subdomain dan memilih domain dari dropdown Cloudflare secara langsung.
+
+v1.7.7 (Patch Update)
+- [Peningkatan] Memperbaiki alur Setup Tunnel phpMyAdmin: Kini penambahan tunnel otomatis membuat record CNAME DNS di Cloudflare (sama seperti penambahan tunnel website biasa), sehingga tidak terjadi lagi error DNS_PROBE_FINISHED_NXDOMAIN.
+
+v1.7.6 (Patch Update)
+- [Perbaikan Bug Kritis] Memperbaiki konfigurasi Cloudflare Tunnel untuk phpMyAdmin yang sebelumnya secara keliru diarahkan ke port 8080 (port Dapoy Panel / Native PHP) alih-alih port Docker phpMyAdmin (8099). Inilah yang menyebabkan halaman 404 Not Found saat mengakses phpMyAdmin via Tunnel.
+
+v1.7.5 (Patch Update)
+- [Perbaikan Bug] Memperbaiki Auto-Login (SSO) phpMyAdmin yang mengalami error pengalihan rute statis 404 ketika diakses melalui domain Cloudflare Tunnel (sehingga gagal meng-inject cookie autentikasi).
+
+v1.7.4 (Patch Update)
+- [Peningkatan] Memperbaiki fitur Auto-Login (SSO) pada phpMyAdmin yang sebelumnya gagal bekerja (fallback ke manual login) akibat hilangnya *volume mounting* saat proses instalasi Live Log.
+
+v1.7.3 (Patch Update)
+- [Perbaikan Bug] Memperbaiki Auto-Update checker yang tidak mendeteksi versi baru dengan benar karena git rev-list tanpa melakukan git fetch.
+- [Perbaikan Bug] Memperbaiki issue Cloudflare API Token link.
+
+v1.7.2 (Feature Update)
+- [Sistem Database] Mengimplementasikan Modal Live Log UI untuk instalasi Database dan phpMyAdmin. Menampilkan proses secara real-time seperti terminal agar tidak ada klik ganda atau stuck tanpa pemberitahuan.
+
+v1.7.1 (Hotfix)
+- [Sistem Database] Memperbaiki instalasi Docker Database & phpMyAdmin yang stuck/gagal akibat permission sudo yang tidak ter-bypass secara internal.
+
+v1.7.0 (Major Update)
+- [Sistem Database] Migrasi total sistem pengelolaan Database dan phpMyAdmin dari Native (apt) ke Docker. Meningkatkan stabilitas, keamanan (isolasi proses), dan kemudahan update (tinggal ganti versi image docker).
+- [Sistem Database] Dukungan pilihan versi resmi Docker Hub langsung dari UI untuk instalasi Database (mariadb:10.11, mysql:8.0, dll).
+- [Sistem Update] Menyesuaikan installer utama untuk secara otomatis menginstal Docker Engine dan Docker Compose.
+
+v1.6.12 (Hotfix TCP)
+- [Sistem Database] Mengubah koneksi default phpMyAdmin dari UNIX Socket ke TCP (127.0.0.1) untuk kompatibilitas universal dengan berbagai versi MariaDB/MySQL.
+- [Sistem Database] Sinkronisasi konfigurasi Host Database Manager dengan phpMyAdmin.
+
+v1.6.11 (Hotfix)
+- [Sistem Database] Memperbaiki isu socket MySQL yang tidak dikenali.
+
+v1.6.10 (Debug)
+- [Sistem Diagnostik] Menambahkan modul Debugging Visual ke dalam phpMyAdmin untuk melacak mengapa Cookie atau Token Auto-Heal gagal masuk ke dalam browser.
+
+v1.6.9 (Patch)
+- [Perbaikan Bug] Ultimate Fix untuk Sistem Auto-Login phpMyAdmin: Mengganti algoritma set-cookie menggunakan metode Javascript Redirect agar tidak di-block browser, membuat Blowfish Secret persisten, dan mengarahkan koneksi auth_socket secara eksplisit ke MySQL Daemon.
+
+v1.6.8 (Patch)
+- [Perbaikan Bug] Mengizinkan login otomatis untuk user root bawaan MySQL (auth_socket) tanpa password dan memperbaiki pengecekan status Database Native.
+
+v1.6.7 (Patch)
+- [Sistem Otomatis] Hotfix: Memperbaiki kesalahan internal panel pada v1.6.6.
+
+v1.6.6 (Patch)
+- [Sistem Otomatis] Menambahkan fungsi Auto-Heal untuk memperbaiki konfigurasi phpMyAdmin dan file Cookie SSO secara dinamis saat tombol dibuka tanpa harus melakukan install ulang.
+
+v1.6.5 (Patch)
+- [Perbaikan Bug] Memperbaiki Auto-Login phpMyAdmin yang masih menampilkan halaman login karena pembatasan PrivateTmp pada service systemd.
+
+v1.6.4 (Patch)
+- [Sistem Update] Menyempurnakan mekanisme restart PM2 setelah update.
+
+v1.6.2 (Patch)
+- [Perbaikan Bug] Memperbaiki susunan route ingress Cloudflare saat setup domain baru.
+
+v1.6.1 (Patch)
+- [Perbaikan Bug] Memperbaiki error newConfig is not defined saat setup route PMA.
+
+v1.6.0 (Major Patch)
+- [Perbaikan Penting] Membersihkan bentrokan port 8080 dari instalasi phpMyAdmin lama atau Docker Ghost secara paksa agar versi Native dapat berjalan 100%.
+
+v1.5.9 (Patch Update)
+- [Peningkatan] Merubah sistem otentikasi phpMyAdmin menjadi Sistem Cookie Rahasia yang jauh lebih ringan dan kebal dari blokir session. Mendukung penuh integrasi Cloudflare Tunnel tanpa bug.
+
+v1.5.8 (Patch Update)
+- [Perbaikan Bug Kritis] Memperbaiki Auto-Login phpMyAdmin yang gagal (selalu kembali ke halaman login) akibat perlindungan token CSRF dari versi terbaru phpMyAdmin. Sistem kini menggunakan otentikasi Single Sign-On (SSO) internal yang dijamin 100% aman dan langsung masuk.
+
+v1.5.7 (Patch Update)
+- [Peningkatan] Merubah instalasi phpMyAdmin menjadi Native tanpa menggunakan Docker.
+
+v1.5.5 (Patch Update)
+- [Perbaikan Bug Kritis] Memperbaiki error sistem "Unexpected token '<', <!DOCTYPE... is not valid JSON" saat proses instalasi Cloudflared. Error ini terjadi karena endpoint API (backend) untuk fungsi instalasi secara tidak sengaja tidak memiliki penanganan JSON untuk `requireAuth` ketika sesi tidak tersedia, serta ketiadaan `try-catch` yang menyebabkan *crash* pada kondisi tertentu dikembalikan sebagai halaman HTML Error 500.
+
+v1.5.4 (Patch Update)
+- [Perbaikan Bug Kritis] Memperbaiki syntax error yang menyebabkan NVM dan Pyenv uninstall route tidak bisa dieksekusi (unreachable code).
+- [Perbaikan Bug Kritis] Memperbaiki error "Access denied for user 'root' (using password: NO)" pada list database Native MySQL. Bug disebabkan oleh format argumen password MySQL yang salah `-p"password"` menjadi `-ppassword`.
+- [Perbaikan Bug Kritis] Menghapus semua referensi Docker untuk menjadikan Dapoy Panel sepenuhnya Native/Standalone. Default MySQL host diubah dari `host.docker.internal` menjadi `127.0.0.1`.
+- [Fitur Baru] Menambahkan UI "Konfigurasi Database MySQL" di Settings page untuk memudahkan konfigurasi koneksi database.
+- [Fitur Baru] Menambahkan auto-detect dan auto-install MySQL/MariaDB. Jika MySQL belum terinstall, panel akan menampilkan tombol untuk install otomatis.
+- [Perbaikan Bug] Menghapus duplicate tunnelmanager route dan nodemanager route yang menunjuk ke file yang sudah tidak ada.
+- [Perbaikan Bug] Menghapus link "Node Manager" dari sidebar Dashboard karena sudah diintegrasikan ke App Manager.
+- [Fitur Baru] Menambahkan API route /api/system/settings (GET & POST) untuk pengaturan identitas aplikasi (nama, domain, logo).
+- [Pembersihan] Menghapus file-file temporary yang tidak terpakai dari project.
+- [UI] Mengubah label "Databases (Docker)" menjadi "Databases" di Dashboard.
+
+v1.5.3 (Patch Update)
+- [Peningkatan] Menghapus dependency yang tidak perlu dari package.json untuk mengurangi ukuran instalasi.
+
+v1.5.2 (Patch Update)
+- [Perbaikan Bug] Memperbaiki path environment variable yang salah di Windows development mode.
+
+v1.5.1 (Patch Update)
+- [Peningkatan] Integrasi phpMyAdmin sekarang diubah dari konfigurasi berbasis Docker MySQL ke Native MySQL. phpMyAdmin akan langsung terkoneksi dengan MariaDB/MySQL bawaan sistem (port 3306) via host.docker.internal, sehingga pengguna tidak perlu bergantung pada container MySQL.
+
+v1.5.0 (Minor Update)
+- [Fitur Baru] Tombol phpMyAdmin (PMA) kini dibuat dinamis pada setiap baris container database (MySQL/MariaDB). Tombol ini akan membaca IP internal dan password otomatis untuk melakukan Auto-Login ke phpMyAdmin tanpa perlu input password manual lagi.
+- [Peningkatan] Konfigurasi phpMyAdmin dirubah menggunakan PMA_ARBITRARY=1 untuk mendukung akses multi-database dari satu instance.
+- [Peningkatan] Kolom input manual untuk instalasi phpMyAdmin (Host, Port, User, Password) dihilangkan dari antarmuka karena sudah sepenuhnya otomatis.
+
+v1.4.0 (Major Update)
+- [Perubahan Besar] Dapoy Panel sekarang Standalone (Zero aaPanel)! Seluruh ketergantungan pada aaPanel dihapus.
+- [Fitur Baru] Native System Stats: Monitoring CPU, RAM, dan Disk langsung dari kernel Linux tanpa perlu aaPanel.
+- [Fitur Baru] Dashboard counters real-time untuk PM2 Apps, Docker Databases, dan Cloudflare Tunnels.
+- [Fitur Baru] Script uninstall_aapanel.sh untuk menghapus aaPanel secara aman dari VPS.
+- [Peningkatan] install.sh sekarang menginstal Nginx & PHP langsung dari repository resmi (tanpa aaPanel).
+- [Penghapusan] Menu dan widget aaPanel dihapus dari Dashboard.
+
+v1.3.8 (Patch Update)
+- [Perbaikan Bug] Memperbaiki masalah di mana Web Manager gagal menambahkan CNAME (DNS Route) Cloudflare Tunnel secara otomatis ketika dijalankan dari environment Windows.
+
+v1.3.7 (Feature Update)
+- [Fitur Baru] Menambahkan kemampuan untuk menginstal `cloudflared` secara otomatis langsung dari UI Tunnel Manager jika terdeteksi belum terpasang di VPS. Kini pengguna tidak perlu repot membuka SSH manual untuk instalasi awal! (Dilengkapi dengan Live Terminal Log).
+
+v1.7.3 (Patch Update)
+- [Perbaikan Bug] Memperbaiki Auto-Update checker yang tidak mendeteksi versi baru dengan benar karena git rev-list tanpa melakukan git fetch.
+- [Perbaikan Bug] Memperbaiki issue Cloudflare API Token link.
+
+v1.3.6 (Patch Update)
+- [Perbaikan Bug] Memperbaiki logo di bilah navigasi samping (Sidebar) yang sebelumnya menampilkan teks "/logo.png" secara tumpang tindih dengan teks "Dapoy Panel" ketika pengguna mengatur logo kustom. Kini gambar logo akan dirender dengan benar.
+
+v1.3.5 (Patch Update)
+- [Perbaikan Bug Kritis] Memperbaiki "Error sistem: Unexpected token '<', <!DOCTYPE... is not valid JSON" yang terjadi secara acak pada beberapa aksi (termasuk menghapus website). Bug ini disebabkan oleh sistem inti (core system) Dapoy Panel yang mengalami Crash (menutup paksa proses Node.js) ketika mencoba me-restart layanan eksternal (seperti Nginx atau Cloudflared) di belakang layar tanpa mengirimkan sinyal callback, sehingga Express.js melempar halaman 502/500 HTML. Kini eksekusi perintah latar belakang telah diamankan dan tidak akan membuat panel crash lagi.
+
+v1.3.4 (Patch Update)
+- [Perbaikan Bug] Memperbaiki error sistem "Unexpected token '<', <!DOCTYPE... is not valid JSON" saat mencoba mengganti versi PHP di Web Manager. Error ini terjadi karena endpoint API (backend) untuk fungsi penggantian versi PHP sebelumnya tidak sengaja tertinggal saat merilis antarmuka UI (frontend)-nya pada versi 1.3.0.
+
+v1.3.3 (Patch Update)
+- [Peningkatan UI] Mengganti logo "D" pada halaman kustom default Nginx ("Website not found") dengan logo resmi Dapoy Panel. Gambar ini telah dikonversi menjadi format Base64 dan ditanamkan (embedded) langsung di dalam sistem (hardcoded HTML) agar tidak dapat diedit atau dimanipulasi secara eksternal.
+
+v1.3.2 (Patch Update)
+- [Perbaikan Bug] Memperbaiki error sistem "Unexpected token '<', <!DOCTYPE... is not valid JSON" saat menghapus website di Web Manager. Error ini disebabkan oleh kegagalan sistem saat menghapus konfigurasi Cloudflare Tunnel akibat penulisan fungsi YAML Parser yang salah (`yaml.load` menjadi `yaml.parse`).
+
+v1.3.1 (Minor Update)
+- [Peningkatan UI] Mengganti halaman default Nginx aaPanel ("Website not found") dengan halaman kustom bergaya modern dan gelap ala Dapoy Panel, lengkap dengan logo dan pesan pengalihan. Halaman ini akan otomatis diterapkan pada server tanpa perlu konfigurasi tambahan.
+
+v1.3.0 (Minor Update)
+- [Peningkatan UI] Pada tabel daftar website di Web Manager, nama domain sekarang menjadi tautan (hyperlink) biru yang bisa diklik untuk langsung membuka alamat website tersebut di tab baru.
+- [Peningkatan UI] Path root direktori website di Web Manager sekarang menjadi tautan yang bisa diklik. Jika diklik, pengguna akan langsung diarahkan ke halaman File Manager yang otomatis membuka folder direktori tersebut.
+- [Fitur Baru] Versi PHP di Web Manager kini bisa diedit langsung melalui menu Dropdown (Select Box) pada tabel, sehingga Anda tidak perlu menghapus website hanya untuk mengubah versi PHP.
+- [Perbaikan Bug] Memperbaiki styling warna merah (danger) pada tombol "Hapus" di Web Manager yang sebelumnya kehilangan gaya CSS-nya.
+
+v1.2.9 (Patch Update)
+- [Perbaikan Bug] Mengintegrasikan koneksi Cloudflare Tunnel secara otomatis ketika membuat website baru di Web Manager. Sekarang, jika Anda mencentang opsi "Gunakan Cloudflare Tunnel", sistem akan langsung menyimpan rute DNS dan me-restart tunnel tanpa perlu menambahkan secara manual lagi di menu Tunnel Manager.
+
+v1.2.8 (Patch Update)
+- [Perbaikan Bug] Memperbaiki Tombol "Install Versi Python Baru" pada Pyenv Manager yang tidak berubah otomatis menjadi tombol "Hapus Versi" saat pertama kali dimuat atau saat ditekan tombol Refresh Data, karena kesalahan pemanggilan fungsi (typo).
+
+v1.2.7 (Minor Update)
+- [Fitur Baru] Tombol "Install Versi Baru" kini bersifat dinamis dan akan otomatis berubah menjadi "Hapus Versi" (warna merah) jika sistem mendeteksi bahwa versi Node.js atau Python yang dipilih sudah terpasang. Ini berfungsi untuk mencegah pengguna tanpa sengaja memasang ulang versi yang sama, sekaligus memberikan akses cepat untuk mencopot pemasangan (uninstall) versi lama guna menghemat penyimpanan VPS.
+- [Peningkatan UI] Mengganti nama tab "Node Manager" menjadi "App Manager" di panel navigasi samping (Sidebar) pada seluruh halaman dashboard.
+
+v1.2.5 (Patch Update)
+- [Perbaikan Bug] Memperbaiki error "Instalasi sedang berjalan" dan tampilan log error literal `
+
+` yang muncul jika pengguna tanpa sengaja menekan tombol install lebih dari sekali atau jika halaman dimuat ulang saat proses instalasi (Node/Python) sedang berjalan di belakang layar. Sekarang, menekan tombol kembali akan meneruskan pemantauan (resume log) dari proses yang sudah berjalan secara cerdas.
+
+v1.2.4 (Minor Update)
+- [Fitur Baru] Mengubah proses instalasi NVM, Node.js, Pyenv, dan Python versi menjadi "Interactive Live Log". Kini Anda dapat melihat secara langsung log instalasi dari server dalam bentuk Pop-up Modal, sehingga Anda tidak perlu menerka-nerka proses di balik layar.
+
+v1.2.3 (Patch Update)
+- [Perbaikan Bug] Memperbaiki styling UI modal (seperti pada Web Manager) di mana elemen input atau dropdown keluar batas (overflow). Lebar modal telah diperbesar menjadi 500px dan ditambahkan pengaman flexbox.
+
+v1.2.2 (Patch Update)
+- [Peningkatan UI] Mengubah input teks versi Python (Pyenv) menjadi menu Dropdown (Select Box) dengan daftar versi stabil untuk memudahkan pengguna menginstal Python.
+- [Peningkatan UI] Menambahkan kembali kolom "Port" pada tabel Process List (PM2) di App Manager agar port aplikasi mudah terlihat.
+
+v1.2.1 (Patch Update)
+- [Perbaikan Bug] Memperbaiki error Javascript Syntax Error pada App Manager yang menyebabkan tampilan hang/stuck di "Memuat data" dan fitur Tab tidak bisa diklik.
+
+v1.2.0 (Minor Update)
+- [Fitur Baru] Mengubah Node Manager menjadi "App Manager" yang mendukung aplikasi Node.js dan Python secara bersamaan via PM2.
+- [Fitur Baru] Penambahan dukungan eksekusi dan manajemen aplikasi Python (Django, Flask, FastAPI, Bot, dsb).
+- [Fitur Baru] Terintegrasi dengan Pyenv untuk instalasi dan manajemen multi versi Python secara terisolasi.
+- [Fitur Baru] Menambahkan fitur "Pip Install" (Membaca requirements.txt) untuk aplikasi Python layaknya NPM Install.
+- [Peningkatan] UI App Manager yang baru menggunakan sistem Tab untuk memisahkan konfigurasi Node.js dan Python.
+
+v1.1.5 (Patch Update)
+- [Perbaikan Bug] Memperbaiki styling UI pada Form "Buat Website Baru" di Web Manager di mana ukuran kotak input dan select box tidak sejajar (misaligned) serta teks placeholder terpotong.
+
+v1.1.4 (Patch Update)
+- [Peningkatan] Menyembunyikan konfigurasi sistem Nginx bawaan aaPanel (seperti 0.default, phpmyadmin, phpfpm_status) dari daftar Web Manager agar tampilan lebih bersih dan hanya menampilkan website milik pengguna.
+
+v1.1.3 (Patch Update)
+- [Perbaikan Bug] Memperbaiki dropdown pemilihan domain di Web Manager yang memunculkan "undefined".
+- [Perbaikan Bug] Memperbaiki Sistem Update (Checker Update) yang sebelumnya selalu menampilkan versi statis (hardcoded 1.0.98), kini langsung membaca versi asli dari package.json.
+
+v1.1.2 (Patch Update)
+- [Peningkatan UI] Form penambahan Web Manager kini memiliki dropdown pilihan domain Cloudflare dan input custom path Root Direktori layaknya Tunnel Manager / Node Manager.
+
+v1.1.1 (Patch Update)
+- [Perbaikan Bug] Memperbaiki error variabel undefined saat memuat daftar website Nginx di Web Manager.
+- [Perbaikan Bug] Memperbaiki modal / popup form Tambah Website yang sebelumnya tidak mau muncul karena CSS styling yang hilang.
+
+v1.1.0 (Minor Update)
+- [Fitur Baru] Menambahkan Web Manager untuk membuat website Nginx/PHP secara instan.
+- [Fitur Baru] Web Manager kini terintegrasi langsung dengan Cloudflare Tunnel otomatis (Tidak perlu buka port 80).
+- [Fitur Baru] File Manager kini memiliki fitur Checkbox dan Bulk Actions (Delete, Copy, Move).
+- [Peningkatan] install.sh kini mendukung Ubuntu/Debian (apt) dan CentOS/RHEL (yum) secara otomatis.
+- [Peningkatan] install.sh kini akan menginstal Nginx/PHP secara background menggunakan mekanisme aaPanel Fast Install untuk mencegah konflik port 80.
+- [Perbaikan Bug] Memperbaiki parsing port Node Manager untuk IPv6, wildcards, dan aplikasi mode Cluster.
+1 . 5 . 6  
+ 
