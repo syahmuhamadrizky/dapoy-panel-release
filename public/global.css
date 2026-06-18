@@ -170,6 +170,7 @@ a:hover {
     height: 100vh;
     overflow-y: auto;
     background-color: var(--bg-main);
+    padding-bottom: 0;
 }
 
 /* Topbar - Light */
@@ -497,19 +498,6 @@ a:hover {
 
 .bottom-nav-item.active .nav-icon {
     transform: scale(1.1);
-}
-
-/* Main content padding for bottom nav */
-.main-content {
-    flex: 1;
-    margin-left: 250px;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow-y: auto;
-    background-color: var(--bg-main);
-    padding-bottom: 70px;
-    /* Space for bottom nav on mobile */
 }
 
 /* Responsive Mobile */
