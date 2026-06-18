@@ -1,6 +1,6 @@
 {
   "name": "dapoy-panel",
-  "version": "1.7.29",
+  "version": "1.8.0",
   "description": "Dapoy Panel - Server Management Standalone",
   "main": "server.js",
   "scripts": {
