@@ -452,18 +452,28 @@ a:hover {
     background: var(--bg-sidebar);
     border-top: 1px solid var(--sidebar-border);
     z-index: 1000;
-    padding: 8px 0;
-    padding-bottom: env(safe-area-inset-bottom, 8px);
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+    padding: 6px 0;
+    padding-bottom: env(safe-area-inset-bottom, 6px);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.bottom-nav::-webkit-scrollbar {
+    display: none;
 }
 
 .bottom-nav-items {
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-items: center;
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0 8px;
+    gap: 4px;
+    min-width: max-content;
 }
 
 .bottom-nav-item {
@@ -473,31 +483,33 @@ a:hover {
     justify-content: center;
     text-decoration: none;
     color: var(--text-sidebar);
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 500;
-    padding: 4px 8px;
+    padding: 6px 10px;
     border-radius: 8px;
     transition: all var(--transition-fast);
-    min-width: 50px;
+    min-width: 56px;
+    white-space: nowrap;
 }
 
 .bottom-nav-item .nav-icon {
-    font-size: 20px;
+    font-size: 18px;
     margin-bottom: 2px;
     transition: transform var(--transition-fast);
 }
 
-.bottom-nav-item:hover,
-.bottom-nav-item.active {
+.bottom-nav-item:hover {
+    background: rgba(255, 255, 255, 0.1);
     color: white;
 }
 
 .bottom-nav-item.active {
-    background: rgba(239, 68, 68, 0.2);
+    color: white;
+    background: rgba(239, 68, 68, 0.25);
 }
 
 .bottom-nav-item.active .nav-icon {
-    transform: scale(1.1);
+    transform: scale(1.15);
 }
 
 /* Responsive Mobile */
@@ -513,7 +525,7 @@ a:hover {
 
     .main-content {
         margin-left: 0;
-        padding-bottom: 70px;
+        padding-bottom: 65px;
     }
 
     .grid-2 {
