@@ -999,7 +999,7 @@
             <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span>phpMyAdmin</a>
             <a href="/terminal" class="nav-item "><span class="icon">🔧</span>Terminal SSH</a>
             <a href="javascript:void(0)"
-                onclick="navigator.clipboard.writeText('087777999907'); alert('Donate dengan Gopay / Dana 087777999907 atas nama Syah Muhamad Rizky\n\n(Nomor otomatis disalin ke clipboard!)');"
+                onclick="showDonateModal()"
                 class="nav-item"
                 style="margin-top: auto; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.5);"><span
                     class="icon">💖</span>Donate</a>
@@ -1478,6 +1478,28 @@
             </div>
         </div>
     </div>
+
+<!-- DONATE MODAL -->
+<div id="donateModal" class="modal">
+    <div class="modal-content" style="max-width: 400px; text-align: center; border-radius: 16px; padding: 30px;">
+        <img src="/logo.png" alt="Logo Dapoy" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; margin-bottom: 16px; border: 2px solid var(--primary);">
+        <h2 style="margin-top: 0; color: #fff;">Support Dapoy Panel</h2>
+        <p style="color: var(--gray); margin-bottom: 20px; font-size: 14px;">Dukung pengembangan panel ini dengan berdonasi via Gopay / Dana ke nomor berikut atas nama <strong>Syah Muhamad Rizky</strong></p>
+        
+        <div style="display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 20px;">
+            <code style="font-size: 20px; color: var(--primary); letter-spacing: 2px; font-weight: bold; margin-right: 15px;">087777999907</code>
+            <button onclick="navigator.clipboard.writeText('087777999907'); this.innerText='Disalin!'; setTimeout(()=>this.innerText='Copy', 2000);" class="btn btn-primary" style="padding: 6px 12px; font-size: 12px; border-radius: 6px;">Copy</button>
+        </div>
+        
+        <button onclick="document.getElementById('donateModal').classList.remove('active')" class="btn" style="width: 100%; background: var(--border); color: #fff; padding: 10px; border-radius: 10px;">Tutup</button>
+    </div>
+</div>
+<script>
+function showDonateModal() {
+    document.getElementById('donateModal').classList.add('active');
+}
+</script>
+
 </body>
 
 </html>

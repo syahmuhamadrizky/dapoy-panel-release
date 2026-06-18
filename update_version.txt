@@ -1,3 +1,6 @@
+v1.7.27 (Patch Update)
+- [Peningkatan UI] Mengubah pop-up (alert standar browser) untuk menu Donate menjadi Modal interaktif yang lebih modern dan elegan. Modal ini dilengkapi dengan tombol "Copy" khusus dan menampilkan logo sistem agar terlihat lebih premium.
+
 v1.7.26 (Patch Update)
 - [Peningkatan UI] Menghapus sisa opsi direktori root `/opt/ (Sistem Root)` pada Tunnel Manager dan App Manager agar selaras dengan file manager dan mencegah salah atur folder root aplikasi.
 
