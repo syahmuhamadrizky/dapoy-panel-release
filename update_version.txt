@@ -1,3 +1,6 @@
+v1.7.29 (Patch Update)
+- [Perbaikan Bug] Mengembalikan sistem pembacaan logo ke `logo.png` bawaan pada modal Donate dan template `index.html` (Website Baru). File `logo.png` sekarang juga akan disertakan dalam file sistem saat pengguna melakukan Update Panel.
+
 v1.7.28 (Patch Update)
 - [Peningkatan UI] Memperbaiki tampilan Modal Donate yang rusak pada beberapa halaman dengan memastikan gaya CSS tetap absolut di tengah layar, tidak terpengaruh tema halaman.
 - [Perbaikan Bug] Memperbaiki masalah logo kustom tidak tampil di Modal Donate dan `index.html` (untuk web baru) dengan mengintegrasikan sistem agar membaca logo dari identitas panel.
