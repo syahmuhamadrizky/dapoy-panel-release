@@ -1,1047 +1,170 @@
-<!DOCTYPE html><html lang="id"><head>
+<!DOCTYPE html>
+<html lang="id">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Dapoy Panel</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/global.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #ef4444;
-            --secondary: #3b82f6;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --bg: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --border: rgba(148, 163, 184, 0.1);
-            --gray: #64748b;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: #e2e8f0;
-            min-height: 100vh;
-            display: flex;
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .sidebar-footer {
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
-        }
-
-        .user-card {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px;
-            background: rgba(239, 68, 68, 0.1);
-            border-radius: 14px;
-            margin-bottom: 16px;
-        }
-
-        .user-avatar {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .user-info h4 {
-            font-size: 14px;
-            font-weight: 600;
-            color: white;
-        }
-
-        .user-info p {
-            font-size: 12px;
-            color: var(--gray);
-        }
-
-        .btn-logout {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            padding: 12px;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            border-radius: 10px;
-            color: #ef4444;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-        }
-
-        .btn-logout:hover {
-            background: rgba(239, 68, 68, 0.2);
-        }
-
-
-        .sidebar {
-            width: 280px;
-            height: 100vh;
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-            border-right: 1px solid var(--border);
-            padding: 24px 16px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 32px;
-            padding: 0 12px;
-        }
-
-        .sidebar-brand .logo {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-        .sidebar-brand h1 {
-            font-size: 18px;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .sidebar-brand p {
-            font-size: 12px;
-            color: var(--gray);
-        }
-
-        .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            flex: 1;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: 12px;
-            color: var(--gray);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-        }
-
-        .nav-item.active {
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(59, 130, 246, 0.1));
-            color: var(--primary);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 32px 40px;
-            overflow-y: auto;
-            height: 100vh;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
-
-        .header-left h1 {
-            font-size: 32px;
-            font-weight: 800;
-            color: white;
-            letter-spacing: -1px;
-            margin-bottom: 8px;
-        }
-
-        .header-left p {
-            color: var(--gray);
-            font-size: 15px;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .header-time {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            padding: 12px 20px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            font-size: 14px;
-            color: #94a3b8;
-        }
-
-        .header-time .icon {
-            margin-right: 8px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 28px;
-            transition: all 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .stat-card .icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card .icon.blue {
-            background: rgba(99, 102, 241, 0.15);
-        }
-
-        .stat-card .icon.green {
-            background: rgba(16, 185, 129, 0.15);
-        }
-
-        .stat-card .icon.purple {
-            background: rgba(139, 92, 246, 0.15);
-        }
-
-        .stat-card .icon.orange {
-            background: rgba(245, 158, 11, 0.15);
-        }
-
-        .stat-card h3 {
-            font-size: 32px;
-            font-weight: 800;
-            color: white;
-            margin-bottom: 4px;
-        }
-
-        .stat-card p {
-            color: var(--gray);
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .stat-card .trend {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-top: 12px;
-            padding: 4px 10px;
-            border-radius: 6px;
-        }
-
-        .stat-card .trend.up {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--success);
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .section-title h2 {
-            font-size: 22px;
-            font-weight: 700;
-            color: white;
-        }
-
-        .section-title .badge {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            font-size: 12px;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 20px;
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 32px;
-            transition: all 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 24px;
-        }
-
-        .card-header .icon-wrap {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-        }
-
-        .card-header .icon-wrap.blue {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
-        }
-
-        .card-header .icon-wrap.green {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
-        }
-
-        .card-header h3 {
-            font-size: 20px;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 8px;
-        }
-
-        .card-header p {
-            color: var(--gray);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .status-badge.online {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--success);
-        }
-
-        .status-badge.offline {
-            background: rgba(239, 68, 68, 0.15);
-            color: var(--danger);
-        }
-
-        .status-badge.checking {
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--warning);
-        }
-
+        /* Specific adjustments for dashboard */
         .status-dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
-
-        .status-badge.online .status-dot {
-            background: var(--success);
-        }
-
-        .status-badge.offline .status-dot {
-            background: var(--danger);
-            animation: none;
-        }
-
-        .status-badge.checking .status-dot {
-            background: var(--warning);
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 0.5;
-                transform: scale(0.8);
-            }
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 14px 28px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(239, 68, 68, 0.4);
-        }
-
-        .btn-secondary {
-            background: rgba(148, 163, 184, 0.1);
-            color: #e2e8f0;
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(148, 163, 184, 0.2);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-            color: white;
-        }
-
-        .btn-danger {
-            background: rgba(239, 68, 68, 0.15);
-            color: var(--danger);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        .btn-sm {
-            padding: 10px 16px;
-            font-size: 13px;
-        }
-
-        .btn.loading {
-            pointer-events: none;
-            opacity: 0.8;
-        }
-
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .quick-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .quick-action-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 18px;
-            background: rgba(148, 163, 184, 0.08);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: #e2e8f0;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-        }
-
-        .quick-action-btn:hover {
-            background: rgba(239, 68, 68, 0.15);
-            border-color: var(--primary);
-            color: white;
-        }
-
-        .info-box {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 16px 20px;
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            margin-top: 20px;
-            font-size: 13px;
-            color: #a5b4fc;
-        }
-
-        .info-box .icon {
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-
-        .card-full {
-            grid-column: 1 / -1;
-        }
-
-        .tunnel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .tunnel-form {
-            display: flex;
-            gap: 16px;
-            align-items: flex-end;
-            padding: 24px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 16px;
-            margin-bottom: 24px;
-        }
-
-        .form-group {
-            flex: 1;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--gray);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 14px 16px;
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            font-size: 14px;
-            color: white;
-            transition: all 0.2s;
-        }
-
-        .form-group input::placeholder {
-            color: var(--gray);
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .table th {
-            text-align: left;
-            padding: 16px 20px;
-            background: rgba(0, 0, 0, 0.3);
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--gray);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .table td {
-            padding: 16px 20px;
-            border-top: 1px solid var(--border);
-            font-size: 14px;
-        }
-
-        .table tbody tr {
-            transition: background 0.2s;
-        }
-
-        .table tbody tr:hover {
-            background: rgba(239, 68, 68, 0.05);
-        }
-
-        .table .service-tag {
             display: inline-block;
-            padding: 6px 12px;
-            background: rgba(148, 163, 184, 0.1);
-            border-radius: 6px;
-            font-family: 'Monaco', 'Consolas', monospace;
-            font-size: 12px;
-            color: #e2e8f0;
+            margin-right: 6px;
         }
-
-        .table-empty {
-            text-align: center;
-            padding: 40px;
-            color: var(--gray);
-        }
-
-        .settings-form {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-
-        .settings-form input {
-            width: 100%;
-            padding: 16px;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            font-size: 14px;
-            color: white;
-            font-family: 'Monaco', 'Consolas', monospace;
-            transition: all 0.2s;
-        }
-
-        .settings-form input::placeholder {
-            color: var(--gray);
-        }
-
-        .settings-form input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
-        }
-
-        .settings-actions {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-top: 8px;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 40px;
-            color: var(--gray);
-            font-size: 13px;
-            border-top: 1px solid var(--border);
-            margin-top: 40px;
-        }
-
-        @media (max-width: 1200px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
+        .online .status-dot { background-color: var(--success); box-shadow: 0 0 8px var(--success); }
+        .offline .status-dot { background-color: var(--danger); }
+        .checking .status-dot { background-color: var(--warning); animation: pulse 1.5s infinite; }
         
-    
-        
-
-    
-        
-
-    
-        
-
-    
-        
-
-    
-        
-
-    
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-                padding-bottom: 70px;
-                overflow-x: hidden;
-            }
-
-            .sidebar {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                height: 70px;
-                flex-direction: row;
-                padding: 0;
-                background: #0f172a;
-                border-right: none;
-                border-top: 1px solid var(--border);
-                z-index: 1000;
-                overflow-x: auto;
-                overflow-y: hidden;
-            }
-
-            .sidebar-brand, .sidebar-footer {
-                display: none !important;
-            }
-
-            .sidebar-nav {
-                flex-direction: row;
-                width: 100%;
-                gap: 0;
-                padding: 0 10px;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-            .nav-item {
-                flex-direction: column;
-                padding: 8px 12px;
-                font-size: 10px;
-                gap: 4px;
-                border-radius: 8px;
-                min-width: 60px;
-                justify-content: center;
-                white-space: nowrap;
-            }
-
-            .nav-item .icon {
-                font-size: 20px;
-                margin: 0;
-            }
-
-            .main-content {
-                padding: 16px;
-                height: auto;
-                min-height: calc(100vh - 70px);
-                margin-left: 0;
-                max-width: 100vw;
-                overflow-x: hidden;
-            }
-
-            /* Fix Header */
-            .header {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                gap: 16px;
-            }
-            .header-actions {
-                width: 100%;
-                flex-wrap: wrap;
-            }
-            .header-actions button {
-                flex: 1;
-            }
-
-            /* Fix Modals */
-            .modal {
-                width: 95% !important;
-                padding: 16px !important;
-            }
-            .modal-header h3 {
-                font-size: 18px;
-            }
-            .form-group > div[style*="display: flex"],
-            .form-group > div[style*="display: grid"] {
-                flex-direction: column !important;
-                grid-template-columns: 1fr !important;
-            }
-
-            /* Fix Tables */
-            .table-container {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                width: 100%;
-            }
-            
-            table {
-                display: block;
-                width: 100%;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            table th, table td {
-                white-space: nowrap;
-                padding: 12px;
-            }
-            
-            pre {
-                white-space: pre-wrap;
-                word-wrap: break-word;
-                overflow-x: auto;
-            }
-
-            /* Override all inline grid-template-columns */
-            div[style*="grid-template-columns"] {
-                grid-template-columns: 1fr !important;
-            }
-            
-            /* Form inside cards */
-            div[style*="display: grid"][style*="gap"] {
-                grid-template-columns: 1fr !important;
-            }
-            
-            
-            /* Fix Website Modal Flex wrap issue */
-            #hostnameAutoGroup > div,
-            #hostnameAutoGroup + div + div > div {
-                flex-direction: column !important;
-                align-items: stretch !important;
-            }
-            #hostnameAutoGroup > div > span {
-                display: none !important;
-            }
-            #webSubdomain, #webDomainSelect, #webBaseDir, #webDirName {
-                height: 44px !important;
-                width: 100% !important;
-            }
-
-            /* Override inline flex layouts */
-            div[style*="display: flex"] {
-                flex-wrap: wrap !important;
-            }
-            div[style*="justify-content: space-between"] {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                gap: 12px !important;
-            }
-            
-            /* Tabs */
-            .tabs {
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-            .tab-btn {
-                flex: 1;
-                font-size: 14px;
-                padding: 8px 12px;
-            }
-
-            /* Other Grids */
-            .stats-grid,
-            .cards-grid,
-            .settings-grid {
-                grid-template-columns: 1fr !important;
-            }
-            
-            .card {
-                max-width: 100%;
-                overflow-x: auto;
-            }
-
-            .tunnel-form,
-            .settings-form {
-                flex-direction: column;
-                grid-template-columns: 1fr !important;
-            }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
-
     </style>
 </head>
-
 <body>
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <div class="logo">🚀</div>
-            <div>
-                <h1>Dapoy Panel</h1>
-                <p>Server Management</p>
+    <div class="layout-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo sidebar-brand-logo">🚀</div>
+                <div class="title sidebar-brand-h1">Dapoy Panel</div>
             </div>
-        </div>
-        <nav class="sidebar-nav">
-            <a href="/dashboard" class="nav-item active"><span class="icon">📊</span>Dashboard</a>
-            <a href="/tunnelmanager" class="nav-item "><span class="icon">☁️</span>Tunneling</a>
-            <a href="/webmanager" class="nav-item "><span class="icon">🌐</span>Website</a>
-            <a href="/appmanager" class="nav-item "><span class="icon">📦</span>Node &amp; Pyth</a>
-            <a href="/databasemanager" class="nav-item "><span class="icon">🗄️</span>Database</a>
-            <a href="/filemanager" class="nav-item "><span class="icon">📁</span>File Manager</a>
-            <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span>phpMyAdmin</a>
-            <a href="/terminal" class="nav-item "><span class="icon">🔧</span>Terminal SSH</a>
             
-            <div id="trialIndicator" style="display: none; justify-content: center; align-items: center; gap: 8px; margin-top: auto; margin-bottom: 10px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px dashed rgba(239, 68, 68, 0.5); padding: 12px; border-radius: 12px; font-weight: bold; font-size: 13px;">
-                ⏱️ Trial: <span id="trialCountdown" style="font-family: monospace; font-size: 14px;">--:--:--</span>
-            </div>
-        <a href="javascript:void(0)" onclick="showDonateModal()" class="nav-item" style="margin-top: 0; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.5);" id="btnDonateOrReg"><span class="icon">💖</span>Donate</a>
-            <a href="/settings" class="nav-item "><span class="icon">⚙️</span>Pengaturan Sistem</a>
-
-        </nav>
-        <div class="sidebar-footer">
-            <div class="user-card">
-                <div class="user-avatar">👤</div>
-                <div class="user-info">
-                    <h4 id="username">Admin</h4>
-                    <p>Administrator</p>
+            <nav class="sidebar-nav">
+                <a href="/dashboard" class="nav-item active"><span class="icon">📊</span> Dashboard</a>
+                <a href="/tunnelmanager" class="nav-item"><span class="icon">☁️</span> Tunneling</a>
+                <a href="/webmanager" class="nav-item"><span class="icon">🌐</span> Website</a>
+                <a href="/appmanager" class="nav-item"><span class="icon">📦</span> Node &amp; Pyth</a>
+                <a href="/databasemanager" class="nav-item"><span class="icon">🗄️</span> Database</a>
+                <a href="/filemanager" class="nav-item"><span class="icon">📁</span> File Manager</a>
+                <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span> phpMyAdmin</a>
+                <a href="/terminal" class="nav-item"><span class="icon">🔧</span> Terminal SSH</a>
+                
+                <div style="flex: 1;"></div> <!-- Spacer -->
+                
+                <!-- Trial & Donate -->
+                <div id="trialIndicator" style="display: none; justify-content: center; align-items: center; gap: 8px; margin-top: auto; margin-bottom: 10px; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px dashed rgba(239, 68, 68, 0.3); padding: 12px; border-radius: var(--radius-sm); font-weight: bold; font-size: 12px;">
+                    ⏱️ Trial: <span id="trialCountdown" style="font-family: monospace; font-size: 13px;">--:--:--</span>
+                </div>
+                <a href="javascript:void(0)" onclick="showDonateModal()" class="nav-item" style="margin-top: 0; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.3);" id="btnDonateOrReg">
+                    <span class="icon">💖</span> Donate
+                </a>
+                
+                <a href="/settings" class="nav-item"><span class="icon">⚙️</span> Pengaturan Sistem</a>
+            </nav>
+            
+            <div class="sidebar-header" style="border-top: 1px solid var(--sidebar-border); border-bottom: none; margin-top: 10px; padding-bottom: 0;">
+                <div class="flex align-center gap-3" style="width: 100%;">
+                    <div style="width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">👤</div>
+                    <div style="flex: 1;">
+                        <div id="username" style="font-size: 13px; font-weight: 600; color: white;">Admin</div>
+                        <div style="font-size: 11px; color: var(--text-sidebar);">Administrator</div>
+                    </div>
+                    <a href="/logout" title="Logout" style="color: var(--danger); font-size: 18px; text-decoration: none;">🚪</a>
                 </div>
             </div>
-            <a href="/logout" class="btn-logout"><span>🚪</span>Logout</a>
-        </div>
-    </aside>
+        </aside>
 
-    <main class="main-content">
-        <header class="header">
-            <div class="header-left">
-                <h1>Dashboard</h1>
-                <p>Pantau dan kelola server Anda dengan mudah</p>
-            </div>
-            <div class="header-right">
-                <div class="header-time"><span class="icon">🕐</span><span id="currentTime">Memuat...</span></div>
-            </div>
-        </header>
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-title">
+                    <h2 class="sidebar-brand-p" style="font-size: 16px; font-weight: 600; color: var(--text-muted);">Server Management</h2>
+                </div>
+                <div class="topbar-actions">
+                    <div class="badge" style="background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 12px; border-radius: 20px;">
+                        <span class="icon" style="margin-right: 6px;">🕐</span>
+                        <span id="currentTime">Memuat...</span>
+                    </div>
+                </div>
+            </header>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="icon blue">🚀</div>
-                <h3>Dapoy</h3>
-                <p>Panel Status</p>
-                <div id="panelStatus" style="margin-top: 16px;">
-                    <span class="status-badge online"><span class="status-dot"></span>Active</span>
+            <div class="page-container">
+                <!-- Top Stats Grid -->
+                <div class="grid-stats">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title"><span style="font-size: 18px;">🚀</span> Panel Status</span>
+                        </div>
+                        <div id="panelStatus">
+                            <span class="badge badge-success online"><span class="status-dot"></span> Active</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title"><span style="font-size: 18px;">📦</span> Node Apps (PM2)</span>
+                        </div>
+                        <h3 id="statApps" style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">0</h3>
+                        <span class="text-success" style="font-size: 12px; font-weight: 600;">✓ Berjalan</span>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title"><span style="font-size: 18px;">🗄️</span> Databases</span>
+                        </div>
+                        <h3 id="statDbs" style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">0</h3>
+                        <span class="text-success" style="font-size: 12px; font-weight: 600;">✓ Tersedia</span>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title"><span style="font-size: 18px;">☁️</span> CF Tunnels</span>
+                        </div>
+                        <h3 id="statTunnels" style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">0</h3>
+                        <span class="text-success" style="font-size: 12px; font-weight: 600;">✓ Aktif</span>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title"><span style="font-size: 18px;">🌐</span> Nginx</span>
+                        </div>
+                        <div id="nginxStatusContainer" class="flex align-center gap-2">
+                            <span id="nginxStatusBadge" class="badge badge-warning checking"><span class="status-dot"></span>Checking...</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="stat-card">
-                <div class="icon green">📦</div>
-                <h3 id="statApps">0</h3>
-                <p>Node Apps (PM2)</p>
-                <span class="trend up">✓ Berjalan</span>
-            </div>
-            <div class="stat-card">
-                <div class="icon purple">🗄️</div>
-                <h3 id="statDbs">0</h3>
-                <p>Databases</p>
-                <span class="trend up">✓ Tersedia</span>
-            </div>
-            <div class="stat-card">
-                <div class="icon orange">☁️</div>
-                <h3 id="statTunnels">0</h3>
-                <p>Cloudflare Tunnels</p>
-                <span class="trend up">✓ Aktif</span>
-            </div>
-            <div class="stat-card">
-                <div class="icon" style="background: rgba(16, 185, 129, 0.15);">🌐</div>
-                <h3 style="font-size: 24px; margin-top: 8px;">Nginx</h3>
-                <p>Web Server</p>
-                <div id="nginxStatusContainer" style="margin-top: 16px; display: flex; align-items: center; justify-content: space-between;">
-                    <span id="nginxStatusBadge" class="status-badge checking"><span class="status-dot"></span>Checking...</span>
-                </div>
-            </div>
-        </div>
 
-        <div class="section-title">
-            <h2>Status Sistem</h2>
-        </div>
-        <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
-            <div class="card" style="padding: 16px; margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between;">
-                <div style="font-size: 12px; color: var(--gray); margin-bottom: 6px;">Biasa (Load)</div>
-                <h3 id="statLoad" style="font-size: 16px;">0.00 / 0.00 / 0.00</h3>
-            </div>
-            <div class="card" style="padding: 16px; margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                    <div style="font-size: 12px; color: var(--gray);">CPU</div>
-                    <div id="statCpuPct" style="font-weight: bold; font-size: 12px; color: var(--primary);">0%</div>
+                <div class="mb-4" style="margin-top: 24px;">
+                    <h3 style="font-size: 16px; font-weight: 600; color: var(--text-main); margin-bottom: 16px;">Status Sistem (Server Load)</h3>
+                    <div class="grid-stats">
+                        <div class="card flex flex-col justify-between">
+                            <div class="text-muted" style="font-size: 12px; margin-bottom: 8px;">Beban Rata-rata (Load)</div>
+                            <h3 id="statLoad" style="font-size: 18px; font-weight: 600;">0.00 / 0.00 / 0.00</h3>
+                        </div>
+                        <div class="card flex flex-col justify-between">
+                            <div class="flex-between" style="margin-bottom: 8px;">
+                                <div class="text-muted" style="font-size: 12px;">CPU</div>
+                                <div id="statCpuPct" class="text-success" style="font-weight: 700; font-size: 13px;">0%</div>
+                            </div>
+                            <h3 id="statCpuCore" style="font-size: 18px; font-weight: 600;">0 Inti</h3>
+                        </div>
+                        <div class="card flex flex-col justify-between">
+                            <div class="flex-between" style="margin-bottom: 8px;">
+                                <div class="text-muted" style="font-size: 12px;">RAM</div>
+                                <div id="statRamPct" style="color: var(--secondary); font-weight: 700; font-size: 13px;">0%</div>
+                            </div>
+                            <h3 id="statRamText" style="font-size: 18px; font-weight: 600;">0MB / 0MB</h3>
+                        </div>
+                        <div class="card flex flex-col justify-between">
+                            <div class="flex-between" style="margin-bottom: 8px;">
+                                <div class="text-muted" style="font-size: 12px;">Disk (/)</div>
+                                <div id="statDiskPct" class="text-warning" style="font-weight: 700; font-size: 13px;">0%</div>
+                            </div>
+                            <h3 id="statDiskText" style="font-size: 18px; font-weight: 600;">0GB / 0GB</h3>
+                        </div>
+                    </div>
                 </div>
-                <h3 id="statCpuCore" style="font-size: 16px;">0 Inti</h3>
-            </div>
-            <div class="card" style="padding: 16px; margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                    <div style="font-size: 12px; color: var(--gray);">RAM</div>
-                    <div id="statRamPct" style="font-weight: bold; font-size: 12px; color: var(--primary);">0%</div>
-                </div>
-                <h3 id="statRamText" style="font-size: 16px;">0MB / 0MB</h3>
-            </div>
-            <div class="card" style="padding: 16px; margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                    <div style="font-size: 12px; color: var(--gray);">Disk (/)</div>
-                    <div id="statDiskPct" style="font-weight: bold; font-size: 12px; color: var(--primary);">0%</div>
-                </div>
-                <h3 id="statDiskText" style="font-size: 16px;">0GB / 0GB</h3>
-            </div>
-        </div>
 
-        <footer class="footer">© 2025 SMR Dapoy Panel - Sistem Management Server. All rights reserved.</footer>
-    </main>
+            </div>
+            
+            <div style="text-align: center; padding: 20px; color: var(--text-muted); font-size: 12px; margin-top: auto; border-top: 1px solid var(--border-color);">
+                &copy; 2025 SMR Dapoy Panel - Sistem Management Server. All rights reserved.
+            </div>
+        </main>
+    </div>
 
+    <!-- SEMUA SCRIPT JS ASLI -->
     <script>
         function updateTime() {
             const now = new Date();
@@ -1052,7 +175,9 @@
         setInterval(updateTime, 1000);
 
         document.addEventListener('DOMContentLoaded', function () {
-            loadTunnelConfig();
+            if(typeof loadTunnelConfig === 'function') {
+                try { loadTunnelConfig(); } catch(e){}
+            }
             fetchStats();
         });
 
@@ -1074,29 +199,26 @@
                     document.getElementById('statDiskPct').textContent = data.disk.pct + '%';
                     document.getElementById('statDiskText').textContent = data.disk.used + ' / ' + data.disk.total;
 
-                    // Update stat cards di atas
                     document.getElementById('statApps').textContent = data.stats.apps;
                     document.getElementById('statDbs').textContent = data.stats.dbs;
                     document.getElementById('statTunnels').textContent = data.stats.tunnels;
 
-                    // Update Nginx
                     const nginxBadge = document.getElementById('nginxStatusBadge');
                     const nginxContainer = document.getElementById('nginxStatusContainer');
                     if (data.stats.nginx === 'online') {
-                        nginxBadge.className = 'status-badge online';
+                        nginxBadge.className = 'badge badge-success online';
                         nginxBadge.innerHTML = '<span class="status-dot"></span>Online';
-                        // Hapus tombol start jika ada
                         const btn = document.getElementById('btnStartNginx');
                         if (btn) btn.remove();
                     } else {
-                        nginxBadge.className = 'status-badge offline';
+                        nginxBadge.className = 'badge badge-danger offline';
                         nginxBadge.innerHTML = '<span class="status-dot"></span>Offline';
-                        // Auto-start if requested by user
                         if (!document.getElementById('btnStartNginx')) {
                             const btn = document.createElement('button');
                             btn.id = 'btnStartNginx';
-                            btn.className = 'btn btn-primary btn-sm';
-                            btn.style.padding = '6px 12px';
+                            btn.className = 'btn btn-primary';
+                            btn.style.padding = '4px 10px';
+                            btn.style.fontSize = '11px';
                             btn.innerHTML = '▶ Start';
                             btn.onclick = async function() {
                                 btn.disabled = true;
@@ -1105,7 +227,7 @@
                                     const r = await fetch('/api/nginx/start', { method: 'POST' });
                                     const resData = await r.json();
                                     if (resData.success) {
-                                        fetchStats(); // Segarkan status
+                                        fetchStats();
                                     } else {
                                         alert(resData.message);
                                         btn.disabled = false;
@@ -1118,8 +240,6 @@
                                 }
                             };
                             nginxContainer.appendChild(btn);
-                            
-                            // Auto-start logic (the user mentioned "start otomatis")
                             btn.click();
                         }
                     }
@@ -1130,103 +250,24 @@
         }
 
         setInterval(fetchStats, 5000);
-
-        async function loadTunnelConfig() {
-            const tbody = document.getElementById('tunnelRoutesTable');
-            try {
-                const response = await fetch('/api/tunnel/config');
-                const data = await response.json();
-                if (data.success) {
-                    if (data.routes.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="3" class="table-empty">Tidak ada rute ditemukan.</td></tr>';
-                        return;
-                    }
-                    var rows = '';
-                    for (var i = 0; i < data.routes.length; i++) {
-                        var r = data.routes[i];
-                        rows += '<tr><td style="font-weight: 600; color: white;">' + r.hostname + '</td><td><span class="service-tag">' + r.service + '</span></td><td style="text-align: right;"><button onclick="deleteTunnelRoute(\'' + r.hostname + '\')" class="btn btn-danger btn-sm">🗑️ Hapus</button></td></tr>';
-                    }
-                    tbody.innerHTML = rows;
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="3" class="table-empty" style="color: var(--danger);">Error: ' + data.message + '</td></tr>';
-                }
-            } catch (error) {
-                tbody.innerHTML = '<tr><td colspan="3" class="table-empty" style="color: var(--danger);">Failed to load config</td></tr>';
-            }
-        }
-
-        async function addTunnelRoute() {
-            var hostname = document.getElementById('tunnelHostname').value.trim();
-            var service = document.getElementById('tunnelService').value.trim();
-            var btn = document.getElementById('btnAddTunnel');
-            if (!hostname || !service) return alert('Hostname dan Service harus diisi!');
-            btn.disabled = true;
-            btn.innerHTML = '⏳ Menyimpan...';
-            try {
-                var response = await fetch('/api/tunnel/config', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ hostname: hostname, service: service })
-                });
-                var data = await response.json();
-                if (data.success) {
-                    document.getElementById('tunnelHostname').value = '';
-                    document.getElementById('tunnelService').value = '';
-                    loadTunnelConfig();
-                    alert('Rute berhasil ditambahkan! Jangan lupa klik Restart Service agar aktif.');
-                } else {
-                    alert('Gagal: ' + data.message);
-                }
-            } catch (error) {
-                alert('Error: ' + error.message);
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '+ Tambah Rute';
-            }
-        }
-
-        async function deleteTunnelRoute(hostname) {
-            if (!confirm('Hapus rute untuk ' + hostname + '?')) return;
-            try {
-                var response = await fetch('/api/tunnel/config/' + hostname, { method: 'DELETE' });
-                var data = await response.json();
-                if (data.success) { loadTunnelConfig(); } else { alert('Gagal: ' + data.message); }
-            } catch (error) { alert('Error: ' + error.message); }
-        }
-
-        async function restartTunnel() {
-            var btn = document.getElementById('btnRestartTunnel');
-            btn.disabled = true;
-            btn.innerHTML = '⏳ Merestart...';
-            try {
-                var response = await fetch('/api/tunnel/restart', { method: 'POST' });
-                var data = await response.json();
-                alert(data.message);
-            } catch (error) { alert('Error: ' + error.message); }
-            finally {
-                btn.disabled = false;
-                btn.innerHTML = '🚀 Restart Service';
-            }
-        }
-
     </script>
 
+    <!-- Global App Identity Loader -->
     <script>
-        // Global App Identity Loader
         document.addEventListener('DOMContentLoaded', async function () {
             try {
                 const res = await fetch('/api/system/settings');
                 const data = await res.json();
                 if (data.success) {
                     document.title = document.title.split('-')[0].trim() + ' - ' + data.appName;
-                    const brandH1 = document.querySelector('.sidebar-brand h1');
-                    const brandP = document.querySelector('.sidebar-brand p');
-                    const brandLogo = document.querySelector('.sidebar-brand .logo');
+                    const brandH1 = document.querySelector('.sidebar-brand-h1');
+                    const brandP = document.querySelector('.sidebar-brand-p');
+                    const brandLogo = document.querySelector('.sidebar-brand-logo');
                     if (brandH1) brandH1.textContent = data.appName;
                     if (brandP) brandP.textContent = data.appDomain;
                     if (brandLogo) {
                         if (data.appLogo.startsWith('http') || data.appLogo.startsWith('/') || data.appLogo.startsWith('data:image')) {
-                            brandLogo.innerHTML = '<img src="' + data.appLogo + '" style="width:100%;height:100%;border-radius:12px;object-fit:cover;">';
+                            brandLogo.innerHTML = '<img src="' + data.appLogo + '" style="width:100%;height:100%;border-radius:6px;object-fit:cover;">';
                         } else {
                             brandLogo.textContent = data.appLogo;
                         }
@@ -1236,127 +277,120 @@
         });
     </script>
 
-<!-- DONATE MODAL -->
-<div id="donateModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-    <div style="background: #1e293b; max-width: 400px; width: 90%; text-align: center; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);">
-        <img src="logo.png" alt="Logo Dapoy" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; margin-bottom: 16px; border: 2px solid #3b82f6; background: #0f172a;">
-        <h2 style="margin-top: 0; color: #fff; font-family: sans-serif;">Support Dapoy Panel</h2>
-        <p style="color: #94a3b8; margin-bottom: 20px; font-size: 14px; font-family: sans-serif; line-height: 1.5;">Dukung pengembangan panel ini dengan berdonasi via Gopay / Dana ke nomor berikut atas nama <strong>Syah Muhamad Rizky</strong></p>
-        
-        <div style="display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px;">
-            <code style="font-size: 20px; color: #3b82f6; letter-spacing: 2px; font-weight: bold; margin-right: 15px;">087777999907</code>
-            <button onclick="navigator.clipboard.writeText('087777999907'); this.innerText='Disalin!'; setTimeout(()=>this.innerText='Copy', 2000);" style="background: #3b82f6; color: #fff; padding: 6px 12px; font-size: 12px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold;">Copy</button>
-        </div>
-        
-        <button onclick="document.getElementById('donateModal').style.display='none'" style="width: 100%; background: rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">Tutup</button>
-    </div>
-</div>
-<script>
-function showDonateModal() {
-    document.getElementById('donateModal').style.display = 'flex';
-}
-</script>
-
-
-
-
-<!-- REGISTRASI MODAL -->
-
-<div id="trialRegModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-    <div style="background: #1e293b; max-width: 400px; width: 90%; text-align: center; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);">
-        <img src="logo.png" alt="Logo Dapoy" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; margin-bottom: 16px; border: 2px solid #f59e0b; background: #0f172a;">
-        <h2 style="margin-top: 0; color: #fff;">Aktivasi Dapoy Panel</h2>
-        <p style="color: #94a3b8; margin-bottom: 20px; font-size: 14px;">Waktu Free Trial (2 Jam) sedang berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
-        <input type="text" id="modalLicenseKey" placeholder="DP-XXXX-XXXX" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; color: #fff; text-align: center; font-family: monospace; font-size: 16px; margin-bottom: 15px; text-transform: uppercase;">
-        <div style="display: flex; gap: 10px;">
-            <button onclick="document.getElementById('trialRegModal').style.display='none'" style="flex: 1; background: rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; transition: 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">Batal</button>
-            <button onclick="submitModalActivation()" id="btnModalActivate" style="flex: 1; background: #f59e0b; color: #fff; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold;">Aktivasi</button>
+    <!-- DONATE MODAL -->
+    <div id="donateModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+            <div style="font-size: 40px; margin-bottom: 16px;">💖</div>
+            <h2 style="margin-top: 0; color: var(--text-main); font-size: 20px;">Support Dapoy Panel</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px; line-height: 1.5;">Dukung pengembangan panel ini dengan berdonasi via Gopay / Dana ke nomor berikut atas nama <strong>Syah Muhamad Rizky</strong></p>
+            
+            <div style="display: flex; align-items: center; justify-content: center; background: #f1f5f9; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 20px;">
+                <code style="font-size: 18px; color: var(--secondary); letter-spacing: 2px; font-weight: bold; margin-right: 15px;">087777999907</code>
+                <button onclick="navigator.clipboard.writeText('087777999907'); this.innerText='Disalin!'; setTimeout(()=>this.innerText='Copy', 2000);" class="btn btn-secondary" style="padding: 6px 12px; font-size: 11px;">Copy</button>
+            </div>
+            
+            <button onclick="document.getElementById('donateModal').style.display='none'" class="btn btn-outline" style="width: 100%;">Tutup</button>
         </div>
     </div>
-</div>
+    <script>
+    function showDonateModal() {
+        document.getElementById('donateModal').style.display = 'flex';
+    }
+    </script>
 
+    <!-- REGISTRASI MODAL -->
+    <div id="trialRegModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+            <div style="font-size: 40px; margin-bottom: 16px;">🔑</div>
+            <h2 style="margin-top: 0; color: var(--text-main); font-size: 20px;">Aktivasi Dapoy Panel</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px;">Waktu Free Trial (2 Jam) sedang berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
+            <input type="text" id="modalLicenseKey" placeholder="DP-XXXX-XXXX" class="form-control" style="text-align: center; font-family: monospace; font-size: 15px; margin-bottom: 15px; text-transform: uppercase;">
+            <div style="display: flex; gap: 10px;">
+                <button onclick="document.getElementById('trialRegModal').style.display='none'" class="btn btn-outline" style="flex: 1;">Batal</button>
+                <button onclick="submitModalActivation()" id="btnModalActivate" class="btn btn-primary" style="flex: 1;">Aktivasi</button>
+            </div>
+        </div>
+    </div>
 
-<script>
-let trialInterval;
-async function fetchLicenseStatus() {
-    try {
-        const res = await fetch('/api/license-status');
-        const data = await res.json();
-        const btnDonate = document.getElementById('btnDonateOrReg');
-        const trialIndicator = document.getElementById('trialIndicator');
-        const trialCountdown = document.getElementById('trialCountdown');
+    <script>
+    let trialInterval;
+    async function fetchLicenseStatus() {
+        try {
+            const res = await fetch('/api/license-status');
+            const data = await res.json();
+            const btnDonate = document.getElementById('btnDonateOrReg');
+            const trialIndicator = document.getElementById('trialIndicator');
+            const trialCountdown = document.getElementById('trialCountdown');
+            
+            if (data.status === 'registered') {
+                if (trialIndicator) trialIndicator.style.display = 'none';
+                if (btnDonate) {
+                    btnDonate.innerHTML = '<span class="icon">💎</span> Registered';
+                    btnDonate.style.color = 'var(--secondary)';
+                    btnDonate.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+                    btnDonate.style.background = 'rgba(59, 130, 246, 0.1)';
+                }
+            } else if (data.status === 'trial') {
+                if (btnDonate) {
+                    btnDonate.innerHTML = '<span class="icon">🔑</span> Registrasi';
+                    btnDonate.style.color = 'var(--warning)';
+                    btnDonate.style.borderColor = 'rgba(245, 158, 11, 0.3)';
+                    btnDonate.style.background = 'rgba(245, 158, 11, 0.1)';
+                    btnDonate.onclick = function() {
+                        document.getElementById('trialRegModal').style.display = 'flex';
+                    };
+                }
+                if (trialIndicator && data.trialEndsAt) {
+                    trialIndicator.style.display = 'flex';
+                    
+                    trialInterval = setInterval(() => {
+                        const now = Date.now();
+                        const diff = data.trialEndsAt - now;
+                        if (diff <= 0) {
+                            clearInterval(trialInterval);
+                            window.location.reload();
+                        } else {
+                            const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
+                            const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+                            const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+                            trialCountdown.innerText = h + ':' + m + ':' + s;
+                        }
+                    }, 1000);
+                }
+            } else if (data.status === 'expired') {
+                window.location.reload();
+            }
+        } catch (err) {}
+    }
+
+    async function submitModalActivation() {
+        const key = document.getElementById('modalLicenseKey').value.trim();
+        if (!key) return alert('Masukkan License Key!');
+        const btn = document.getElementById('btnModalActivate');
+        btn.disabled = true;
+        btn.innerText = 'Memproses...';
         
-        if (data.status === 'registered') {
-            if (trialIndicator) trialIndicator.style.display = 'none';
-            if (btnDonate) {
-                btnDonate.innerHTML = '<span class="icon">💎</span>Registered';
-                btnDonate.style.color = '#3b82f6';
-                btnDonate.style.borderColor = 'rgba(59, 130, 246, 0.5)';
-                btnDonate.style.background = 'rgba(59, 130, 246, 0.1)';
-                // Tetap bisa buka donate modal kalau di klik (opsional)
+        try {
+            const res = await fetch('/api/activate', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ license_key: key })
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert('Aktivasi Berhasil! Halaman akan dimuat ulang.');
+                window.location.reload();
+            } else {
+                alert('Gagal: ' + (data.message || 'Key tidak valid'));
             }
-        } else if (data.status === 'trial') {
-            if (btnDonate) {
-                btnDonate.innerHTML = '<span class="icon">🔑</span>Registrasi';
-                btnDonate.style.color = '#f59e0b';
-                btnDonate.style.borderColor = 'rgba(245, 158, 11, 0.5)';
-                btnDonate.style.background = 'rgba(245, 158, 11, 0.1)';
-                btnDonate.onclick = function() {
-                    document.getElementById('trialRegModal').style.display = 'flex';
-                };
-            }
-            if (trialIndicator && data.trialEndsAt) {
-                trialIndicator.style.display = 'flex';
-                
-                trialInterval = setInterval(() => {
-                    const now = Date.now();
-                    const diff = data.trialEndsAt - now;
-                    if (diff <= 0) {
-                        clearInterval(trialInterval);
-                        window.location.reload(); // akan diarahkan ke layar block
-                    } else {
-                        const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
-                        const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
-                        const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
-                        trialCountdown.innerText = h + ':' + m + ':' + s;
-                    }
-                }, 1000);
-            }
-        } else if (data.status === 'expired') {
-            window.location.reload();
+        } catch (err) {
+            alert('Terjadi kesalahan server.');
         }
-    } catch (err) {
-        console.error('Error fetching license status:', err);
+        btn.disabled = false;
+        btn.innerText = 'Aktivasi';
     }
-}
 
-async function submitModalActivation() {
-    const key = document.getElementById('modalLicenseKey').value.trim();
-    if (!key) return alert('Masukkan License Key!');
-    const btn = document.getElementById('btnModalActivate');
-    btn.disabled = true;
-    btn.innerText = 'Memproses...';
-    
-    try {
-        const res = await fetch('/api/activate', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ license_key: key })
-        });
-        const data = await res.json();
-        if (data.success) {
-            alert('Aktivasi Berhasil! Halaman akan dimuat ulang.');
-            window.location.reload();
-        } else {
-            alert('Gagal: ' + (data.message || 'Key tidak valid'));
-        }
-    } catch (err) {
-        alert('Terjadi kesalahan server.');
-    }
-    btn.disabled = false;
-    btn.innerText = 'Aktivasi';
-}
-
-document.addEventListener('DOMContentLoaded', fetchLicenseStatus);
-</script>
-</body></html>
+    document.addEventListener('DOMContentLoaded', fetchLicenseStatus);
+    </script>
+</body>
+</html>

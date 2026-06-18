@@ -1,140 +1,11 @@
-<!DOCTYPE html><html lang="id"><head>
+<!DOCTYPE html>
+<html lang="id">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Manager - Dapoy Panel</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/global.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #ef4444;
-            --secondary: #3b82f6;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --bg: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --border: rgba(148, 163, 184, 0.1);
-            --gray: #64748b;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: #e2e8f0;
-            min-height: 100vh;
-            display: flex;
-        }
-
-        option {
-            background-color: var(--bg);
-            color: #fff;
-        }
-
-        .sidebar {
-            width: 280px;
-            height: 100vh;
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-            border-right: 1px solid var(--border);
-            padding: 24px 16px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 32px;
-            padding: 0 12px;
-        }
-
-        .sidebar-brand .logo {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-        .sidebar-brand h1 {
-            font-size: 18px;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .sidebar-brand p {
-            font-size: 12px;
-            color: var(--gray);
-        }
-
-        .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            flex: 1;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: 12px;
-            color: var(--gray);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-        }
-
-        .nav-item.active {
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(59, 130, 246, 0.1));
-            color: var(--primary);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 32px;
-            overflow-y: auto;
-            height: 100vh;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-        }
-
-        .header h2 {
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 24px;
-            border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-            margin-bottom: 24px;
-        }
-
         .toolbar {
             display: flex;
             gap: 12px;
@@ -143,57 +14,23 @@
             flex-wrap: wrap;
         }
 
-        .btn {
-            padding: 10px 20px;
-            border-radius: 10px;
-            border: none;
-            font-family: inherit;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
-        }
-
-        .btn-action {
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-            border: 1px solid var(--border);
-        }
-
-        .btn-action:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-danger {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        /* Breadcrumb & Path Selector */
         .path-container {
             display: flex;
             gap: 12px;
             align-items: center;
             margin-bottom: 20px;
-            background: rgba(0, 0, 0, 0.2);
+            background: var(--bg-main);
             padding: 12px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
         }
 
         .path-container select {
             padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: #fff;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-main);
             font-family: monospace;
             outline: none;
         }
@@ -215,45 +52,13 @@
 
         .breadcrumb span:hover {
             text-decoration: underline;
-            color: #fff;
+            color: var(--primary);
         }
 
         .breadcrumb .separator {
-            color: var(--gray);
+            color: var(--text-muted);
             cursor: default;
             text-decoration: none !important;
-        }
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-
-        th,
-        td {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            font-weight: 600;
-            color: var(--gray);
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
         }
 
         .file-icon {
@@ -262,7 +67,7 @@
         }
 
         .file-link {
-            color: #fff;
+            color: var(--text-main);
             text-decoration: none;
             cursor: pointer;
             display: flex;
@@ -275,31 +80,10 @@
 
         .dir-link {
             font-weight: 600;
-            color: #60a5fa;
+            color: var(--secondary);
         }
 
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            width: 90%;
-            max-width: 600px;
-            padding: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-        }
-
+        /* Modal Specific Override */
         .modal-content.editor {
             max-width: 1000px;
             height: 90vh;
@@ -307,354 +91,143 @@
             flex-direction: column;
         }
 
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            color: var(--gray);
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--gray);
-            font-size: 14px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: #fff;
-            font-family: monospace;
-        }
-
         textarea.form-control {
             flex: 1;
             resize: none;
             min-height: 300px;
         }
-    
-        
-
-    
-        
-
-    
-        
-
-    
-        
-
-    
-        
-
-    
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-                padding-bottom: 70px;
-                overflow-x: hidden;
-            }
-
-            .sidebar {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                height: 70px;
-                flex-direction: row;
-                padding: 0;
-                background: #0f172a;
-                border-right: none;
-                border-top: 1px solid var(--border);
-                z-index: 1000;
-                overflow-x: auto;
-                overflow-y: hidden;
-            }
-
-            .sidebar-brand, .sidebar-footer {
-                display: none !important;
-            }
-
-            .sidebar-nav {
-                flex-direction: row;
-                width: 100%;
-                gap: 0;
-                padding: 0 10px;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-            .nav-item {
-                flex-direction: column;
-                padding: 8px 12px;
-                font-size: 10px;
-                gap: 4px;
-                border-radius: 8px;
-                min-width: 60px;
-                justify-content: center;
-                white-space: nowrap;
-            }
-
-            .nav-item .icon {
-                font-size: 20px;
-                margin: 0;
-            }
-
-            .main-content {
-                padding: 16px;
-                height: auto;
-                min-height: calc(100vh - 70px);
-                margin-left: 0;
-                max-width: 100vw;
-                overflow-x: hidden;
-            }
-
-            /* Fix Header */
-            .header {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                gap: 16px;
-            }
-            .header-actions {
-                width: 100%;
-                flex-wrap: wrap;
-            }
-            .header-actions button {
-                flex: 1;
-            }
-
-            /* Fix Modals */
-            .modal {
-                width: 95% !important;
-                padding: 16px !important;
-            }
-            .modal-header h3 {
-                font-size: 18px;
-            }
-            .form-group > div[style*="display: flex"],
-            .form-group > div[style*="display: grid"] {
-                flex-direction: column !important;
-                grid-template-columns: 1fr !important;
-            }
-
-            /* Fix Tables */
-            .table-container {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                width: 100%;
-            }
-            
-            table {
-                display: block;
-                width: 100%;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            table th, table td {
-                white-space: nowrap;
-                padding: 12px;
-            }
-            
-            pre {
-                white-space: pre-wrap;
-                word-wrap: break-word;
-                overflow-x: auto;
-            }
-
-            /* Override all inline grid-template-columns */
-            div[style*="grid-template-columns"] {
-                grid-template-columns: 1fr !important;
-            }
-            
-            /* Form inside cards */
-            div[style*="display: grid"][style*="gap"] {
-                grid-template-columns: 1fr !important;
-            }
-            
-            
-            /* Fix Website Modal Flex wrap issue */
-            #hostnameAutoGroup > div,
-            #hostnameAutoGroup + div + div > div {
-                flex-direction: column !important;
-                align-items: stretch !important;
-            }
-            #hostnameAutoGroup > div > span {
-                display: none !important;
-            }
-            #webSubdomain, #webDomainSelect, #webBaseDir, #webDirName {
-                height: 44px !important;
-                width: 100% !important;
-            }
-
-            /* Override inline flex layouts */
-            div[style*="display: flex"] {
-                flex-wrap: wrap !important;
-            }
-            div[style*="justify-content: space-between"] {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                gap: 12px !important;
-            }
-            
-            /* Tabs */
-            .tabs {
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-            .tab-btn {
-                flex: 1;
-                font-size: 14px;
-                padding: 8px 12px;
-            }
-
-            /* Other Grids */
-            .stats-grid,
-            .cards-grid,
-            .settings-grid {
-                grid-template-columns: 1fr !important;
-            }
-            
-            .card {
-                max-width: 100%;
-                overflow-x: auto;
-            }
-
-            .tunnel-form,
-            .settings-form {
-                flex-direction: column;
-                grid-template-columns: 1fr !important;
-            }
-        }
-
     </style>
 </head>
-
 <body>
-    <div class="sidebar">
-        <div class="sidebar-brand">
-            <div class="logo" id="logoContainer">🚀</div>
-            <div>
-                <h1>Dapoy Panel</h1>
-                <p>Advanced Manager</p>
+    <div class="layout-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo sidebar-brand-logo">🚀</div>
+                <div class="title sidebar-brand-h1">Dapoy Panel</div>
             </div>
-        </div>
-        <nav class="sidebar-nav">
-            <a href="/dashboard" class="nav-item "><span class="icon">📊</span>Dashboard</a>
-            <a href="/tunnelmanager" class="nav-item "><span class="icon">☁️</span>Tunneling</a>
-            <a href="/webmanager" class="nav-item "><span class="icon">🌐</span>Website</a>
-            <a href="/appmanager" class="nav-item "><span class="icon">📦</span>Node &amp; Pyth</a>
-            <a href="/databasemanager" class="nav-item "><span class="icon">🗄️</span>Database</a>
-            <a href="/filemanager" class="nav-item active"><span class="icon">📁</span>File Manager</a>
-            <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span>phpMyAdmin</a>
-            <a href="/terminal" class="nav-item "><span class="icon">🔧</span>Terminal SSH</a>
             
-            <div id="trialIndicator" style="display: none; justify-content: center; align-items: center; gap: 8px; margin-top: auto; margin-bottom: 10px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px dashed rgba(239, 68, 68, 0.5); padding: 12px; border-radius: 12px; font-weight: bold; font-size: 13px;">
-                ⏱️ Trial: <span id="trialCountdown" style="font-family: monospace; font-size: 14px;">--:--:--</span>
-            </div>
-        <a href="javascript:void(0)" onclick="showDonateModal()" class="nav-item" style="margin-top: 0; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.5);" id="btnDonateOrReg"><span class="icon">💖</span>Donate</a>
-            <a href="/settings" class="nav-item "><span class="icon">⚙️</span>Pengaturan Sistem</a>
-            <a href="/logout" class="nav-item" style="color: #ef4444;"><span class="icon">🚪</span>Logout</a>
-        </nav>
-    </div>
-
-    <div class="main-content">
-        <div class="header">
-            <h2>📁 File Manager</h2>
-            <div class="header-actions">
-                <button class="btn btn-action" onclick="loadFiles()">🔄 Refresh</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="path-container">
-                <select id="baseDirSelector" onchange="navigateTo(this.value)">
-                    <option value="/www/dp/">/www/dp/</option>
-                    <option value="/www/app/">/www/app/</option>
-                    <option value="/www/project/">/www/project/</option>
-                </select>
-                <div class="breadcrumb" id="breadcrumbPath">
-                    <!-- Dinamis -->
+            <nav class="sidebar-nav">
+                <a href="/dashboard" class="nav-item"><span class="icon">📊</span> Dashboard</a>
+                <a href="/tunnelmanager" class="nav-item"><span class="icon">☁️</span> Tunneling</a>
+                <a href="/webmanager" class="nav-item"><span class="icon">🌐</span> Website</a>
+                <a href="/appmanager" class="nav-item"><span class="icon">📦</span> Node &amp; Pyth</a>
+                <a href="/databasemanager" class="nav-item"><span class="icon">🗄️</span> Database</a>
+                <a href="/filemanager" class="nav-item active"><span class="icon">📁</span> File Manager</a>
+                <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span> phpMyAdmin</a>
+                <a href="/terminal" class="nav-item"><span class="icon">🔧</span> Terminal SSH</a>
+                
+                <div style="flex: 1;"></div> <!-- Spacer -->
+                
+                <!-- Trial & Donate -->
+                <div id="trialIndicator" style="display: none; justify-content: center; align-items: center; gap: 8px; margin-top: auto; margin-bottom: 10px; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px dashed rgba(239, 68, 68, 0.3); padding: 12px; border-radius: var(--radius-sm); font-weight: bold; font-size: 12px;">
+                    ⏱️ Trial: <span id="trialCountdown" style="font-family: monospace; font-size: 13px;">--:--:--</span>
+                </div>
+                <a href="javascript:void(0)" onclick="showDonateModal()" class="nav-item" style="margin-top: 0; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.3);" id="btnDonateOrReg">
+                    <span class="icon">💖</span> Donate
+                </a>
+                
+                <a href="/settings" class="nav-item"><span class="icon">⚙️</span> Pengaturan Sistem</a>
+            </nav>
+            
+            <div class="sidebar-header" style="border-top: 1px solid var(--sidebar-border); border-bottom: none; margin-top: 10px; padding-bottom: 0;">
+                <div class="flex align-center gap-3" style="width: 100%;">
+                    <div style="width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">👤</div>
+                    <div style="flex: 1;">
+                        <div id="username" style="font-size: 13px; font-weight: 600; color: white;">Admin</div>
+                        <div style="font-size: 11px; color: var(--text-sidebar);">Administrator</div>
+                    </div>
+                    <a href="/logout" title="Logout" style="color: var(--danger); font-size: 18px; text-decoration: none;">🚪</a>
                 </div>
             </div>
+        </aside>
 
-            <div class="toolbar">
-                <button class="btn btn-primary" onclick="showModal('uploadModal')">📤 Upload File</button>
-                <button class="btn btn-action" onclick="showModal('newFolderModal')">📁 Folder Baru</button>
-                <button class="btn btn-action" onclick="showModal('newFileModal')">📄 File Baru</button>
-                <div id="bulkActions" style="display: none; margin-left: auto; gap: 8px;">
-                    <button class="btn btn-action" onclick="bulkAction('copy')">📋 Copy Terpilih</button>
-                    <button class="btn btn-action" onclick="bulkAction('move')">✂️ Move Terpilih</button>
-                    <button class="btn btn-danger" onclick="bulkAction('delete')">🗑️ Hapus Terpilih</button>
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-title">
+                    <h2 style="font-size: 18px; font-weight: 700; color: var(--text-main);">📁 File Manager</h2>
+                </div>
+                <div class="topbar-actions">
+                    <button class="btn btn-outline" onclick="loadFiles()">🔄 Refresh</button>
+                </div>
+            </header>
+
+            <div class="page-container">
+                <div class="card">
+                    <div class="path-container">
+                        <select id="baseDirSelector" onchange="navigateTo(this.value)">
+                            <option value="/www/dp/">/www/dp/</option>
+                            <option value="/www/app/">/www/app/</option>
+                            <option value="/www/project/">/www/project/</option>
+                        </select>
+                        <div class="breadcrumb" id="breadcrumbPath">
+                            <!-- Dinamis -->
+                        </div>
+                    </div>
+
+                    <div class="toolbar">
+                        <button class="btn btn-primary" onclick="showModal('uploadModal')">📤 Upload File</button>
+                        <button class="btn btn-outline" onclick="showModal('newFolderModal')">📁 Folder Baru</button>
+                        <button class="btn btn-outline" onclick="showModal('newFileModal')">📄 File Baru</button>
+                        <div id="bulkActions" style="display: none; margin-left: auto; gap: 8px;">
+                            <button class="btn btn-outline" onclick="bulkAction('copy')">📋 Copy Terpilih</button>
+                            <button class="btn btn-outline" onclick="bulkAction('move')">✂️ Move Terpilih</button>
+                            <button class="btn btn-danger" onclick="bulkAction('delete')">🗑️ Hapus Terpilih</button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px;"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"></th>
+                                    <th>Nama File</th>
+                                    <th>Permissions</th>
+                                    <th>Owner</th>
+                                    <th>Size</th>
+                                    <th>Modified Time</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fileList">
+                                <tr>
+                                    <td colspan="7" class="text-center py-4 text-muted">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 40px;"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"></th>
-                            <th>Nama File</th>
-                            <th>Permissions</th>
-                            <th>Owner</th>
-                            <th>Size</th>
-                            <th>Modified Time</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="fileList">
-                        <tr>
-                            <td colspan="7" style="text-align:center; padding: 30px;">Loading...</td>
-                        </tr>
-                    </tbody>
-                </table>
+            
+            <div style="text-align: center; padding: 20px; color: var(--text-muted); font-size: 12px; margin-top: auto; border-top: 1px solid var(--border-color);">
+                &copy; 2025 SMR Dapoy Panel - Sistem Management Server. All rights reserved.
             </div>
-        </div>
+        </main>
     </div>
 
     <!-- Upload Modal -->
-    <div class="modal" id="uploadModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">📤 Upload File</h3>
-                <button class="close-modal" onclick="closeModal('uploadModal')">×</button>
+    <div class="modal" id="uploadModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div class="modal-content" style="background: var(--bg-card); border-radius: var(--radius-lg); width: 90%; max-width: 500px; padding: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);">
+            <div class="flex flex-between align-center mb-4">
+                <h3 class="modal-title m-0">📤 Upload File</h3>
+                <button class="btn btn-sm btn-outline border-0" onclick="closeModal('uploadModal')">×</button>
             </div>
             <form id="uploadForm">
-                <div class="form-group">
-                    <label>Pilih File</label>
-                    <input type="file" id="uploadFile" class="form-control">
+                <div class="form-group mb-4">
+                    <label class="form-label">Pilih File</label>
+                    <input type="file" id="uploadFile" class="form-control" style="padding: 8px;">
                 </div>
                 <div id="uploadProgressContainer" style="display: none; margin-bottom: 16px;">
-                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                    <div class="flex flex-between text-muted mb-2" style="font-size: 12px;">
                         <span>Progress Upload</span>
                         <span id="uploadProgressText">0%</span>
                     </div>
-                    <div style="width: 100%; background: rgba(255,255,255,0.1); border-radius: 8px; height: 10px; overflow: hidden;">
-                        <div id="uploadProgressBar" style="width: 0%; height: 100%; background: var(--primary); transition: width 0.2s;"></div>
+                    <div style="width: 100%; background: var(--border-color); border-radius: 8px; height: 8px; overflow: hidden;">
+                        <div id="uploadProgressBar" style="width: 0%; height: 100%; background: var(--secondary); transition: width 0.2s;"></div>
                     </div>
                 </div>
-                <div style="text-align: right;">
+                <div class="text-right">
                     <button type="submit" class="btn btn-primary" id="btnUpload">Upload Sekarang</button>
                 </div>
             </form>
@@ -662,18 +235,18 @@
     </div>
 
     <!-- New Folder Modal -->
-    <div class="modal" id="newFolderModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">📁 Buat Folder Baru</h3>
-                <button class="close-modal" onclick="closeModal('newFolderModal')">×</button>
+    <div class="modal" id="newFolderModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div class="modal-content" style="background: var(--bg-card); border-radius: var(--radius-lg); width: 90%; max-width: 400px; padding: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);">
+            <div class="flex flex-between align-center mb-4">
+                <h3 class="modal-title m-0">📁 Buat Folder Baru</h3>
+                <button class="btn btn-sm btn-outline border-0" onclick="closeModal('newFolderModal')">×</button>
             </div>
             <form id="newFolderForm">
-                <div class="form-group">
-                    <label>Nama Folder</label>
+                <div class="form-group mb-4">
+                    <label class="form-label">Nama Folder</label>
                     <input type="text" id="newFolderName" class="form-control" required="" placeholder="folder-baru">
                 </div>
-                <div style="text-align: right;">
+                <div class="text-right">
                     <button type="submit" class="btn btn-primary">Buat Folder</button>
                 </div>
             </form>
@@ -681,43 +254,44 @@
     </div>
 
     <!-- New File / Editor Modal -->
-    <div class="modal" id="editorModal">
-        <div class="modal-content editor">
-            <div class="modal-header">
-                <h3 class="modal-title" id="editorTitle">📄 Text Editor</h3>
-                <button class="close-modal" onclick="closeModal('editorModal')">×</button>
+    <div class="modal" id="editorModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div class="modal-content editor" style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);">
+            <div class="flex flex-between align-center mb-4">
+                <h3 class="modal-title m-0" id="editorTitle">📄 Text Editor</h3>
+                <button class="btn btn-sm btn-outline border-0" onclick="closeModal('editorModal')">×</button>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-2">
                 <input type="text" id="editorFileName" class="form-control" placeholder="nama-file.txt">
             </div>
-            <div class="form-group" style="flex: 1; display: flex;">
-                <textarea id="editorContent" class="form-control" spellcheck="false"></textarea>
+            <div class="form-group mb-4" style="flex: 1; display: flex;">
+                <textarea id="editorContent" class="form-control" spellcheck="false" style="font-family: monospace; font-size: 13px;"></textarea>
             </div>
-            <div style="text-align: right;">
+            <div class="text-right">
                 <button class="btn btn-primary" onclick="saveFile()" id="btnSaveFile">💾 Simpan File</button>
             </div>
         </div>
     </div>
 
     <!-- Destination Modal for Copy/Move -->
-    <div class="modal" id="destinationModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="destModalTitle">Pilih Direktori Tujuan</h3>
-                <button class="close-modal" onclick="closeModal('destinationModal')">×</button>
+    <div class="modal" id="destinationModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div class="modal-content" style="background: var(--bg-card); border-radius: var(--radius-lg); width: 90%; max-width: 500px; padding: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);">
+            <div class="flex flex-between align-center mb-4">
+                <h3 class="modal-title m-0" id="destModalTitle">Pilih Direktori Tujuan</h3>
+                <button class="btn btn-sm btn-outline border-0" onclick="closeModal('destinationModal')">×</button>
             </div>
             <form id="destinationForm">
-                <div class="form-group">
-                    <label>Path Tujuan</label>
-                    <input type="text" id="destinationPath" class="form-control" required="" placeholder="/var/www/baru">
+                <div class="form-group mb-4">
+                    <label class="form-label">Path Tujuan</label>
+                    <input type="text" id="destinationPath" class="form-control" required="" placeholder="/www/baru">
                 </div>
-                <div style="text-align: right;">
+                <div class="text-right">
                     <button type="submit" class="btn btn-primary" id="btnConfirmDest">Konfirmasi</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- SCRIPTS ASLI -->
     <script>
         let currentPath = '/www/dp/';
         const urlParams = new URLSearchParams(window.location.search);
@@ -733,15 +307,21 @@
 
         async function loadLogo() {
             try {
-                const res = await fetch('/api/settings');
+                const res = await fetch('/api/system/settings');
                 const data = await res.json();
-                if (data.success && data.settings.logo) {
-                    const logoStr = data.settings.logo;
-                    const c = document.getElementById('logoContainer');
-                    if (logoStr.startsWith('http') || logoStr.startsWith('/') || logoStr.startsWith('data:image')) {
-                        c.innerHTML = `<img src="${logoStr}" style="width:100%; height:100%; border-radius:12px; object-fit:cover;">`;
-                    } else {
-                        c.innerHTML = logoStr;
+                if (data.success) {
+                    document.title = document.title.split('-')[0].trim() + ' - ' + data.appName;
+                    const brandH1 = document.querySelector('.sidebar-brand-h1');
+                    const brandP = document.querySelector('.sidebar-brand-p');
+                    const brandLogo = document.querySelector('.sidebar-brand-logo');
+                    if (brandH1) brandH1.textContent = data.appName;
+                    if (brandP) brandP.textContent = data.appDomain;
+                    if (brandLogo) {
+                        if (data.appLogo.startsWith('http') || data.appLogo.startsWith('/') || data.appLogo.startsWith('data:image')) {
+                            brandLogo.innerHTML = '<img src="' + data.appLogo + '" style="width:100%;height:100%;border-radius:6px;object-fit:cover;">';
+                        } else {
+                            brandLogo.textContent = data.appLogo;
+                        }
                     }
                 }
             } catch (e) { }
@@ -754,7 +334,7 @@
 
             const parts = path.split('/').filter(p => p);
             const breadcrumb = document.getElementById('breadcrumbPath');
-            breadcrumb.innerHTML = `<span style="cursor:default;color:var(--gray)">Root</span>`;
+            breadcrumb.innerHTML = `<span style="cursor:default;color:var(--text-muted)">Root</span>`;
 
             let accumPath = '';
             parts.forEach(part => {
@@ -762,7 +342,7 @@
                 if (accumPath === normBase || accumPath.startsWith(normBase + '/')) {
                     breadcrumb.innerHTML += `<span class="separator">/</span><span onclick="loadFiles('${accumPath}')" style="cursor:pointer; color:var(--secondary)">${part}</span>`;
                 } else {
-                    breadcrumb.innerHTML += `<span class="separator">/</span><span style="cursor:default; color:var(--gray)">${part}</span>`;
+                    breadcrumb.innerHTML += `<span class="separator">/</span><span style="cursor:default; color:var(--text-main)">${part}</span>`;
                 }
             });
         }
@@ -773,7 +353,6 @@
             currentPath = path;
             updateBreadcrumb(path);
 
-            // Sync dropdown if it matches
             const sel = document.getElementById('baseDirSelector');
             let found = false;
             for (let i = 0; i < sel.options.length; i++) {
@@ -783,11 +362,10 @@
                 }
             }
 
-            // Ensure toolbar is always visible
             document.querySelector('.toolbar').style.display = 'flex';
 
             const tbody = document.getElementById('fileList');
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 30px;">Loading...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">Loading...</td></tr>';
             if (document.getElementById('selectAll')) document.getElementById('selectAll').checked = false;
             updateBulkActions();
 
@@ -803,7 +381,6 @@
                     tbody.innerHTML = '';
                     currentFiles = data.files ? data.files.map(f => f.name) : [];
 
-                    // Add parent folder ".."
                     let normCurrentPath = currentPath.endsWith('/') && currentPath.length > 1 ? currentPath.slice(0, -1) : currentPath;
                     let normBase = document.getElementById('baseDirSelector').value;
                     normBase = normBase.endsWith('/') && normBase.length > 1 ? normBase.slice(0, -1) : normBase;
@@ -820,7 +397,7 @@
                     }
 
                     if (data.files.length === 0) {
-                        tbody.innerHTML += '<tr><td colspan="7" style="text-align:center; padding: 30px; color:var(--gray);">Folder kosong</td></tr>';
+                        tbody.innerHTML += '<tr><td colspan="7" class="text-center py-4 text-muted">Folder kosong</td></tr>';
                         return;
                     }
 
@@ -832,30 +409,30 @@
 
                         let actions = ``;
                         if (!f.isDir) {
-                            actions += `<button class="btn btn-action" style="padding:4px 8px; font-size:12px; margin-right:4px;" onclick="openEditor('${fullPath}', false)">Edit</button>`;
+                            actions += `<button class="btn btn-sm btn-outline" style="margin-right:4px;" onclick="openEditor('${fullPath}', false)">Edit</button>`;
                             if (f.name.endsWith('.zip') || f.name.endsWith('.tar.gz') || f.name.endsWith('.tar')) {
-                                actions += `<button class="btn btn-action" style="padding:4px 8px; font-size:12px; margin-right:4px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: var(--secondary);" onclick="extractFile('${fullPath}')">🗜️ Ekstrak</button>`;
+                                actions += `<button class="btn btn-sm btn-outline" style="margin-right:4px; color: var(--secondary);" onclick="extractFile('${fullPath}')">🗜️ Ekstrak</button>`;
                             }
                         }
-                        actions += `<button class="btn btn-danger" style="padding:4px 8px; font-size:12px;" onclick="deletePath('${fullPath}')">Delete</button>`;
+                        actions += `<button class="btn btn-sm btn-danger" onclick="deletePath('${fullPath}')">Delete</button>`;
 
                         tbody.innerHTML += `
                             <tr>
                                 <td><input type="checkbox" class="file-checkbox" value="${fullPath}" onclick="updateBulkActions()"></td>
                                 <td><a class="${linkClass}" onclick="${onClick}"><span class="file-icon">${icon}</span>${f.name}</a></td>
-                                <td style="font-family:monospace; color:var(--gray);">${f.perms}</td>
-                                <td style="color:var(--gray);">${f.owner}</td>
+                                <td style="font-family:monospace; color:var(--text-muted);">${f.perms}</td>
+                                <td style="color:var(--text-muted);">${f.owner}</td>
                                 <td>${f.size}</td>
-                                <td style="color:var(--gray);">${f.modifiedTime}</td>
-                                <td>${actions}</td>
+                                <td style="color:var(--text-muted);">${f.modifiedTime}</td>
+                                <td><div class="flex">${actions}</div></td>
                             </tr>
                         `;
                     });
                 } else {
-                    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 30px; color:var(--danger);">${data.message}</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">${data.message}</td></tr>`;
                 }
             } catch (e) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 30px; color:var(--danger);">${e.message}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">${e.message}</td></tr>`;
             }
         }
 
@@ -863,11 +440,9 @@
             loadFiles(val);
         }
 
-        // Modals
         function showModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        // Upload
         async function extractFile(filePath) {
             if (!confirm(`Ekstrak file ${filePath} ke folder ini?`)) return;
             try {
@@ -942,7 +517,6 @@
             handleFileUpload(file);
         });
 
-        // Drag and drop upload
         const dropZone = document.querySelector('.main-content');
         dropZone.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -963,7 +537,6 @@
             }
         });
 
-        // Mkdir
         document.getElementById('newFolderForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('newFolderName').value.trim();
@@ -981,7 +554,6 @@
             } catch (e) { alert(e.message); }
         });
 
-        // Delete
         async function deletePath(path) {
             if (!confirm(`Yakin ingin menghapus secara permanen:\n${path} ?`)) return;
             try {
@@ -995,9 +567,7 @@
             } catch (e) { alert(e.message); }
         }
 
-        // Editor
         document.getElementById('newFileModal') && document.getElementById('newFileModal').addEventListener('click', () => { });
-        // using showModal for new file means opening editor in "New File" mode
         const originalShowModal = showModal;
         showModal = function (id) {
             if (id === 'newFileModal') {
@@ -1039,7 +609,6 @@
             let path = document.getElementById('editorFileName').value.trim();
             if (!path) return alert('Nama/Path file kosong!');
 
-            // Jika isNew, pastikan path absolute
             if (isEditingNewFile && !path.startsWith('/')) {
                 path = (currentPath === '/' ? '' : currentPath) + '/' + path;
             }
@@ -1061,11 +630,6 @@
                 }
             } catch (e) { alert(e.message); }
             btn.disabled = false; btn.textContent = '💾 Simpan File';
-        }
-
-        async function logout() {
-            await fetch('/api/logout', { method: 'POST' });
-            window.location.href = '/login';
         }
 
         let currentBulkAction = null;
@@ -1146,127 +710,120 @@
         });
     </script>
 
-<!-- DONATE MODAL -->
-<div id="donateModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-    <div style="background: #1e293b; max-width: 400px; width: 90%; text-align: center; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);">
-        <img src="logo.png" alt="Logo Dapoy" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; margin-bottom: 16px; border: 2px solid #3b82f6; background: #0f172a;">
-        <h2 style="margin-top: 0; color: #fff; font-family: sans-serif;">Support Dapoy Panel</h2>
-        <p style="color: #94a3b8; margin-bottom: 20px; font-size: 14px; font-family: sans-serif; line-height: 1.5;">Dukung pengembangan panel ini dengan berdonasi via Gopay / Dana ke nomor berikut atas nama <strong>Syah Muhamad Rizky</strong></p>
-        
-        <div style="display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px;">
-            <code style="font-size: 20px; color: #3b82f6; letter-spacing: 2px; font-weight: bold; margin-right: 15px;">087777999907</code>
-            <button onclick="navigator.clipboard.writeText('087777999907'); this.innerText='Disalin!'; setTimeout(()=>this.innerText='Copy', 2000);" style="background: #3b82f6; color: #fff; padding: 6px 12px; font-size: 12px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold;">Copy</button>
-        </div>
-        
-        <button onclick="document.getElementById('donateModal').style.display='none'" style="width: 100%; background: rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">Tutup</button>
-    </div>
-</div>
-<script>
-function showDonateModal() {
-    document.getElementById('donateModal').style.display = 'flex';
-}
-</script>
-
-
-
-
-<!-- REGISTRASI MODAL -->
-
-<div id="trialRegModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-    <div style="background: #1e293b; max-width: 400px; width: 90%; text-align: center; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);">
-        <img src="logo.png" alt="Logo Dapoy" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; margin-bottom: 16px; border: 2px solid #f59e0b; background: #0f172a;">
-        <h2 style="margin-top: 0; color: #fff;">Aktivasi Dapoy Panel</h2>
-        <p style="color: #94a3b8; margin-bottom: 20px; font-size: 14px;">Waktu Free Trial (2 Jam) sedang berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
-        <input type="text" id="modalLicenseKey" placeholder="DP-XXXX-XXXX" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; color: #fff; text-align: center; font-family: monospace; font-size: 16px; margin-bottom: 15px; text-transform: uppercase;">
-        <div style="display: flex; gap: 10px;">
-            <button onclick="document.getElementById('trialRegModal').style.display='none'" style="flex: 1; background: rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; transition: 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">Batal</button>
-            <button onclick="submitModalActivation()" id="btnModalActivate" style="flex: 1; background: #f59e0b; color: #fff; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold;">Aktivasi</button>
+    <!-- DONATE MODAL -->
+    <div id="donateModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+            <div style="font-size: 40px; margin-bottom: 16px;">💖</div>
+            <h2 style="margin-top: 0; color: var(--text-main); font-size: 20px;">Support Dapoy Panel</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px; line-height: 1.5;">Dukung pengembangan panel ini dengan berdonasi via Gopay / Dana ke nomor berikut atas nama <strong>Syah Muhamad Rizky</strong></p>
+            
+            <div style="display: flex; align-items: center; justify-content: center; background: #f1f5f9; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 20px;">
+                <code style="font-size: 18px; color: var(--secondary); letter-spacing: 2px; font-weight: bold; margin-right: 15px;">087777999907</code>
+                <button onclick="navigator.clipboard.writeText('087777999907'); this.innerText='Disalin!'; setTimeout(()=>this.innerText='Copy', 2000);" class="btn btn-secondary" style="padding: 6px 12px; font-size: 11px;">Copy</button>
+            </div>
+            
+            <button onclick="document.getElementById('donateModal').style.display='none'" class="btn btn-outline" style="width: 100%;">Tutup</button>
         </div>
     </div>
-</div>
+    <script>
+    function showDonateModal() {
+        document.getElementById('donateModal').style.display = 'flex';
+    }
+    </script>
 
+    <!-- REGISTRASI MODAL -->
+    <div id="trialRegModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+            <div style="font-size: 40px; margin-bottom: 16px;">🔑</div>
+            <h2 style="margin-top: 0; color: var(--text-main); font-size: 20px;">Aktivasi Dapoy Panel</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px;">Waktu Free Trial (2 Jam) sedang berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
+            <input type="text" id="modalLicenseKey" placeholder="DP-XXXX-XXXX" class="form-control" style="text-align: center; font-family: monospace; font-size: 15px; margin-bottom: 15px; text-transform: uppercase;">
+            <div style="display: flex; gap: 10px;">
+                <button onclick="document.getElementById('trialRegModal').style.display='none'" class="btn btn-outline" style="flex: 1;">Batal</button>
+                <button onclick="submitModalActivation()" id="btnModalActivate" class="btn btn-primary" style="flex: 1;">Aktivasi</button>
+            </div>
+        </div>
+    </div>
 
-<script>
-let trialInterval;
-async function fetchLicenseStatus() {
-    try {
-        const res = await fetch('/api/license-status');
-        const data = await res.json();
-        const btnDonate = document.getElementById('btnDonateOrReg');
-        const trialIndicator = document.getElementById('trialIndicator');
-        const trialCountdown = document.getElementById('trialCountdown');
+    <script>
+    let trialInterval;
+    async function fetchLicenseStatus() {
+        try {
+            const res = await fetch('/api/license-status');
+            const data = await res.json();
+            const btnDonate = document.getElementById('btnDonateOrReg');
+            const trialIndicator = document.getElementById('trialIndicator');
+            const trialCountdown = document.getElementById('trialCountdown');
+            
+            if (data.status === 'registered') {
+                if (trialIndicator) trialIndicator.style.display = 'none';
+                if (btnDonate) {
+                    btnDonate.innerHTML = '<span class="icon">💎</span> Registered';
+                    btnDonate.style.color = 'var(--secondary)';
+                    btnDonate.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+                    btnDonate.style.background = 'rgba(59, 130, 246, 0.1)';
+                }
+            } else if (data.status === 'trial') {
+                if (btnDonate) {
+                    btnDonate.innerHTML = '<span class="icon">🔑</span> Registrasi';
+                    btnDonate.style.color = 'var(--warning)';
+                    btnDonate.style.borderColor = 'rgba(245, 158, 11, 0.3)';
+                    btnDonate.style.background = 'rgba(245, 158, 11, 0.1)';
+                    btnDonate.onclick = function() {
+                        document.getElementById('trialRegModal').style.display = 'flex';
+                    };
+                }
+                if (trialIndicator && data.trialEndsAt) {
+                    trialIndicator.style.display = 'flex';
+                    
+                    trialInterval = setInterval(() => {
+                        const now = Date.now();
+                        const diff = data.trialEndsAt - now;
+                        if (diff <= 0) {
+                            clearInterval(trialInterval);
+                            window.location.reload();
+                        } else {
+                            const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
+                            const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+                            const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+                            trialCountdown.innerText = h + ':' + m + ':' + s;
+                        }
+                    }, 1000);
+                }
+            } else if (data.status === 'expired') {
+                window.location.reload();
+            }
+        } catch (err) {}
+    }
+
+    async function submitModalActivation() {
+        const key = document.getElementById('modalLicenseKey').value.trim();
+        if (!key) return alert('Masukkan License Key!');
+        const btn = document.getElementById('btnModalActivate');
+        btn.disabled = true;
+        btn.innerText = 'Memproses...';
         
-        if (data.status === 'registered') {
-            if (trialIndicator) trialIndicator.style.display = 'none';
-            if (btnDonate) {
-                btnDonate.innerHTML = '<span class="icon">💎</span>Registered';
-                btnDonate.style.color = '#3b82f6';
-                btnDonate.style.borderColor = 'rgba(59, 130, 246, 0.5)';
-                btnDonate.style.background = 'rgba(59, 130, 246, 0.1)';
-                // Tetap bisa buka donate modal kalau di klik (opsional)
+        try {
+            const res = await fetch('/api/activate', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ license_key: key })
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert('Aktivasi Berhasil! Halaman akan dimuat ulang.');
+                window.location.reload();
+            } else {
+                alert('Gagal: ' + (data.message || 'Key tidak valid'));
             }
-        } else if (data.status === 'trial') {
-            if (btnDonate) {
-                btnDonate.innerHTML = '<span class="icon">🔑</span>Registrasi';
-                btnDonate.style.color = '#f59e0b';
-                btnDonate.style.borderColor = 'rgba(245, 158, 11, 0.5)';
-                btnDonate.style.background = 'rgba(245, 158, 11, 0.1)';
-                btnDonate.onclick = function() {
-                    document.getElementById('trialRegModal').style.display = 'flex';
-                };
-            }
-            if (trialIndicator && data.trialEndsAt) {
-                trialIndicator.style.display = 'flex';
-                
-                trialInterval = setInterval(() => {
-                    const now = Date.now();
-                    const diff = data.trialEndsAt - now;
-                    if (diff <= 0) {
-                        clearInterval(trialInterval);
-                        window.location.reload(); // akan diarahkan ke layar block
-                    } else {
-                        const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
-                        const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
-                        const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
-                        trialCountdown.innerText = h + ':' + m + ':' + s;
-                    }
-                }, 1000);
-            }
-        } else if (data.status === 'expired') {
-            window.location.reload();
+        } catch (err) {
+            alert('Terjadi kesalahan server.');
         }
-    } catch (err) {
-        console.error('Error fetching license status:', err);
+        btn.disabled = false;
+        btn.innerText = 'Aktivasi';
     }
-}
 
-async function submitModalActivation() {
-    const key = document.getElementById('modalLicenseKey').value.trim();
-    if (!key) return alert('Masukkan License Key!');
-    const btn = document.getElementById('btnModalActivate');
-    btn.disabled = true;
-    btn.innerText = 'Memproses...';
-    
-    try {
-        const res = await fetch('/api/activate', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ license_key: key })
-        });
-        const data = await res.json();
-        if (data.success) {
-            alert('Aktivasi Berhasil! Halaman akan dimuat ulang.');
-            window.location.reload();
-        } else {
-            alert('Gagal: ' + (data.message || 'Key tidak valid'));
-        }
-    } catch (err) {
-        alert('Terjadi kesalahan server.');
-    }
-    btn.disabled = false;
-    btn.innerText = 'Aktivasi';
-}
-
-document.addEventListener('DOMContentLoaded', fetchLicenseStatus);
-</script>
-</body></html>
+    document.addEventListener('DOMContentLoaded', fetchLicenseStatus);
+    </script>
+</body>
+</html>
