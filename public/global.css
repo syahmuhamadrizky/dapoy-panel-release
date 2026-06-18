@@ -621,4 +621,92 @@ a:hover {
     .text-center {
         text-align: left !important;
     }
+
+    /* ========== EXTRA MOBILE FIXES ========== */
+
+    /* ALL flex containers with gap become column */
+    [class*="flex"][class*="gap-"] {
+        flex-direction: column !important;
+        flex-wrap: wrap !important;
+    }
+
+    /* Settings - Card Aplikasi, Kredensial, SSH jadi stack */
+    .settings-form {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .settings-form .card {
+        width: 100% !important;
+        margin-bottom: 16px !important;
+        display: block !important;
+    }
+
+    /* App Manager - Node Setup Form stack */
+    #setupNodeFormContainer form,
+    #setupPythonFormContainer form {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    #setupNodeFormContainer form>div,
+    #setupPythonFormContainer form>div {
+        width: 100% !important;
+        flex: none !important;
+    }
+
+    /* Database Tunnel - subdomain + domain + button STACK */
+    #pmaTunnelSubdomain,
+    #pmaTunnelZone,
+    #btnSetupTunnel {
+        width: 100% !important;
+        border-radius: var(--radius-sm) !important;
+        margin-bottom: 8px !important;
+        flex: none !important;
+    }
+
+    /* Form grids inside cards - force vertical */
+    .card .grid-stats {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .card .grid-stats>div {
+        width: 100% !important;
+        flex: none !important;
+    }
+
+    /* Tunnel Form inputs - full width */
+    .tunnel-form input,
+    .tunnel-form select,
+    .tunnel-form button {
+        width: 100% !important;
+        border-radius: var(--radius-sm) !important;
+    }
+
+    /* Topbar actions stack */
+    .topbar-actions {
+        flex-direction: column !important;
+        width: 100% !important;
+        margin-top: 8px !important;
+    }
+
+    /* Card header flex column */
+    .card .flex,
+    .card .flex-between {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+    /* All inputs stack vertically */
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="number"],
+    select,
+    textarea {
+        width: 100% !important;
+        display: block !important;
+        margin-bottom: 12px !important;
+    }
 }
