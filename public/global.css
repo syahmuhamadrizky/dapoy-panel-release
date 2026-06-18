@@ -622,6 +622,45 @@ a:hover {
         text-align: left !important;
     }
 
+    /* ========== SETTINGS PAGE MOBILE ========== */
+
+    /* Cards grid - stack all cards vertically */
+    .cards-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+    }
+
+    .cards-grid .card {
+        width: 100% !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Card header icons */
+    .cards-grid .card-header {
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 12px !important;
+    }
+
+    /* Logo upload button on mobile */
+    .cards-grid .flex.gap-2 {
+        flex-direction: row !important;
+    }
+
+    /* SSH Settings form on mobile */
+    .cards-grid .flex.gap-3,
+    .cards-grid .flex.gap-3.mb-4 {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .cards-grid .flex.gap-3>.form-group {
+        width: 100% !important;
+        flex: none !important;
+        min-width: unset !important;
+    }
+
     /* ========== EXTRA MOBILE FIXES ========== */
 
     /* ALL flex containers with gap become column */
