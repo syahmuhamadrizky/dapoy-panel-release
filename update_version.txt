@@ -1,3 +1,6 @@
+v1.7.25 (Patch Update)
+- [Peningkatan UI] Menyelaraskan pilihan direktori path (root folder) pada menu Web Manager, Tunnel Manager, dan App Manager agar sama dengan File Manager (hanya menampilkan `/www/dp/`, `/www/app/`, dan `/www/project/`).
+
 v1.7.24 (Patch Update)
 - [Peningkatan Keamanan] Menambahkan "Peringatan Keras" pada Web Manager saat pengguna mencoba menghapus website/subdomain yang saat ini terhubung langsung ke Port 3000 (port utama Dapoy Panel). Ini untuk mencegah pengguna terputus dari akses Panel secara tidak sengaja.
 
