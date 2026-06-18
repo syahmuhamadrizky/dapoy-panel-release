@@ -532,7 +532,93 @@ a:hover {
         grid-template-columns: 1fr;
     }
 
+    .grid-stats {
+        grid-template-columns: 1fr;
+    }
+
     .bottom-nav {
         display: block;
+    }
+
+    /* Form responsive - stack inputs vertically */
+    .tunnel-form {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Settings form responsive */
+    .settings-form .form-grid,
+    .settings-form .grid-stats {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* All form inputs full width on mobile */
+    .form-group input,
+    .form-group select,
+    .form-group textarea,
+    .form-control {
+        width: 100% !important;
+        min-width: unset !important;
+    }
+
+    /* Flex form groups stack on mobile */
+    .flex.gap-2,
+    .flex.gap-3,
+    .flex.gap-4,
+    .flex.align-center {
+        flex-wrap: wrap;
+    }
+
+    .flex.gap-2>*,
+    .flex.gap-3>*,
+    .flex.gap-4>* {
+        flex: 1 1 100% !important;
+        min-width: 100% !important;
+    }
+
+    /* Buttons full width on mobile */
+    .btn {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    /* Table responsive */
+    .table-container {
+        overflow-x: auto;
+    }
+
+    /* Card content full width */
+    .card {
+        padding: 12px;
+    }
+
+    /* Page container padding */
+    .page-container {
+        padding: 12px;
+    }
+
+    /* Topbar responsive */
+    .topbar {
+        padding: 0 12px;
+        flex-wrap: wrap;
+        height: auto;
+        min-height: 60px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    /* Modal responsive */
+    .modal-content {
+        width: 95% !important;
+        max-width: 95% !important;
+        margin: 10px;
+    }
+
+    /* Text alignment */
+    .text-right {
+        text-align: left !important;
+    }
+
+    .text-center {
+        text-align: left !important;
     }
 }
