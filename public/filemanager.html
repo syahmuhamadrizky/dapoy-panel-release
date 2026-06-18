@@ -1171,19 +1171,20 @@ function showDonateModal() {
 
 
 <!-- REGISTRASI MODAL -->
-<div id="trialRegModal" class="modal">
-    <div class="modal-content" style="max-width: 400px; text-align: center; border-radius: 16px; padding: 30px;">
+
+<div id="trialRegModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+    <div style="background: #1e293b; max-width: 400px; width: 90%; text-align: center; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);">
+        <img src="logo.png" alt="Logo Dapoy" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; margin-bottom: 16px; border: 2px solid #f59e0b; background: #0f172a;">
         <h2 style="margin-top: 0; color: #fff;">Aktivasi Dapoy Panel</h2>
-        <p style="color: var(--gray); margin-bottom: 20px; font-size: 14px;">Waktu Free Trial (2 Jam) sedang berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
-        
-        <input type="text" id="modalLicenseKey" placeholder="DP-XXXX-XXXX" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-dark); color: #fff; text-align: center; font-family: monospace; font-size: 16px; margin-bottom: 15px; text-transform: uppercase;">
-        
+        <p style="color: #94a3b8; margin-bottom: 20px; font-size: 14px;">Waktu Free Trial (2 Jam) sedang berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
+        <input type="text" id="modalLicenseKey" placeholder="DP-XXXX-XXXX" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; color: #fff; text-align: center; font-family: monospace; font-size: 16px; margin-bottom: 15px; text-transform: uppercase;">
         <div style="display: flex; gap: 10px;">
-            <button onclick="document.getElementById('trialRegModal').classList.remove('active')" class="btn" style="flex: 1; background: var(--border); color: #fff; padding: 10px; border-radius: 10px;">Batal</button>
-            <button onclick="submitModalActivation()" id="btnModalActivate" class="btn btn-primary" style="flex: 1; padding: 10px; border-radius: 10px;">Aktivasi</button>
+            <button onclick="document.getElementById('trialRegModal').style.display='none'" style="flex: 1; background: rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; transition: 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">Batal</button>
+            <button onclick="submitModalActivation()" id="btnModalActivate" style="flex: 1; background: #f59e0b; color: #fff; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold;">Aktivasi</button>
         </div>
     </div>
 </div>
+
 
 <script>
 let trialInterval;
@@ -1211,7 +1212,7 @@ async function fetchLicenseStatus() {
                 btnDonate.style.borderColor = 'rgba(245, 158, 11, 0.5)';
                 btnDonate.style.background = 'rgba(245, 158, 11, 0.1)';
                 btnDonate.onclick = function() {
-                    document.getElementById('trialRegModal').classList.add('active');
+                    document.getElementById('trialRegModal').style.display = 'flex';
                 };
             }
             if (trialIndicator && data.trialEndsAt) {
