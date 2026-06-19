@@ -509,12 +509,19 @@
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         async function extractFile(filePath) {
-            if (!confirm(`Ekstrak file ${filePath} ke folder ini?`)) return;
+            const currentDir = currentPath === '/' ? '' : currentPath;
+            const fileName = filePath.split('/').pop();
+            const folderName = fileName.replace(/\.zip|\.tar\.gz|\.tgz|\.tar/gi, '');
+            const defaultTarget = currentDir + '/' + folderName;
+
+            const targetDir = prompt(`Masukkan path tujuan ekstrak:\n(Folder akan otomatis dibuat dan file lama akan ditimpa jika ada)`, defaultTarget);
+            if (!targetDir) return;
+
             try {
                 const res = await fetch('/api/file/extract', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ filePath })
+                    body: JSON.stringify({ filePath, targetDir })
                 });
                 const result = await res.json();
                 alert(result.message);
