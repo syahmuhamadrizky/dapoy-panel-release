@@ -168,7 +168,9 @@
                         <div class="card flex flex-col justify-between">
                             <div class="flex-between" style="margin-bottom: 8px;">
                                 <div class="text-muted" style="font-size: 12px;">CPU</div>
-                                <div id="statCpuPct" class="text-success" style="font-weight: 700; font-size: 13px;">0%
+                                <div style="display: flex; gap: 8px;">
+                                    <div id="statCpuTemp" class="text-warning" style="font-weight: 700; font-size: 13px;">0°C</div>
+                                    <div id="statCpuPct" class="text-success" style="font-weight: 700; font-size: 13px;">0%</div>
                                 </div>
                             </div>
                             <h3 id="statCpuCore" style="font-size: 18px; font-weight: 600;">0 Inti</h3>
@@ -271,6 +273,9 @@
                     document.getElementById('statLoad').textContent = data.load;
                     document.getElementById('statCpuPct').textContent = data.cpu.pct + '%';
                     document.getElementById('statCpuCore').textContent = data.cpu.cores + ' Inti';
+                    if (document.getElementById('statCpuTemp')) {
+                        document.getElementById('statCpuTemp').textContent = data.cpu.temp > 0 ? Math.round(data.cpu.temp) + '°C' : '-°C';
+                    }
 
                     document.getElementById('statRamPct').textContent = data.ram.pct + '%';
                     document.getElementById('statRamText').textContent = data.ram.used + 'MB / ' + data.ram.total + 'MB';
