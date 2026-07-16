@@ -383,7 +383,7 @@
                 domain = document.getElementById('webDomainManual').value.trim();
             }
             if (!domain) return alert('Domain tidak boleh kosong!');
-            const baseDir = document.getElementById('webBaseDir').value;
+            const baseDir = document.getElementById('webLocation').value;
             let dirName = document.getElementById('webDirName').value.trim();
             if (!dirName) dirName = domain;
             if (dirName.startsWith('/')) dirName = dirName.substring(1);
@@ -666,11 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if(u.role !== 'admin') {
                 
-                const webBaseDir = document.getElementById('webBaseDir');
-                if (webBaseDir) {
-                    webBaseDir.innerHTML = `<option value="/home/${u.username}/public_html/">/home/${u.username}/public_html/</option>`;
-                    webBaseDir.disabled = true;
-                }
+                
                 
                 // If on dashboard, add change password button to sidebar header
                 if (window.location.pathname === '/dashboard') {
