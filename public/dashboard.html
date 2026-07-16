@@ -158,17 +158,15 @@
                 </div>
 
                 <div class="mb-4" style="margin-top: 24px;">
-                    <h3 style="font-size: 16px; font-weight: 600; color: var(--text-main); margin-bottom: 16px;">Status
-                        Sistem (Server Load)</h3>
+                    <h3 id="statSectionTitle" style="font-size: 16px; font-weight: 600; color: var(--text-main); margin-bottom: 16px;">Status Sistem (Server Load)</h3>
                     <div class="grid-stats">
                         <div class="card flex flex-col justify-between">
-                            <div class="text-muted" style="font-size: 12px; margin-bottom: 8px;">Beban Rata-rata (Load)
-                            </div>
+                            <div id="statLoadTitle" class="text-muted" style="font-size: 12px; margin-bottom: 8px;">Beban Rata-rata (Load)</div>
                             <h3 id="statLoad" style="font-size: 18px; font-weight: 600;">0.00 / 0.00 / 0.00</h3>
                         </div>
                         <div class="card flex flex-col justify-between">
                             <div class="flex-between" style="margin-bottom: 8px;">
-                                <div class="text-muted" style="font-size: 12px;">CPU</div>
+                                <div id="statCpuTitle" class="text-muted" style="font-size: 12px;">CPU</div>
                                 <div style="display: flex; gap: 8px;">
                                     <div id="statCpuTemp" class="text-warning" style="font-weight: 700; font-size: 13px;">0°C</div>
                                     <div id="statCpuPct" class="text-success" style="font-weight: 700; font-size: 13px;">0%</div>
@@ -186,7 +184,7 @@
                         </div>
                         <div class="card flex flex-col justify-between">
                             <div class="flex-between" style="margin-bottom: 8px;">
-                                <div class="text-muted" style="font-size: 12px;">Disk (/)</div>
+                                <div id="statDiskTitle" class="text-muted" style="font-size: 12px;">Disk (/)</div>
                                 <div id="statDiskPct" class="text-warning" style="font-weight: 700; font-size: 13px;">0%
                                 </div>
                             </div>
@@ -283,6 +281,17 @@
 
                     document.getElementById('statDiskPct').textContent = data.disk.pct + '%';
                     document.getElementById('statDiskText').textContent = data.disk.used + ' / ' + data.disk.total;
+
+                    if (data.isAdmin === false) {
+                        document.getElementById('statSectionTitle').textContent = 'Status Quota (Resource Anda)';
+                        document.getElementById('statLoadTitle').textContent = 'Aplikasi Aktif / Max App';
+                        document.getElementById('statCpuTitle').textContent = 'Penggunaan CPU App';
+                        document.getElementById('statDiskTitle').textContent = 'Disk Storage (/www/project)';
+                        if (document.getElementById('statCpuTemp')) {
+                            document.getElementById('statCpuTemp').style.display = 'none';
+                        }
+                        document.getElementById('statCpuCore').textContent = data.cpu.cores + ' Max App';
+                    }
 
                     document.getElementById('statApps').textContent = data.stats.apps;
                     document.getElementById('statDbs').textContent = data.stats.dbs;
