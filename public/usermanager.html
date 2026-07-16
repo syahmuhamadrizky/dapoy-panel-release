@@ -110,6 +110,7 @@
                         <div id="username" style="font-size: 14px; font-weight: 600; color: white;">...</div>
                         
                     </div>
+                    <a href="#" onclick="changeMyPassword()" title="Ganti Password" style="color: var(--warning); font-size: 18px; text-decoration: none; margin-right: 5px;">🔑</a>
                     <a href="/logout" title="Logout"
                         style="color: var(--danger); font-size: 18px; text-decoration: none;">🚪</a>
                 </div>
@@ -338,6 +339,7 @@
                 <td>
                     <button class="btn btn-sm btn-outline" onclick="openDomainModal('${u.username}')">🌐 Domain</button>
                     <button class="btn btn-sm btn-outline" style="color:var(--warning); border-color:var(--warning);" onclick="openLimitModal('${u.username}')">⚖️ Limit</button>
+                    <button class="btn btn-sm btn-outline" style="color:var(--success); border-color:var(--success);" onclick="resetUserPassword('${u.username}')">🔑 Reset Password</button>
                     <button class="btn btn-sm btn-danger" onclick="deleteUser('${u.username}')">🗑️</button>
                 </td>
             </tr>`;
@@ -364,6 +366,21 @@
                 alert('User berhasil ditambahkan');
                 closeAddUserModal();
                 fetchUsers();
+            } else alert(data.message);
+        } catch(e) { alert('Terjadi kesalahan'); }
+    }
+
+    async function resetUserPassword(username) {
+        if (!confirm(`Yakin ingin mereset password user '${username}'?`)) return;
+        try {
+            const res = await fetch('/api/users/reset-password', {
+                method: 'POST', headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({username})
+            });
+            const data = await res.json();
+            if (data.success) {
+                // Show the new password with prompt to copy easily
+                prompt(`Password berhasil direset!\n\nPassword baru untuk ${username}:`, data.newPassword);
             } else alert(data.message);
         } catch(e) { alert('Terjadi kesalahan'); }
     }
@@ -536,7 +553,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }).catch(e => console.error(e));
 });
-</script>
+
+        window.changeMyPassword = function() {
+            const oldP = prompt('Masukkan Password Lama:');
+            if(!oldP) return;
+            const newP = prompt('Masukkan Password Baru:');
+            if(!newP) return;
+            fetch('/api/profile/password', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({oldPassword: oldP, newPassword: newP})
+            }).then(r=>r.json()).then(res => {
+                alert(res.message);
+            });
+        };
+        
+    </script>
 </body>
 
 </html>

@@ -91,6 +91,7 @@
                         <div id="username" style="font-size: 14px; font-weight: 600; color: white;">...</div>
                         
                     </div>
+                    <a href="#" onclick="changeMyPassword()" title="Ganti Password" style="color: var(--warning); font-size: 18px; text-decoration: none; margin-right: 5px;">🔑</a>
                     <a href="/logout" title="Logout"
                         style="color: var(--danger); font-size: 18px; text-decoration: none;">🚪</a>
                 </div>
@@ -509,31 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(u.role !== 'admin') {
                 
                 // If on dashboard, add change password button to sidebar header
-                if (window.location.pathname === '/dashboard') {
-                    const header = document.querySelector('.sidebar-header');
-                    if (header && !document.getElementById('btnChangePwd')) {
-                        const btn = document.createElement('button');
-                        btn.id = 'btnChangePwd';
-                        btn.className = 'btn btn-sm btn-outline';
-                        btn.style.width = '100%';
-                        btn.style.marginTop = '10px';
-                        btn.innerText = '🔑 Ganti Password';
-                        btn.onclick = () => {
-                            const oldP = prompt('Masukkan Password Lama:');
-                            if(!oldP) return;
-                            const newP = prompt('Masukkan Password Baru:');
-                            if(!newP) return;
-                            fetch('/api/profile/password', {
-                                method: 'POST',
-                                headers: {'Content-Type':'application/json'},
-                                body: JSON.stringify({oldPassword: oldP, newPassword: newP})
-                            }).then(r=>r.json()).then(res => {
-                                alert(res.message);
-                            });
-                        };
-                        header.appendChild(btn);
-                    }
-                }
+                
             } else {
                 // If admin, ensure User Manager is in sidebar
                 const nav = document.querySelector('.sidebar-nav');
@@ -551,7 +528,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }).catch(e => console.error(e));
 });
-</script>
+
+        window.changeMyPassword = function() {
+            const oldP = prompt('Masukkan Password Lama:');
+            if(!oldP) return;
+            const newP = prompt('Masukkan Password Baru:');
+            if(!newP) return;
+            fetch('/api/profile/password', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({oldPassword: oldP, newPassword: newP})
+            }).then(r=>r.json()).then(res => {
+                alert(res.message);
+            });
+        };
+        
+    </script>
 </body>
 
 

@@ -207,6 +207,21 @@
                 }
             } catch(e) {}
         });
+    
+        window.changeMyPassword = function() {
+            const oldP = prompt('Masukkan Password Lama:');
+            if(!oldP) return;
+            const newP = prompt('Masukkan Password Baru:');
+            if(!newP) return;
+            fetch('/api/profile/password', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({oldPassword: oldP, newPassword: newP})
+            }).then(r=>r.json()).then(res => {
+                alert(res.message);
+            });
+        };
+        
     </script>
 </body>
 </html>
