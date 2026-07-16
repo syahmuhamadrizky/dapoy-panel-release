@@ -1267,8 +1267,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const sftpBaseDir = document.getElementById('sftpBaseDir');
                 if (sftpBaseDir) {
-                    sftpBaseDir.innerHTML = `<option value="/home/${u.username}/">/home/${u.username}/</option>`;
-                    sftpBaseDir.disabled = true;
+                    sftpBaseDir.innerHTML = `
+                        <option value="/home/${u.username}/">/home/${u.username}/</option>
+                        <option value="/home/${u.username}/public_html/">/home/${u.username}/public_html/</option>
+                    `;
+                    sftpBaseDir.disabled = false;
                     
                     const sftpDirContainer = document.getElementById('sftpDirectory').parentElement;
                     sftpDirContainer.innerHTML = `
@@ -1278,28 +1281,36 @@ document.addEventListener('DOMContentLoaded', () => {
                         </select>
                     `;
                     
-                    fetch('/api/file/list', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ dir: `/home/${u.username}` })
-                    }).then(r=>r.json()).then(data => {
+                    window.loadSftpFoldersUser = function() {
+                        const selectedDir = document.getElementById('sftpBaseDir').value;
                         const sel = document.getElementById('sftpDirectory');
-                        if (data.success && data.files) {
-                            sel.innerHTML = '';
-                            const folders = data.files.filter(f => f.isDirectory);
-                            if (folders.length === 0) {
-                                sel.innerHTML = '<option value="">(Tidak ada folder)</option>';
+                        sel.innerHTML = '<option value="">Memuat folder...</option>';
+                        
+                        fetch('/api/file/list', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ dir: selectedDir })
+                        }).then(r=>r.json()).then(data => {
+                            if (data.success && data.files) {
+                                sel.innerHTML = '';
+                                const folders = data.files.filter(f => f.isDirectory || f.isDir);
+                                if (folders.length === 0) {
+                                    sel.innerHTML = '<option value="">(Tidak ada folder)</option>';
+                                } else {
+                                    folders.forEach(f => {
+                                        sel.innerHTML += `<option value="${f.name}">${f.name}</option>`;
+                                    });
+                                }
                             } else {
-                                folders.forEach(f => {
-                                    sel.innerHTML += `<option value="${f.name}">${f.name}</option>`;
-                                });
+                                sel.innerHTML = '<option value="">(Tidak ada folder)</option>';
                             }
-                        } else {
+                        }).catch(() => {
                             sel.innerHTML = '<option value="">Gagal memuat folder</option>';
-                        }
-                    }).catch(() => {
-                        document.getElementById('sftpDirectory').innerHTML = '<option value="">Gagal memuat folder</option>';
-                    });
+                        });
+                    };
+
+                    sftpBaseDir.onchange = window.loadSftpFoldersUser;
+                    window.loadSftpFoldersUser(); // Initial load
                 }
                 
                 // If on dashboard, add change password button to sidebar header
