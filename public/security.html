@@ -306,6 +306,7 @@
                 if (brandP) brandP.textContent = data.appDomain;
                 if (brandLogo) {
                     if (data.appLogo.startsWith('http') || data.appLogo.startsWith('/') || data.appLogo.startsWith('data:image')) {
+                        brandLogo.style.background = 'none';
                         brandLogo.innerHTML = '<img src="' + data.appLogo + '" style="width:100%;height:100%;border-radius:6px;object-fit:cover;">';
                     } else {
                         brandLogo.textContent = data.appLogo;
