@@ -219,7 +219,7 @@
                                     domain ke port lokal di server Anda</p>
                             </div>
                             <div class="flex gap-2">
-                                <button onclick="openApiSettings()" class="btn btn-outline">⚙️ Pengaturan API</button>
+                                <button id="btnApiSettings" onclick="openApiSettings()" class="btn btn-outline">⚙️ Pengaturan API</button>
                                 <button onclick="restartTunnel()" class="btn btn-outline" id="btnRestartTunnel">🚀
                                     Restart Service</button>
                             </div>
@@ -1257,6 +1257,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if(u.role !== 'admin') {
                 
+                const style = document.createElement('style');
+                style.innerHTML = \`
+                    #btnApiSettings { display: none !important; }
+                \`;
+                document.head.appendChild(style);
+
                 const tunnelHost = document.getElementById('tunnelHost');
                 if (tunnelHost) {
                     Array.from(tunnelHost.options).forEach(opt => {
