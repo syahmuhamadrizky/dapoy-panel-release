@@ -1258,9 +1258,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if(u.role !== 'admin') {
                 
                 const style = document.createElement('style');
-                style.innerHTML = \`
+                style.innerHTML = `
                     #btnApiSettings { display: none !important; }
-                \`;
+                `;
                 document.head.appendChild(style);
 
                 const tunnelHost = document.getElementById('tunnelHost');
