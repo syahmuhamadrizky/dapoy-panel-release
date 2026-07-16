@@ -241,10 +241,11 @@
             <div class="form-group mb-4">
                 <label class="form-label">Directory Path (Root Folder)</label>
                 <div class="flex gap-2">
-                    <select id="webBaseDir" class="form-control" style="flex: 1; font-family: monospace;">
+                    <select id="webLocation" class="form-control" onchange="updateSubfolder()" style="flex: 1; font-family: monospace;">
                         <option value="/www/dp/">/www/dp/</option>
                         <option value="/www/app/">/www/app/</option>
                         <option value="/www/project/">/www/project/</option>
+                        <option value="/home/">/home/</option>
                     </select>
                     <input type="text" oninput="this.value = this.value.replace(/\s+/g, '-')" id="webDirName"
                         placeholder="nama-folder" class="form-control" style="flex: 2; font-family: monospace;">
