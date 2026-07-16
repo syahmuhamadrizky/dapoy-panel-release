@@ -1291,7 +1291,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 sel.innerHTML = '<option value="">(Tidak ada folder)</option>';
                             } else {
                                 folders.forEach(f => {
-                                    sel.innerHTML += \`<option value="\${f.name}">\${f.name}</option>\`;
+                                    sel.innerHTML += `<option value="${f.name}">${f.name}</option>`;
                                 });
                             }
                         } else {
