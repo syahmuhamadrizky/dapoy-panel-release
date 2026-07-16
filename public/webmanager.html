@@ -657,7 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(u.role === 'admin') {
                 document.body.classList.add('is-admin');
             } else {
-                const userDir = `/home/${u.username}/`;
+                const userDir = `/home/${u.username}/public_html/`;
                 const sel_webLocation = document.getElementById('webLocation');
                 if (sel_webLocation) {
                     sel_webLocation.innerHTML = `<option value="${userDir}">${userDir}</option>`;
