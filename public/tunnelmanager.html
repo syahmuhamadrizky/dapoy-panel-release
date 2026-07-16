@@ -1256,6 +1256,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if(u.role !== 'admin') {
                 document.querySelectorAll('a[href="/settings"], a[href="/usermanager"], a[href="/terminal"]').forEach(el => el.style.display = 'none');
                 
+                const tunnelHost = document.getElementById('tunnelHost');
+                if (tunnelHost) {
+                    Array.from(tunnelHost.options).forEach(opt => {
+                        if (opt.value.startsWith('ssh://') || opt.value.startsWith('rdp://')) {
+                            opt.remove();
+                        }
+                    });
+                }
+                
                 // If on dashboard, add change password button to sidebar header
                 if (window.location.pathname === '/dashboard') {
                     const header = document.querySelector('.sidebar-header');
