@@ -443,6 +443,29 @@
                 const data = await res.json();
 
                 if (data.success) {
+                    if (data.allowedRoots && data.allowedRoots.length > 0) {
+                        const sel = document.getElementById('baseDirSelector');
+                        sel.innerHTML = '';
+                        data.allowedRoots.forEach(root => {
+                            const opt = document.createElement('option');
+                            opt.value = root.endsWith('/') ? root : root + '/';
+                            opt.textContent = opt.value;
+                            sel.appendChild(opt);
+                        });
+                        if (data.path && data.path !== currentPath) {
+                            currentPath = data.path;
+                        }
+                        for (let i = 0; i < sel.options.length; i++) {
+                            if (currentPath === sel.options[i].value || currentPath.startsWith(sel.options[i].value)) {
+                                sel.selectedIndex = i;
+                                break;
+                            }
+                        }
+                        updateBreadcrumb(currentPath);
+                    } else if (data.path && data.path !== currentPath) {
+                        currentPath = data.path;
+                        updateBreadcrumb(currentPath);
+                    }
                     tbody.innerHTML = '';
                     currentFiles = data.files ? data.files.map(f => f.name) : [];
 
@@ -450,7 +473,7 @@
                     let normBase = document.getElementById('baseDirSelector').value;
                     normBase = normBase.endsWith('/') && normBase.length > 1 ? normBase.slice(0, -1) : normBase;
 
-                    if (normCurrentPath !== normBase && normCurrentPath !== '/') {
+                    if (normCurrentPath !== normBase && normCurrentPath.length > normBase.length) {
                         const parentPath = currentPath.split('/').slice(0, -1).join('/') || '/';
                         tbody.innerHTML += `
                             <tr>
