@@ -1249,8 +1249,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     unEl.nextElementSibling.innerText = u.role === 'admin' ? 'Administrator' : 'User Panel'; 
                 }
             }
+            if(u.role === 'admin') {
+                document.body.classList.add('is-admin');
+            }
             if(u.role !== 'admin') {
-                document.querySelectorAll('a[href="/settings"], a[href="/usermanager"], a[href="/terminal"]').forEach(el => el.style.display = 'none');
                 
                 const style = document.createElement('style');
                 style.innerHTML = `

@@ -749,3 +749,24 @@ a:hover {
         margin-bottom: 12px !important;
     }
 }
+
+/* Sembunyikan menu admin secara default agar tidak kedip (flicker) */
+a.nav-item[href="/settings"], 
+a.nav-item[href="/usermanager"], 
+a.nav-item[href="/terminal"],
+a.bottom-nav-item[href="/settings"], 
+a.bottom-nav-item[href="/usermanager"], 
+a.bottom-nav-item[href="/terminal"] {
+    display: none !important;
+}
+
+body.is-admin a.nav-item[href="/settings"], 
+body.is-admin a.nav-item[href="/usermanager"], 
+body.is-admin a.nav-item[href="/terminal"] {
+    display: flex !important;
+}
+body.is-admin a.bottom-nav-item[href="/settings"], 
+body.is-admin a.bottom-nav-item[href="/usermanager"], 
+body.is-admin a.bottom-nav-item[href="/terminal"] {
+    display: flex !important;
+}
