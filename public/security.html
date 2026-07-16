@@ -24,16 +24,30 @@
             </div>
             <nav class="sidebar-nav" id="sidebarNav">
                 <a href="/dashboard" class="nav-item"><span class="icon">📊</span> Dashboard</a>
-                <a href="/webmanager" class="nav-item"><span class="icon">🌐</span> Web Manager</a>
-                <a href="/appmanager" class="nav-item"><span class="icon">📦</span> App Manager</a>
+                <a href="/tunnelmanager" class="nav-item"><span class="icon">☁️</span> Tunneling</a>
+                <a href="/webmanager" class="nav-item"><span class="icon">🌐</span> Website</a>
+                <a href="/appmanager" class="nav-item"><span class="icon">📦</span> Node &amp; Pyth</a>
                 <a href="/databasemanager" class="nav-item"><span class="icon">🗄️</span> Database</a>
-                <a href="/tunnelmanager" class="nav-item"><span class="icon">🚇</span> Tunnels</a>
-                <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span> phpMyAdmin</a>
                 <a href="/filemanager" class="nav-item"><span class="icon">📁</span> File Manager</a>
-                <a href="/terminal" class="nav-item"><span class="icon">🔧</span> Web Terminal</a>
-                <a href="/usermanager" class="nav-item" id="adminUserNav"><span class="icon">👥</span> User Manager</a>
-                <a href="/security" class="nav-item active" id="adminSecNav"><span class="icon">🛡️</span> Security Alerts</a>
-                <a href="/settings" class="nav-item"><span class="icon">⚙️</span> Settings</a>
+                <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span> phpMyAdmin</a>
+                <a href="/terminal" class="nav-item"><span class="icon">🔧</span> Terminal SSH</a>
+
+                <div style="flex: 1;"></div> <!-- Spacer -->
+
+                <!-- Trial & Donate -->
+                <div id="trialIndicator"
+                    style="display: none; justify-content: center; align-items: center; gap: 8px; margin-top: auto; margin-bottom: 10px; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px dashed rgba(239, 68, 68, 0.3); padding: 12px; border-radius: var(--radius-sm); font-weight: bold; font-size: 12px;">
+                    ⏱️ Trial: <span id="trialCountdown" style="font-family: monospace; font-size: 13px;">--:--:--</span>
+                </div>
+                <a href="javascript:void(0)" onclick="showDonateModal()" class="nav-item"
+                    style="margin-top: 0; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.3);"
+                    id="btnDonateOrReg">
+                    <span class="icon">💖</span> Donate
+                </a>
+
+                <a href="/usermanager" class="nav-item"><span class="icon">👥</span> User Manager</a>
+                <a href="/security" class="nav-item active"><span class="icon">🛡️</span> Security Alerts</a>
+                <a href="/settings" class="nav-item"><span class="icon">⚙️</span> Pengaturan Sistem</a>
             </nav>
 
             <div class="sidebar-header" style="border-top: 1px solid var(--sidebar-border); border-bottom: none; margin-top: 10px; padding-bottom: 0;">
