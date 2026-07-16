@@ -826,6 +826,7 @@
                 const data = await res.json();
                 if (data.success) {
                     loadUsers();
+                    loadDatabases();
                 } else {
                     alert('Gagal: ' + data.message);
                 }
@@ -873,6 +874,7 @@
                 if (data.success) {
                     alert('✅ ' + data.message);
                     document.getElementById('assignUserModal').style.display = 'none';
+                    loadDatabases();
                 } else {
                     alert('❌ Gagal: ' + data.message);
                 }
