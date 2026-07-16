@@ -1264,6 +1264,43 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
                 }
+
+                const sftpBaseDir = document.getElementById('sftpBaseDir');
+                if (sftpBaseDir) {
+                    sftpBaseDir.innerHTML = `<option value="/home/${u.username}/">/home/${u.username}/</option>`;
+                    sftpBaseDir.disabled = true;
+                    
+                    const sftpDirContainer = document.getElementById('sftpDirectory').parentElement;
+                    sftpDirContainer.innerHTML = `
+                        <label class="form-label">Nama Folder Web</label>
+                        <select id="sftpDirectory" class="form-control">
+                            <option value="">Memuat folder...</option>
+                        </select>
+                    `;
+                    
+                    fetch('/api/file/list', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ dir: `/home/${u.username}` })
+                    }).then(r=>r.json()).then(data => {
+                        const sel = document.getElementById('sftpDirectory');
+                        if (data.success && data.files) {
+                            sel.innerHTML = '';
+                            const folders = data.files.filter(f => f.isDirectory);
+                            if (folders.length === 0) {
+                                sel.innerHTML = '<option value="">(Tidak ada folder)</option>';
+                            } else {
+                                folders.forEach(f => {
+                                    sel.innerHTML += \`<option value="\${f.name}">\${f.name}</option>\`;
+                                });
+                            }
+                        } else {
+                            sel.innerHTML = '<option value="">Gagal memuat folder</option>';
+                        }
+                    }).catch(() => {
+                        document.getElementById('sftpDirectory').innerHTML = '<option value="">Gagal memuat folder</option>';
+                    });
+                }
                 
                 // If on dashboard, add change password button to sidebar header
                 if (window.location.pathname === '/dashboard') {
