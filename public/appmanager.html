@@ -972,6 +972,17 @@
                             brandLogo.textContent = data.appLogo;
                         }
                     }
+                    // Set Favicon dynamically
+                    let favicon = document.querySelector("link[rel~='icon']");
+                    if (!favicon) {
+                        favicon = document.createElement('link');
+                        favicon.rel = 'icon';
+                        document.head.appendChild(favicon);
+                    }
+                    if (data.appLogo.startsWith('http') || data.appLogo.startsWith('/') || data.appLogo.startsWith('data:image')) {
+                        favicon.href = data.appLogo;
+                    }
+
                 }
             } catch (e) { }
         });
