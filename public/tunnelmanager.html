@@ -1293,7 +1293,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }).then(r=>r.json()).then(data => {
                             if (data.success && data.files) {
                                 sel.innerHTML = '';
-                                const folders = data.files.filter(f => f.isDirectory || f.isDir);
+                                const folders = data.files.filter(f => (f.isDirectory || f.isDir) && f.name !== 'public_html');
                                 if (folders.length === 0) {
                                     sel.innerHTML = '<option value="">(Tidak ada folder)</option>';
                                 } else {
