@@ -336,6 +336,7 @@
                                     <th>Nama Aplikasi</th>
                                     <th>Status</th>
                                     <th>Port</th>
+                                    <th>Domain / URL</th>
                                     <th>Tipe</th>
                                     <th>CPU</th>
                                     <th>RAM</th>
@@ -496,6 +497,20 @@
                             isPython = true;
                         }
 
+                        let domainHtml = '';
+                        if (proc.active_domains && proc.active_domains.length > 0) {
+                            proc.active_domains.forEach(d => {
+                                domainHtml += `<a href="http://${d}" target="_blank" class="badge badge-success" style="margin-bottom:2px; display:inline-block; text-decoration:none;"><i class="fas fa-external-link-alt" style="font-size:10px; margin-right:4px;"></i>${d}</a><br>`;
+                            });
+                            domainHtml += `<button class="btn btn-sm btn-outline" style="padding: 2px 6px; font-size: 10px; margin-top: 4px;" onclick="openAppTunnelModal('${proc.name}', '${proc.active_port}')">➕ Tambah</button>`;
+                        } else {
+                            if (proc.active_port !== '-' && proc.pm2_env.status === 'online') {
+                                domainHtml = `<button class="btn btn-sm btn-primary" style="padding: 4px 8px; font-size: 11px;" onclick="openAppTunnelModal('${proc.name}', '${proc.active_port}')">➕ Tambah Tunnel</button>`;
+                            } else {
+                                domainHtml = '-';
+                            }
+                        }
+
                         const toggleBtn = proc.pm2_env.status === 'online'
                             ? `<button class="btn btn-sm btn-outline" style="color: var(--danger);" onclick="nodeAction('${proc.name}', 'stop')">⏸️ Stop</button>`
                             : `<button class="btn btn-sm btn-outline" style="color: var(--success);" onclick="nodeAction('${proc.name}', 'start')">▶️ Start</button>`;
@@ -509,6 +524,7 @@
                             <td><strong>${proc.name}</strong><br><small class="text-muted">ID: ${proc.pm_id}</small></td>
                             <td>${statusBadge}</td>
                             <td><strong>${proc.active_port || '-'}</strong></td>
+                            <td>${domainHtml}</td>
                             <td>${typeBadge}</td>
                             <td>${cpu}</td>
                             <td>${mem}</td>
@@ -955,7 +971,79 @@
                 }
             } catch (e) { }
         });
+
+        // App Tunnel Modal Logic
+        let targetAppPort = '';
+        function openAppTunnelModal(appName, port) {
+            targetAppPort = port;
+            document.getElementById('appTunnelAppName').innerText = appName;
+            document.getElementById('appTunnelPort').innerText = port;
+            document.getElementById('appTunnelHostname').value = '';
+            document.getElementById('appTunnelModal').style.display = 'flex';
+        }
+
+        async function submitAppTunnel() {
+            const hostname = document.getElementById('appTunnelHostname').value.trim();
+            if (!hostname) return alert('Masukkan nama domain!');
+            const service = 'http://localhost:' + targetAppPort;
+            
+            const btn = document.getElementById('btnSubmitAppTunnel');
+            btn.disabled = true;
+            btn.innerText = 'Menyimpan...';
+            
+            try {
+                // 1. Save config
+                const res = await fetch('/api/tunnel/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ hostname, service })
+                });
+                const result = await res.json();
+                if(!result.success) throw new Error(result.message);
+                
+                // 2. Restart tunnel
+                btn.innerText = 'Restarting Tunnel...';
+                const res2 = await fetch('/api/tunnel/restart', { method: 'POST' });
+                const result2 = await res2.json();
+                if(!result2.success) throw new Error(result2.message);
+                
+                alert('Tunnel berhasil ditambahkan dan di-restart!');
+                document.getElementById('appTunnelModal').style.display = 'none';
+                loadNodeList();
+            } catch(e) {
+                alert('Gagal: ' + e.message);
+            }
+            btn.disabled = false;
+            btn.innerText = 'Simpan & Restart Tunnel';
+        }
     </script>
+
+    <!-- APP TUNNEL MODAL -->
+    <div id="appTunnelModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div style="background: var(--bg-card); max-width: 450px; width: 90%; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden;">
+            <div style="padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0; color: var(--text-main); font-size: 16px;">Buat Tunnel untuk <span id="appTunnelAppName" style="color: var(--secondary);"></span></h3>
+                <button onclick="document.getElementById('appTunnelModal').style.display='none'" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 20px;">&times;</button>
+            </div>
+            <div style="padding: 20px;">
+                <div class="form-group">
+                    <label>Nama Domain / Subdomain</label>
+                    <input type="text" id="appTunnelHostname" class="form-control" placeholder="Contoh: app.dapoy.net" autocomplete="off">
+                    <small class="text-muted" style="display:block; margin-top:5px;">Pastikan CNAME / A Record domain ini sudah mengarah ke server atau Cloudflare Tunnel Anda.</small>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Target Lokal (Port Aplikasi)</label>
+                    <div style="background: var(--bg-main); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); color: var(--text-muted); font-family: monospace;">
+                        http://localhost:<span id="appTunnelPort"></span>
+                    </div>
+                </div>
+            </div>
+            <div style="padding: 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px; background: rgba(0,0,0,0.02);">
+                <button class="btn btn-secondary" onclick="document.getElementById('appTunnelModal').style.display='none'">Batal</button>
+                <button class="btn btn-primary" id="btnSubmitAppTunnel" onclick="submitAppTunnel()">Simpan & Restart Tunnel</button>
+            </div>
+        </div>
+    </div>
 
     <!-- DONATE MODAL -->
     <div id="donateModal"
