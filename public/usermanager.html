@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan Sistem - Dapoy Panel</title>
+    <link rel="stylesheet" href="/global.css?v=1781814963486">
+    <style>
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card-full {
+            grid-column: 1 / -1;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .icon-wrap {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .icon-wrap.blue {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .icon-wrap.green {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .icon-wrap.purple {
+            background: rgba(139, 92, 246, 0.1);
+            color: #8b5cf6;
+        }
+
+        .card-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0 0 4px 0;
+        }
+
+        .card-header p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo sidebar-brand-logo">🚀</div>
+                <div class="title sidebar-brand-h1">Dapoy Panel</div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="/dashboard" class="nav-item"><span class="icon">📊</span> Dashboard</a>
+                <a href="/tunnelmanager" class="nav-item"><span class="icon">☁️</span> Tunneling</a>
+                <a href="/webmanager" class="nav-item"><span class="icon">🌐</span> Website</a>
+                <a href="/appmanager" class="nav-item"><span class="icon">📦</span> Node &amp; Pyth</a>
+                <a href="/databasemanager" class="nav-item"><span class="icon">🗄️</span> Database</a>
+                <a href="/filemanager" class="nav-item"><span class="icon">📁</span> File Manager</a>
+                <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span> phpMyAdmin</a>
+                <a href="/terminal" class="nav-item"><span class="icon">🔧</span> Terminal SSH</a>
+
+                <div style="flex: 1;"></div> <!-- Spacer -->
+
+                <!-- Trial & Donate -->
+                <div id="trialIndicator"
+                    style="display: none; justify-content: center; align-items: center; gap: 8px; margin-top: auto; margin-bottom: 10px; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px dashed rgba(239, 68, 68, 0.3); padding: 12px; border-radius: var(--radius-sm); font-weight: bold; font-size: 12px;">
+                    ⏱️ Trial: <span id="trialCountdown" style="font-family: monospace; font-size: 13px;">--:--:--</span>
+                </div>
+                <a href="javascript:void(0)" onclick="showDonateModal()" class="nav-item"
+                    style="margin-top: 0; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.3);"
+                    id="btnDonateOrReg">
+                    <span class="icon">💖</span> Donate
+                </a>
+
+                <a href="/settings" class="nav-item active"><span class="icon">⚙️</span> Pengaturan Sistem</a>
+            </nav>
+
+            <div class="sidebar-header"
+                style="border-top: 1px solid var(--sidebar-border); border-bottom: none; margin-top: 10px; padding-bottom: 0;">
+                <div class="flex align-center gap-3" style="width: 100%;">
+                    <div
+                        style="width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                        👤</div>
+                    <div style="flex: 1;">
+                        <div id="username" style="font-size: 13px; font-weight: 600; color: white;">Admin</div>
+                        <div style="font-size: 11px; color: var(--text-sidebar);">Administrator</div>
+                    </div>
+                    <a href="/logout" title="Logout"
+                        style="color: var(--danger); font-size: 18px; text-decoration: none;">🚪</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        
+<main class="main-content">
+    <header class="topbar">
+        <div class="topbar-title">
+            <h2 style="font-size: 18px; font-weight: 700; color: var(--text-main);">👥 User Manager</h2>
+            <p style="font-size: 13px; color: var(--text-muted); margin: 4px 0 0 0;">Manajemen pengguna panel (Reseller) dan domain.</p>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <div class="card mb-4">
+            <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h3 style="margin:0;">Daftar Pengguna</h3>
+                </div>
+                <button class="btn btn-primary" onclick="openAddUserModal()">➕ Tambah User</button>
+            </div>
+            
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Domain yang Diizinkan</th>
+                            <th>Limit (Quota)</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr><td colspan="3" class="text-center text-muted py-4">Memuat...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+</div>
+
+<!-- Modal Tambah User -->
+<div class="modal-overlay" id="addUserModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Tambah User Baru</h2>
+            <button class="btn-close" onclick="closeAddUserModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" id="newUsername" class="form-control" placeholder="Contoh: budi">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" id="newPassword" class="form-control" placeholder="Minimal 6 karakter">
+            </div>
+            <p class="text-muted" style="font-size:12px; margin-top:8px;">Info: Akun MySQL dengan username dan password yang sama akan dibuatkan otomatis untuk akses database.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeAddUserModal()">Batal</button>
+            <button class="btn btn-primary" onclick="submitAddUser()">Simpan User</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Kelola Limit -->
+<div class="modal-overlay" id="limitModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Kelola Limit User</h2>
+            <button class="btn-close" onclick="closeLimitModal()">x</button>
+        </div>
+        <div class="modal-body">
+            <p class="text-muted mb-3">User <strong id="limitTargetUser"></strong></p>
+            <div class="form-group mb-3">
+                <label class="form-label">Maksimal Database</label>
+                <input type="number" id="limitMaxDb" class="form-control" placeholder="5">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label">Maksimal Disk (MB)</label>
+                <input type="number" id="limitMaxDiskMB" class="form-control" placeholder="1024">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label">Maksimal Aplikasi Node</label>
+                <input type="number" id="limitMaxApp" class="form-control" placeholder="3">
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label">Maksimal RAM / App (MB)</label>
+                <input type="number" id="limitMaxRamMB" class="form-control" placeholder="512">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeLimitModal()">Batal</button>
+            <button class="btn btn-primary" onclick="saveLimits()">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Kelola Domain -->
+<div class="modal-overlay" id="domainModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Kelola Domain User</h2>
+            <button class="btn-close" onclick="closeDomainModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <p class="text-muted mb-3">User <strong id="domainTargetUser"></strong> hanya bisa menggunakan domain di bawah ini saat membuat Web atau Tunnel.</p>
+            <div class="form-group">
+                <label class="form-label">Tambah Domain Baru</label>
+                <div class="flex gap-2">
+                    <input type="text" id="newDomainInput" class="form-control" placeholder="contoh: budi.com">
+                    <button class="btn btn-primary" onclick="addDomainToTarget()">Tambah</button>
+                </div>
+            </div>
+            <div id="domainList" style="margin-top:16px; display:flex; flex-direction:column; gap:8px;">
+                <!-- Domains go here -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="closeDomainModal()">Tutup</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let usersList = [];
+    let currentDomainUser = null;
+    let currentLimitUser = null;
+    
+    function openLimitModal(username) {
+        currentLimitUser = usersList.find(u => u.username === username);
+        if(!currentLimitUser) return;
+        document.getElementById('limitTargetUser').innerText = username;
+        document.getElementById('limitMaxDb').value = currentLimitUser.limits?.maxDb || 5;
+        document.getElementById('limitMaxDiskMB').value = currentLimitUser.limits?.maxDiskMB || 1024;
+        document.getElementById('limitMaxApp').value = currentLimitUser.limits?.maxApp || 3;
+        document.getElementById('limitMaxRamMB').value = currentLimitUser.limits?.maxRamMB || 512;
+        document.getElementById('limitModal').classList.add('active');
+    }
+    function closeLimitModal() { document.getElementById('limitModal').classList.remove('active'); }
+    
+    async function saveLimits() {
+        const limits = {
+            maxDb: parseInt(document.getElementById('limitMaxDb').value) || 5,
+            maxDiskMB: parseInt(document.getElementById('limitMaxDiskMB').value) || 1024,
+            maxApp: parseInt(document.getElementById('limitMaxApp').value) || 3,
+            maxRamMB: parseInt(document.getElementById('limitMaxRamMB').value) || 512
+        };
+        try {
+            const res = await fetch('/api/users/limits', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: currentLimitUser.username, limits })
+            });
+            const data = await res.json();
+            if(data.success) {
+                closeLimitModal();
+                fetchUsers();
+            } else {
+                alert(data.message);
+            }
+        } catch(e) { alert('Error updating limits'); }
+    }
+
+    async function fetchUsers() {
+        try {
+            const res = await fetch('/api/users');
+            const data = await res.json();
+            if (data.success) {
+                usersList = data.users;
+                renderTable();
+            }
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('usersTableBody');
+        if(usersList.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-4">Tidak ada user lain selain admin.</td></tr>';
+            return;
+        }
+        
+        let html = '';
+        usersList.forEach(u => {
+            const domains = (u.allowedDomains || []).map(d => `<span class="badge badge-success" style="font-size:10px; margin-right:4px;">${d}</span>`).join('');
+            html += `
+            <tr>
+                <td><strong>${u.username}</strong></td>
+                <td>${domains || '<span class="text-muted" style="font-size:11px;">Semua Domain (TIDAK AMAN)</span>'}</td>
+                <td>
+                    <div style="font-size: 11px; color: var(--text-muted);">
+                        DB: ${u.limits?.maxDb || 5} | Disk: ${u.limits?.maxDiskMB || 1024}MB<br>
+                        App: ${u.limits?.maxApp || 3} | RAM: ${u.limits?.maxRamMB || 512}MB
+                    </div>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-outline" onclick="openDomainModal('${u.username}')">🌐 Domain</button>
+                    <button class="btn btn-sm btn-outline" style="color:var(--warning); border-color:var(--warning);" onclick="openLimitModal('${u.username}')">⚙️ Limit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteUser('${u.username}')">🗑️</button>
+                </td>
+            </tr>`;
+        });
+        tbody.innerHTML = html;
+    }
+
+    function openAddUserModal() { document.getElementById('addUserModal').classList.add('active'); }
+    function closeAddUserModal() { document.getElementById('addUserModal').classList.remove('active'); }
+    
+    async function submitAddUser() {
+        const username = document.getElementById('newUsername').value;
+        const password = document.getElementById('newPassword').value;
+        if(!username || !password) return alert('Lengkapi data');
+        
+        try {
+            const res = await fetch('/api/users/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+            if(data.success) {
+                closeAddUserModal();
+                fetchUsers();
+            } else {
+                alert(data.message);
+            }
+        } catch(e) { alert('Terjadi kesalahan'); }
+    }
+
+    async function deleteUser(username) {
+        if(!confirm('Yakin hapus user ' + username + '? Data aplikasi dan MySQL nya harus dihapus manual!')) return;
+        try {
+            const res = await fetch('/api/users/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username })
+            });
+            const data = await res.json();
+            if(data.success) fetchUsers();
+            else alert(data.message);
+        } catch(e) { alert('Terjadi kesalahan'); }
+    }
+
+    function openDomainModal(username) {
+        currentDomainUser = usersList.find(u => u.username === username);
+        if(!currentDomainUser) return;
+        document.getElementById('domainTargetUser').innerText = username;
+        renderDomainList();
+        document.getElementById('domainModal').classList.add('active');
+    }
+    
+    function closeDomainModal() { document.getElementById('domainModal').classList.remove('active'); }
+
+    function renderDomainList() {
+        const container = document.getElementById('domainList');
+        if(!currentDomainUser.allowedDomains || currentDomainUser.allowedDomains.length === 0) {
+            container.innerHTML = '<span class="text-muted" style="font-size:12px;">User belum memiliki batasan domain. (Berbahaya: Bisa memakai domain apa saja).</span>';
+            return;
+        }
+        container.innerHTML = currentDomainUser.allowedDomains.map(d => `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:8px 12px; border-radius:4px;">
+                <span>${d}</span>
+                <button class="btn btn-sm btn-danger" onclick="removeDomain('${d}')">Hapus</button>
+            </div>
+        `).join('');
+    }
+
+    async function updateDomainsApi() {
+        try {
+            await fetch('/api/users/domains', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: currentDomainUser.username, domains: currentDomainUser.allowedDomains })
+            });
+            fetchUsers();
+        } catch(e) { alert('Error updating domains'); }
+    }
+
+    async function addDomainToTarget() {
+        const input = document.getElementById('newDomainInput');
+        const val = input.value.trim();
+        if(!val) return;
+        if(!currentDomainUser.allowedDomains) currentDomainUser.allowedDomains = [];
+        if(!currentDomainUser.allowedDomains.includes(val)) {
+            currentDomainUser.allowedDomains.push(val);
+            await updateDomainsApi();
+            renderDomainList();
+            input.value = '';
+        }
+    }
+
+    async function removeDomain(d) {
+        currentDomainUser.allowedDomains = currentDomainUser.allowedDomains.filter(x => x !== d);
+        await updateDomainsApi();
+        renderDomainList();
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchUsers);
+</script>
+
+<!-- Dapoy Panel Multi-User Script -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/api/me').then(r=>r.json()).then(d => {
+        if(d.success) {
+            const u = d.user;
+            const unEl = document.getElementById('username');
+            if(unEl) { 
+                unEl.innerText = u.username; 
+                if(unEl.nextElementSibling) {
+                    unEl.nextElementSibling.innerText = u.role === 'admin' ? 'Administrator' : 'User Panel'; 
+                }
+            }
+            if(u.role !== 'admin') {
+                document.querySelectorAll('a[href="/settings"], a[href="/usermanager"], a[href="/terminal"]').forEach(el => el.style.display = 'none');
+                
+                // If on dashboard, add change password button to sidebar header
+                if (window.location.pathname === '/dashboard') {
+                    const header = document.querySelector('.sidebar-header');
+                    if (header && !document.getElementById('btnChangePwd')) {
+                        const btn = document.createElement('button');
+                        btn.id = 'btnChangePwd';
+                        btn.className = 'btn btn-sm btn-outline';
+                        btn.style.width = '100%';
+                        btn.style.marginTop = '10px';
+                        btn.innerText = '🔑 Ganti Password';
+                        btn.onclick = () => {
+                            const oldP = prompt('Masukkan Password Lama:');
+                            if(!oldP) return;
+                            const newP = prompt('Masukkan Password Baru:');
+                            if(!newP) return;
+                            fetch('/api/profile/password', {
+                                method: 'POST',
+                                headers: {'Content-Type':'application/json'},
+                                body: JSON.stringify({oldPassword: oldP, newPassword: newP})
+                            }).then(r=>r.json()).then(res => {
+                                alert(res.message);
+                            });
+                        };
+                        header.appendChild(btn);
+                    }
+                }
+            } else {
+                // If admin, ensure User Manager is in sidebar
+                const nav = document.querySelector('.sidebar-nav');
+                if (nav && !document.querySelector('a[href="/usermanager"]')) {
+                    const settingsLink = document.querySelector('a[href="/settings"]');
+                    if (settingsLink) {
+                        const umLink = document.createElement('a');
+                        umLink.href = '/usermanager';
+                        umLink.className = 'nav-item' + (window.location.pathname === '/usermanager' ? ' active' : '');
+                        umLink.innerHTML = '<span class="icon">👥</span> User Manager';
+                        nav.insertBefore(umLink, settingsLink);
+                    }
+                }
+            }
+        }
+    }).catch(e => console.error(e));
+});
+</script>
+</body>
+
+</html>

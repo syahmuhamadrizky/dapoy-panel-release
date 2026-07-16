@@ -491,6 +491,68 @@
 
         document.addEventListener('DOMContentLoaded', fetchLicenseStatus);
     </script>
+
+<!-- Dapoy Panel Multi-User Script -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/api/me').then(r=>r.json()).then(d => {
+        if(d.success) {
+            const u = d.user;
+            const unEl = document.getElementById('username');
+            if(unEl) { 
+                unEl.innerText = u.username; 
+                if(unEl.nextElementSibling) {
+                    unEl.nextElementSibling.innerText = u.role === 'admin' ? 'Administrator' : 'User Panel'; 
+                }
+            }
+            if(u.role !== 'admin') {
+                document.querySelectorAll('a[href="/settings"], a[href="/usermanager"], a[href="/terminal"]').forEach(el => el.style.display = 'none');
+                
+                // If on dashboard, add change password button to sidebar header
+                if (window.location.pathname === '/dashboard') {
+                    const header = document.querySelector('.sidebar-header');
+                    if (header && !document.getElementById('btnChangePwd')) {
+                        const btn = document.createElement('button');
+                        btn.id = 'btnChangePwd';
+                        btn.className = 'btn btn-sm btn-outline';
+                        btn.style.width = '100%';
+                        btn.style.marginTop = '10px';
+                        btn.innerText = '🔑 Ganti Password';
+                        btn.onclick = () => {
+                            const oldP = prompt('Masukkan Password Lama:');
+                            if(!oldP) return;
+                            const newP = prompt('Masukkan Password Baru:');
+                            if(!newP) return;
+                            fetch('/api/profile/password', {
+                                method: 'POST',
+                                headers: {'Content-Type':'application/json'},
+                                body: JSON.stringify({oldPassword: oldP, newPassword: newP})
+                            }).then(r=>r.json()).then(res => {
+                                alert(res.message);
+                            });
+                        };
+                        header.appendChild(btn);
+                    }
+                }
+            } else {
+                // If admin, ensure User Manager is in sidebar
+                const nav = document.querySelector('.sidebar-nav');
+                if (nav && !document.querySelector('a[href="/usermanager"]')) {
+                    const settingsLink = document.querySelector('a[href="/settings"]');
+                    if (settingsLink) {
+                        const umLink = document.createElement('a');
+                        umLink.href = '/usermanager';
+                        umLink.className = 'nav-item' + (window.location.pathname === '/usermanager' ? ' active' : '');
+                        umLink.innerHTML = '<span class="icon">👥</span> User Manager';
+                        nav.insertBefore(umLink, settingsLink);
+                    }
+                }
+            }
+        }
+    }).catch(e => console.error(e));
+});
+</script>
 </body>
+
 
 </html>
