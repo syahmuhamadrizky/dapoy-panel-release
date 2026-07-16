@@ -932,7 +932,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (window.location.pathname === '/filemanager') {
                     const style = document.createElement('style');
                     style.innerHTML = `
-                        .quick-access { display: none !important; }
+                        #baseDirSelector { display: none !important; }
                         /* Change the text of the current path if they see the full path */
                     `;
                     document.head.appendChild(style);
