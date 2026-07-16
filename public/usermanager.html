@@ -313,7 +313,8 @@
             html += `
             <tr>
                 <td><strong>${u.username}</strong></td>
-                <td>${domains || '<span class="text-muted" style="font-size:11px;">Semua Domain (TIDAK AMAN)</span>'}</td>
+                  <td><span class="badge ${u.role === 'admin' ? 'badge-danger' : 'badge-primary'}">${(u.role || 'user').toUpperCase()}</span></td>
+                  <td>${domains || '<span class="text-muted" style="font-size:11px;">Semua Domain (TIDAK AMAN)</span>'}</td>
                 <td>
                     <div style="font-size: 11px; color: var(--text-muted);">
                         DB: ${u.limits?.maxDb || 5} | Disk: ${u.limits?.maxDiskMB || 1024}MB<br>
