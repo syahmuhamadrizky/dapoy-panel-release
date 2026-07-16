@@ -304,8 +304,11 @@
                                 </div>
                                 <div style="flex: 1;">
                                     <label class="form-label">Password</label>
-                                    <input type="password" id="sftpPassword" class="form-control"
-                                        placeholder="Buat password rahasia...">
+                                    <div style="display: flex; gap: 8px;">
+                                        <input type="password" id="sftpPassword" class="form-control"
+                                            placeholder="Buat password rahasia..." style="flex: 1;">
+                                        <button type="button" class="btn btn-outline" onclick="document.getElementById('sftpPassword').type='text'; document.getElementById('sftpPassword').value = generatePassword()">Generate</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group flex gap-2">
@@ -996,6 +999,10 @@
             const btn = document.getElementById('btnCreateSftpUser');
 
             if (!username || !password || !dirInput) return alert('Semua kolom harus diisi!');
+            
+            if (password.length < 8) return alert('Password minimal harus 8 karakter!');
+            if (!/[A-Z]/.test(password)) return alert('Password harus memiliki minimal 1 huruf besar!');
+            if (!/[!@#$%^&*(),.?":{}|<>\-=\[\]\/\\]/.test(password)) return alert('Password harus memiliki minimal 1 karakter simbol!');
 
             if (dirInput.startsWith('/')) dirInput = dirInput.substring(1);
             const directory = baseDir + dirInput;
@@ -1025,8 +1032,26 @@
                 alert('Error: ' + e.message);
             } finally {
                 btn.disabled = false;
+                btn.disabled = false;
                 btn.innerHTML = '+ Buat Akun SFTP';
             }
+        }
+
+        function generatePassword(length = 12) {
+            const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+            let retVal = "";
+            let hasUpper = false;
+            let hasSymbol = false;
+            
+            while (!hasUpper || !hasSymbol) {
+                retVal = "";
+                for (let i = 0, n = charset.length; i < length; ++i) {
+                    retVal += charset.charAt(Math.floor(Math.random() * n));
+                }
+                hasUpper = /[A-Z]/.test(retVal);
+                hasSymbol = /[!@#$%^&*()_+]/.test(retVal);
+            }
+            return retVal;
         }
 
         async function deleteSftpUser(username) {

@@ -291,7 +291,10 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Password User</label>
-                                        <input type="text" id="mysqlDbPass" placeholder="Masukkan password yang kuat" class="form-control" required="">
+                                        <div style="display: flex; gap: 8px;">
+                                            <input type="text" id="mysqlDbPass" placeholder="Masukkan password yang kuat" class="form-control" required="" style="flex: 1;">
+                                            <button type="button" class="btn btn-outline" onclick="document.getElementById('mysqlDbPass').value = generatePassword()">Generate</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="text-right">
@@ -329,6 +332,9 @@
                         </div>
                         <div style="padding: 16px;">
                             <p class="text-muted" style="margin-bottom: 16px; font-size: 13px;">Database: <strong id="assignDbNameLabel" style="color:var(--text-main);"></strong></p>
+                            
+                            <div id="assignedUsersList" style="margin-bottom: 16px;"></div>
+
                             <div class="form-group mb-4">
                                 <label class="form-label">Pilih User</label>
                                 <select id="assignUserSelect" class="form-control"></select>
@@ -662,7 +668,7 @@
                     : '<span class="text-muted" style="font-size:11px;">Belum ada akses</span>';
 
                 const actionBtns = `
-                    <button class="btn btn-sm btn-outline" style="color:var(--secondary); border-color:var(--secondary);" onclick="openAssignModal('${db}')" title="Tugaskan User">🔑 Assign User</button>
+                    <button class="btn btn-sm btn-outline" style="color:var(--secondary); border-color:var(--secondary);" onclick="openAssignModal('${db}', '${users.join(',')}')" title="Tugaskan User">🔑 Assign User</button>
                     <button class="btn btn-sm btn-danger" onclick="deleteDatabase('${db}')" title="Hapus Database">🗑️</button>`;
                 html += `
                 <tr>
@@ -765,6 +771,7 @@
             const dbUser = document.getElementById('mysqlDbUser').value.trim();
             const dbPass = document.getElementById('mysqlDbPass').value;
             if (!dbUser || !dbPass) return alert('Semua field wajib diisi!');
+            if (dbPass.length < 8) return alert('Password harus minimal 8 karakter!');
             if (!/[A-Z]/.test(dbPass) || !/[!@#$%^&*(),.?":{}|<>]/.test(dbPass)) return alert('Password harus memiliki minimal 1 huruf besar dan 1 karakter simbol!');
             if (!/^[a-zA-Z0-9_]+$/.test(dbUser)) return alert('Username hanya boleh berisi huruf, angka, dan underscore (_).');
 
@@ -835,11 +842,26 @@
             }
         }
 
-        async function openAssignModal(dbName) {
+        async function openAssignModal(dbName, assignedUsersStr = '') {
             document.getElementById('assignDbNameLabel').textContent = dbName;
             const select = document.getElementById('assignUserSelect');
             select.innerHTML = '<option>Loading...</option>';
             document.getElementById('assignUserModal').style.display = 'flex';
+
+            const assignedUsersContainer = document.getElementById('assignedUsersList');
+            if(assignedUsersContainer) {
+                const assignedUsers = assignedUsersStr ? assignedUsersStr.split(',') : [];
+                if(assignedUsers.length > 0) {
+                    let html = '<label class="form-label" style="font-size:12px; margin-bottom:8px; display:block;">User yang memiliki akses:</label><div style="display:flex; flex-wrap:wrap; gap:8px;">';
+                    assignedUsers.forEach(u => {
+                        html += `<span class="badge" style="font-size:11px; background: rgba(255,255,255,0.1); border: 1px solid var(--secondary); color: var(--text-color); display:flex; align-items:center; gap:4px;">👤 ${u} <button onclick="revokeUser('${dbName}', '${u}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-weight:bold; padding:0 2px;" title="Cabut Akses">×</button></span>`;
+                    });
+                    html += '</div>';
+                    assignedUsersContainer.innerHTML = html;
+                } else {
+                    assignedUsersContainer.innerHTML = '<label class="form-label" style="font-size:12px; margin-bottom:8px; display:block;">User yang memiliki akses:</label><span class="text-muted" style="font-size:11px;">Belum ada</span>';
+                }
+            }
 
             try {
                 const res = await fetch('/api/database/users');
@@ -883,6 +905,45 @@
             }
         }
 
+        async function revokeUser(dbName, dbUser) {
+            if (!confirm(`Yakin ingin mencabut akses user '${dbUser}' dari database '${dbName}'?`)) return;
+
+            try {
+                const res = await fetch('/api/database/revoke-user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ dbName, dbUser })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('✅ ' + data.message);
+                    document.getElementById('assignUserModal').style.display = 'none';
+                    loadDatabases();
+                } else {
+                    alert('❌ Gagal: ' + data.message);
+                }
+            } catch (e) {
+                alert('❌ Error sistem: ' + e.message);
+            }
+        }
+
+        function generatePassword(length = 12) {
+            const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+            let retVal = "";
+            let hasUpper = false;
+            let hasSymbol = false;
+            
+            while (!hasUpper || !hasSymbol) {
+                retVal = "";
+                for (let i = 0, n = charset.length; i < length; ++i) {
+                    retVal += charset.charAt(Math.floor(Math.random() * n));
+                }
+                hasUpper = /[A-Z]/.test(retVal);
+                hasSymbol = /[!@#$%^&*()_+]/.test(retVal);
+            }
+            return retVal;
+        }
+
         function openEditPassModal(dbUser) {
             document.getElementById('editPassUserLabel').textContent = dbUser;
             document.getElementById('editPassNew').value = '';
@@ -893,6 +954,7 @@
             const dbUser = document.getElementById('editPassUserLabel').textContent;
             const dbPass = document.getElementById('editPassNew').value;
             if (!dbPass) return alert('Password baru wajib diisi!');
+            if (dbPass.length < 8) return alert('Password harus minimal 8 karakter!');
             if (!/[A-Z]/.test(dbPass) || !/[!@#$%^&*(),.?":{}|<>]/.test(dbPass)) return alert('Password harus memiliki minimal 1 huruf besar dan 1 karakter simbol!');
 
             try {
