@@ -1281,6 +1281,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if(u.role === 'admin') {
                 document.body.classList.add('is-admin');
+            } else {
+                const userDir = `/home/${u.username}/`;
+                const sel_sftpBaseDir = document.getElementById('sftpBaseDir');
+                if (sel_sftpBaseDir) {
+                    sel_sftpBaseDir.innerHTML = `<option value="${userDir}">${userDir}</option>`;
+                    sel_sftpBaseDir.value = userDir;
+                }
+            }
             }
             if(u.role !== 'admin') {
                 
