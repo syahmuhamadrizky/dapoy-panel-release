@@ -230,11 +230,26 @@
         </div>
         <div class="modal-body">
             <p class="text-muted mb-3">User <strong id="domainTargetUser"></strong> hanya bisa menggunakan domain di bawah ini saat membuat Web atau Tunnel.</p>
-            <div class="form-group">
-                <label class="form-label">Tambah Domain Baru</label>
+            <div class="form-group" id="domainAutoGroup">
+                <label class="form-label">Pilih Domain Baru</label>
                 <div class="flex gap-2">
-                    <input type="text" id="newDomainInput" class="form-control" placeholder="contoh: budi.com">
+                    <select id="newDomainSelect" class="form-control" style="flex: 1;">
+                        <option value="">Memuat domain...</option>
+                    </select>
                     <button class="btn btn-primary" onclick="addDomainToTarget()">Tambah</button>
+                </div>
+                <div class="text-right mt-2" style="text-align: right; margin-top: 8px;">
+                    <a href="javascript:void(0)" onclick="toggleDomainMode()" style="color: var(--primary); font-size: 12px; text-decoration: none;">Gunakan Input Manual</a>
+                </div>
+            </div>
+            <div class="form-group" id="domainManualGroup" style="display: none;">
+                <label class="form-label">Tambah Domain Baru (Manual)</label>
+                <div class="flex gap-2">
+                    <input type="text" id="newDomainInputManual" class="form-control" placeholder="contoh: budi.com">
+                    <button class="btn btn-primary" onclick="addDomainToTarget()">Tambah</button>
+                </div>
+                <div class="text-right mt-2" style="text-align: right; margin-top: 8px;">
+                    <a href="javascript:void(0)" onclick="toggleDomainMode()" style="color: var(--primary); font-size: 12px; text-decoration: none;">Gunakan Pilihan Domain</a>
                 </div>
             </div>
             <div id="domainList" style="margin-top:16px; display:flex; flex-direction:column; gap:8px;">
@@ -402,16 +417,51 @@
         } catch(e) { alert('Error updating domains'); }
     }
 
+    let domainMode = 'auto';
+    function toggleDomainMode() {
+        if (domainMode === 'auto') {
+            domainMode = 'manual';
+            document.getElementById('domainAutoGroup').style.display = 'none';
+            document.getElementById('domainManualGroup').style.display = 'block';
+        } else {
+            domainMode = 'auto';
+            document.getElementById('domainAutoGroup').style.display = 'block';
+            document.getElementById('domainManualGroup').style.display = 'none';
+        }
+    }
+
+    async function loadCloudflareDomains() {
+        try {
+            const res = await fetch('/api/cloudflare/zones');
+            const data = await res.json();
+            const select = document.getElementById('newDomainSelect');
+            if (data.success && data.zones && data.zones.length > 0) {
+                select.innerHTML = '';
+                data.zones.forEach(zone => {
+                    select.innerHTML += `<option value="${zone}">${zone}</option>`;
+                });
+            } else {
+                select.innerHTML = '<option value="">Belum ada domain di CF</option>';
+            }
+        } catch (e) {
+            document.getElementById('newDomainSelect').innerHTML = '<option value="">Gagal memuat domain</option>';
+        }
+    }
+
     async function addDomainToTarget() {
-        const input = document.getElementById('newDomainInput');
-        const val = input.value.trim();
+        let val = '';
+        if (domainMode === 'auto') {
+            val = document.getElementById('newDomainSelect').value;
+        } else {
+            val = document.getElementById('newDomainInputManual').value.trim();
+        }
         if(!val) return;
         if(!currentDomainUser.allowedDomains) currentDomainUser.allowedDomains = [];
         if(!currentDomainUser.allowedDomains.includes(val)) {
             currentDomainUser.allowedDomains.push(val);
             await updateDomainsApi();
             renderDomainList();
-            input.value = '';
+            document.getElementById('newDomainInputManual').value = '';
         }
     }
 
@@ -421,7 +471,10 @@
         renderDomainList();
     }
 
-    document.addEventListener('DOMContentLoaded', fetchUsers);
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchUsers();
+        loadCloudflareDomains();
+    });
 </script>
 
 <!-- Dapoy Panel Multi-User Script -->
