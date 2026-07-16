@@ -140,6 +140,7 @@
                     <thead>
                         <tr>
                             <th>Username</th>
+                            <th>Role</th>
                             <th>Domain yang Diizinkan</th>
                             <th>Limit (Quota)</th>
                             <th>Aksi</th>
@@ -170,6 +171,13 @@
             <div class="form-group">
                 <label class="form-label">Password</label>
                 <input type="password" id="newPassword" class="form-control" placeholder="Minimal 6 karakter">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Role</label>
+                <select id="newRole" class="form-control">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
             </div>
             <p class="text-muted" style="font-size:12px; margin-top:8px;">Info: Akun MySQL dengan username dan password yang sama akan dibuatkan otomatis untuk akses database.</p>
         </div>
@@ -328,13 +336,14 @@
     async function submitAddUser() {
         const username = document.getElementById('newUsername').value;
         const password = document.getElementById('newPassword').value;
+        const role = document.getElementById('newRole').value;
         if(!username || !password) return alert('Lengkapi data');
         
         try {
             const res = await fetch('/api/users/add', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({ username, password, role })
             });
             const data = await res.json();
             if(data.success) {
