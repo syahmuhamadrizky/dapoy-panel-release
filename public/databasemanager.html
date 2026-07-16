@@ -764,6 +764,7 @@
             const dbUser = document.getElementById('mysqlDbUser').value.trim();
             const dbPass = document.getElementById('mysqlDbPass').value;
             if (!dbUser || !dbPass) return alert('Semua field wajib diisi!');
+            if (!/[A-Z]/.test(dbPass) || !/[!@#$%^&*(),.?":{}|<>]/.test(dbPass)) return alert('Password harus memiliki minimal 1 huruf besar dan 1 karakter simbol!');
             if (!/^[a-zA-Z0-9_]+$/.test(dbUser)) return alert('Username hanya boleh berisi huruf, angka, dan underscore (_).');
 
             const btn = document.getElementById('btnCreateUser');
@@ -889,6 +890,7 @@
             const dbUser = document.getElementById('editPassUserLabel').textContent;
             const dbPass = document.getElementById('editPassNew').value;
             if (!dbPass) return alert('Password baru wajib diisi!');
+            if (!/[A-Z]/.test(dbPass) || !/[!@#$%^&*(),.?":{}|<>]/.test(dbPass)) return alert('Password harus memiliki minimal 1 huruf besar dan 1 karakter simbol!');
 
             try {
                 const res = await fetch('/api/database/edit-user', {
