@@ -165,7 +165,7 @@
 
                 <div id="tab-mysql" class="tab-content active">
                     <!-- Card: Status & Install MySQL -->
-                    <div class="card mb-4"
+                    <div class="card mb-4" id="mysqlStatusCard"
                         style="border: 1px solid rgba(139, 92, 246, 0.3); background: rgba(139, 92, 246, 0.05);">
                         <div class="flex flex-between align-center">
                             <div>
@@ -1162,6 +1162,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 style.innerHTML = `
                     button[title="Tugaskan User"] { display: none !important; }
                     #pmaSection { display: none !important; }
+                    #mysqlStatusCard { display: none !important; }
                 `;
                 document.head.appendChild(style);
                 
