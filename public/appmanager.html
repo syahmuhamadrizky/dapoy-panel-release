@@ -1265,11 +1265,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     sel_pythonAppBaseDir.value = userDir;
                 }
             }
-                const sel_pythonAppBaseDir = document.getElementById('pythonAppBaseDir');
-                if (sel_pythonAppBaseDir) {
-                    sel_pythonAppBaseDir.innerHTML = `<option value="${userDir}">${userDir}</option>`;
-                    sel_pythonAppBaseDir.value = userDir;
-                }
             if(u.role !== 'admin') {
                 
                 const style = document.createElement('style');

@@ -531,6 +531,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         umLink.className = 'nav-item' + (window.location.pathname === '/usermanager' ? ' active' : '');
                         umLink.innerHTML = '<span class="icon">👥</span> User Manager';
                         nav.insertBefore(umLink, settingsLink);
+
+                        const secLink = document.createElement('a');
+                        secLink.href = '/security';
+                        secLink.className = 'nav-item';
+                        secLink.innerHTML = '<span class="icon">🛡️</span> Security Alerts';
+                        nav.insertBefore(secLink, settingsLink);
                     }
                 }
             }
