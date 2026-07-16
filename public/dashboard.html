@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -51,34 +51,34 @@
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <div class="logo sidebar-brand-logo">ðŸš€</div>
+                <div class="logo sidebar-brand-logo">🚀</div>
                 <div class="title sidebar-brand-h1">Dapoy Panel</div>
             </div>
 
             <nav class="sidebar-nav">
-                <a href="/dashboard" class="nav-item active"><span class="icon">ðŸ“Š</span> Dashboard</a>
-                <a href="/tunnelmanager" class="nav-item"><span class="icon">â˜ï¸</span> Tunneling</a>
-                <a href="/webmanager" class="nav-item"><span class="icon">ðŸŒ</span> Website</a>
-                <a href="/appmanager" class="nav-item"><span class="icon">ðŸ“¦</span> Node &amp; Pyth</a>
-                <a href="/databasemanager" class="nav-item"><span class="icon">ðŸ—„ï¸</span> Database</a>
-                <a href="/filemanager" class="nav-item"><span class="icon">ðŸ“</span> File Manager</a>
-                <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">ðŸ¬</span> phpMyAdmin</a>
-                <a href="/terminal" class="nav-item"><span class="icon">ðŸ”§</span> Terminal SSH</a>
+                <a href="/dashboard" class="nav-item active"><span class="icon">📊</span> Dashboard</a>
+                <a href="/tunnelmanager" class="nav-item"><span class="icon">☁️</span> Tunneling</a>
+                <a href="/webmanager" class="nav-item"><span class="icon">🌐</span> Website</a>
+                <a href="/appmanager" class="nav-item"><span class="icon">📦</span> Node &amp; Pyth</a>
+                <a href="/databasemanager" class="nav-item"><span class="icon">🗄️</span> Database</a>
+                <a href="/filemanager" class="nav-item"><span class="icon">📁</span> File Manager</a>
+                <a href="/api/pma-login" target="_blank" class="nav-item"><span class="icon">🐬</span> phpMyAdmin</a>
+                <a href="/terminal" class="nav-item"><span class="icon">🔧</span> Terminal SSH</a>
 
                 <div style="flex: 1;"></div> <!-- Spacer -->
 
                 <!-- Trial & Donate -->
                 <div id="trialIndicator"
                     style="display: none; justify-content: center; align-items: center; gap: 8px; margin-top: auto; margin-bottom: 10px; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px dashed rgba(239, 68, 68, 0.3); padding: 12px; border-radius: var(--radius-sm); font-weight: bold; font-size: 12px;">
-                    â±ï¸ Trial: <span id="trialCountdown" style="font-family: monospace; font-size: 13px;">--:--:--</span>
+                    ⏱️ Trial: <span id="trialCountdown" style="font-family: monospace; font-size: 13px;">--:--:--</span>
                 </div>
                 <a href="javascript:void(0)" onclick="showDonateModal()" class="nav-item"
                     style="margin-top: 0; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px dashed rgba(16, 185, 129, 0.3);"
                     id="btnDonateOrReg">
-                    <span class="icon">ðŸ’–</span> Donate
+                    <span class="icon">💖</span> Donate
                 </a>
 
-                <a href="/settings" class="nav-item"><span class="icon">âš™ï¸</span> Pengaturan Sistem</a>
+                <a href="/settings" class="nav-item"><span class="icon">⚙️</span> Pengaturan Sistem</a>
             </nav>
 
             <div class="sidebar-header"
@@ -86,14 +86,14 @@
                 <div class="flex align-center gap-3" style="width: 100%;">
                     <div
                         style="width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">
-                        ðŸ‘¤</div>
+                        👤</div>
                     <div style="flex: 1;">
                         <div id="username" style="font-size: 14px; font-weight: 600; color: white;">...</div>
                         
                     </div>
-                    <a href="#" onclick="changeMyPassword()" title="Ganti Password" style="color: var(--warning); font-size: 18px; text-decoration: none; margin-right: 5px;">ðŸ”‘</a>
+                    <a href="#" onclick="changeMyPassword()" title="Ganti Password" style="color: var(--warning); font-size: 18px; text-decoration: none; margin-right: 5px;">🔑</a>
                     <a href="/logout" title="Logout"
-                        style="color: var(--danger); font-size: 18px; text-decoration: none;">ðŸšª</a>
+                        style="color: var(--danger); font-size: 18px; text-decoration: none;">🚪</a>
                 </div>
             </div>
         </aside>
@@ -108,7 +108,7 @@
                 <div class="topbar-actions">
                     <div class="badge"
                         style="background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 12px; border-radius: 20px;">
-                        <span class="icon" style="margin-right: 6px;">ðŸ•</span>
+                        <span class="icon" style="margin-right: 6px;">🕐</span>
                         <span id="currentTime">Memuat...</span>
                     </div>
                 </div>
@@ -119,7 +119,7 @@
                 <div class="grid-stats">
                     <div class="card">
                         <div class="card-header">
-                            <span class="card-title"><span style="font-size: 18px;">ðŸš€</span> Panel Status</span>
+                            <span class="card-title"><span style="font-size: 18px;">🚀</span> Panel Status</span>
                         </div>
                         <div id="panelStatus">
                             <span class="badge badge-success online"><span class="status-dot"></span> Active</span>
@@ -127,28 +127,28 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <span class="card-title"><span style="font-size: 18px;">ðŸ“¦</span> Node Apps (PM2)</span>
+                            <span class="card-title"><span style="font-size: 18px;">📦</span> Node Apps (PM2)</span>
                         </div>
                         <h3 id="statApps" style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">0</h3>
-                        <span class="text-success" style="font-size: 12px; font-weight: 600;">âœ“ Berjalan</span>
+                        <span class="text-success" style="font-size: 12px; font-weight: 600;">✓ Berjalan</span>
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <span class="card-title"><span style="font-size: 18px;">ðŸ—„ï¸</span> Databases</span>
+                            <span class="card-title"><span style="font-size: 18px;">🗄️</span> Databases</span>
                         </div>
                         <h3 id="statDbs" style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">0</h3>
-                        <span class="text-success" style="font-size: 12px; font-weight: 600;">âœ“ Tersedia</span>
+                        <span class="text-success" style="font-size: 12px; font-weight: 600;">✓ Tersedia</span>
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <span class="card-title"><span style="font-size: 18px;">â˜ï¸</span> CF Tunnels</span>
+                            <span class="card-title"><span style="font-size: 18px;">☁️</span> CF Tunnels</span>
                         </div>
                         <h3 id="statTunnels" style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">0</h3>
-                        <span class="text-success" style="font-size: 12px; font-weight: 600;">âœ“ Aktif</span>
+                        <span class="text-success" style="font-size: 12px; font-weight: 600;">✓ Aktif</span>
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <span class="card-title"><span style="font-size: 18px;">ðŸŒ</span> Nginx</span>
+                            <span class="card-title"><span style="font-size: 18px;">🌐</span> Nginx</span>
                         </div>
                         <div id="nginxStatusContainer" class="flex align-center gap-2">
                             <span id="nginxStatusBadge" class="badge badge-warning checking"><span
@@ -168,7 +168,7 @@
                             <div class="flex-between" style="margin-bottom: 8px;">
                                 <div id="statCpuTitle" class="text-muted" style="font-size: 12px;">CPU</div>
                                 <div style="display: flex; gap: 8px;">
-                                    <div id="statCpuTemp" class="text-warning" style="font-weight: 700; font-size: 13px;">0Â°C</div>
+                                    <div id="statCpuTemp" class="text-warning" style="font-weight: 700; font-size: 13px;">0°C</div>
                                     <div id="statCpuPct" class="text-success" style="font-weight: 700; font-size: 13px;">0%</div>
                                 </div>
                             </div>
@@ -205,39 +205,39 @@
         <nav class="bottom-nav">
             <ul class="bottom-nav-items">
                 <a href="/dashboard" class="bottom-nav-item active">
-                    <span class="nav-icon">ðŸ“Š</span>
+                    <span class="nav-icon">📊</span>
                     <span>Dashboard</span>
                 </a>
                 <a href="/tunnelmanager" class="bottom-nav-item">
-                    <span class="nav-icon">â˜ï¸</span>
+                    <span class="nav-icon">☁️</span>
                     <span>Tunnel</span>
                 </a>
                 <a href="/webmanager" class="bottom-nav-item">
-                    <span class="nav-icon">ðŸŒ</span>
+                    <span class="nav-icon">🌐</span>
                     <span>Website</span>
                 </a>
                 <a href="/appmanager" class="bottom-nav-item">
-                    <span class="nav-icon">ðŸ“¦</span>
+                    <span class="nav-icon">📦</span>
                     <span>App</span>
                 </a>
                 <a href="/databasemanager" class="bottom-nav-item">
-                    <span class="nav-icon">ðŸ—„ï¸</span>
+                    <span class="nav-icon">🗄️</span>
                     <span>Database</span>
                 </a>
                 <a href="/api/pma-login" target="_blank" class="bottom-nav-item">
-                    <span class="nav-icon">ðŸ¬</span>
+                    <span class="nav-icon">🐬</span>
                     <span>PMA</span>
                 </a>
                 <a href="/filemanager" class="bottom-nav-item">
-                    <span class="nav-icon">ðŸ“</span>
+                    <span class="nav-icon">📁</span>
                     <span>File</span>
                 </a>
                 <a href="/terminal" class="bottom-nav-item">
-                    <span class="nav-icon">ðŸ”§</span>
+                    <span class="nav-icon">🔧</span>
                     <span>Terminal</span>
                 </a>
                 <a href="/settings" class="bottom-nav-item">
-                    <span class="nav-icon">âš™ï¸</span>
+                    <span class="nav-icon">⚙️</span>
                     <span>Settings</span>
                 </a>
             </ul>
@@ -273,7 +273,7 @@
                     document.getElementById('statCpuPct').textContent = data.cpu.pct + '%';
                     document.getElementById('statCpuCore').textContent = data.cpu.cores + ' Inti';
                     if (document.getElementById('statCpuTemp')) {
-                        document.getElementById('statCpuTemp').textContent = data.cpu.temp > 0 ? Math.round(data.cpu.temp) + 'Â°C' : '-Â°C';
+                        document.getElementById('statCpuTemp').textContent = data.cpu.temp > 0 ? Math.round(data.cpu.temp) + '°C' : '-°C';
                     }
 
                     document.getElementById('statRamPct').textContent = data.ram.pct + '%';
@@ -313,7 +313,7 @@
                             btn.className = 'btn btn-primary';
                             btn.style.padding = '4px 10px';
                             btn.style.fontSize = '11px';
-                            btn.innerHTML = 'â–¶ Start';
+                            btn.innerHTML = '▶ Start';
                             btn.onclick = async function () {
                                 btn.disabled = true;
                                 btn.innerHTML = '...';
@@ -325,12 +325,12 @@
                                     } else {
                                         alert(resData.message);
                                         btn.disabled = false;
-                                        btn.innerHTML = 'â–¶ Start';
+                                        btn.innerHTML = '▶ Start';
                                     }
                                 } catch (e) {
                                     alert('Error: ' + e.message);
                                     btn.disabled = false;
-                                    btn.innerHTML = 'â–¶ Start';
+                                    btn.innerHTML = '▶ Start';
                                 }
                             };
                             nginxContainer.appendChild(btn);
@@ -376,7 +376,7 @@
         style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
         <div
             style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
-            <div style="font-size: 40px; margin-bottom: 16px;">ðŸ’–</div>
+            <div style="font-size: 40px; margin-bottom: 16px;">💖</div>
             <h2 style="margin-top: 0; color: var(--text-main); font-size: 20px;">Support Dapoy Panel</h2>
             <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px; line-height: 1.5;">Dukung
                 pengembangan panel ini dengan berdonasi via Gopay / Dana ke nomor berikut atas nama <strong>Syah Muhamad
@@ -406,7 +406,7 @@
         style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
         <div
             style="background: var(--bg-card); max-width: 400px; width: 90%; text-align: center; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
-            <div style="font-size: 40px; margin-bottom: 16px;">ðŸ”‘</div>
+            <div style="font-size: 40px; margin-bottom: 16px;">🔑</div>
             <h2 style="margin-top: 0; color: var(--text-main); font-size: 20px;">Aktivasi Dapoy Panel</h2>
             <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 13px;">Waktu Free Trial (2 Jam) sedang
                 berjalan. Silakan masukkan License Key dari Dapoy Hub untuk mengaktifkan lisensi secara permanen.</p>
@@ -434,14 +434,14 @@
                 if (data.status === 'registered') {
                     if (trialIndicator) trialIndicator.style.display = 'none';
                     if (btnDonate) {
-                        btnDonate.innerHTML = '<span class="icon">ðŸ’Ž</span> Registered';
+                        btnDonate.innerHTML = '<span class="icon">💎</span> Registered';
                         btnDonate.style.color = 'var(--secondary)';
                         btnDonate.style.borderColor = 'rgba(59, 130, 246, 0.3)';
                         btnDonate.style.background = 'rgba(59, 130, 246, 0.1)';
                     }
                 } else if (data.status === 'trial') {
                     if (btnDonate) {
-                        btnDonate.innerHTML = '<span class="icon">ðŸ”‘</span> Registrasi';
+                        btnDonate.innerHTML = '<span class="icon">🔑</span> Registrasi';
                         btnDonate.style.color = 'var(--warning)';
                         btnDonate.style.borderColor = 'rgba(245, 158, 11, 0.3)';
                         btnDonate.style.background = 'rgba(245, 158, 11, 0.1)';
@@ -529,7 +529,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const umLink = document.createElement('a');
                         umLink.href = '/usermanager';
                         umLink.className = 'nav-item' + (window.location.pathname === '/usermanager' ? ' active' : '');
-                        umLink.innerHTML = '<span class="icon">ðŸ‘¥</span> User Manager';
+                        umLink.innerHTML = '<span class="icon">👥</span> User Manager';
                         nav.insertBefore(umLink, settingsLink);
                     }
                 }
