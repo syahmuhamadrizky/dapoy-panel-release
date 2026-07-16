@@ -327,7 +327,12 @@
             const domains = (u.allowedDomains || []).map(d => `<span class="badge badge-success" style="font-size:10px; margin-right:4px;">${d}</span>`).join('');
             html += `
             <tr>
-                <td><strong>${u.username}</strong></td>
+                <td>
+                    <strong>${u.username}</strong>
+                    <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+                        Last Login: ${u.lastLogin ? new Date(u.lastLogin).toLocaleString('id-ID') : 'Belum pernah login'}
+                    </div>
+                </td>
                 <td><span class="badge ${u.role === 'admin' ? 'badge-danger' : 'badge-primary'}">${(u.role || 'user').toUpperCase()}</span></td>
                 <td>${domains || '<span class="text-muted" style="font-size:11px;">Semua Domain (TIDAK AMAN)</span>'}</td>
                 <td>
