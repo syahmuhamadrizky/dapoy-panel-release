@@ -194,7 +194,7 @@
                     </div>
 
                     <!-- Manajemen Versi Node.js Card -->
-                    <div class="card mb-4">
+                    <div class="card mb-4" id="nvmSection">
                         <div class="flex flex-between align-center mb-4">
                             <div>
                                 <h3 class="card-title">🟩 Manajemen Versi Node.js (NVM)</h3>
@@ -288,7 +288,7 @@
                     </div>
 
                     <!-- Manajemen Versi Python Card -->
-                    <div class="card mb-4">
+                    <div class="card mb-4" id="pyenvSection">
                         <div class="flex flex-between align-center mb-4">
                             <div>
                                 <h3 class="card-title">🟦 Manajemen Versi Python (pyenv)</h3>
@@ -1252,14 +1252,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if(u.role !== 'admin') {
                 document.querySelectorAll('a[href="/settings"], a[href="/usermanager"], a[href="/terminal"]').forEach(el => el.style.display = 'none');
                 
-                if (window.location.pathname === '/appmanager') {
-                    const style = document.createElement('style');
-                    style.innerHTML = `
-                        #nvmSection, #pyenvSection { display: none !important; }
-                    `;
-                    document.head.appendChild(style);
-                }
-                
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    #nvmSection, #pyenvSection { display: none !important; }
+                `;
+                document.head.appendChild(style);
+
+                ['nodeAppBaseDir', 'pythonAppBaseDir'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) {
+                        el.innerHTML = `<option value="/home/${u.username}/">/home/${u.username}/</option>`;
+                        el.disabled = true;
+                    }
+                });
+
                 // If on dashboard, add change password button to sidebar header
                 if (window.location.pathname === '/dashboard') {
                     const header = document.querySelector('.sidebar-header');

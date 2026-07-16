@@ -116,7 +116,7 @@
                 </div>
 
                 <!-- PHPMyAdmin Section -->
-                <div class="card mb-4"
+                <div class="card mb-4" id="pmaSection"
                     style="border: 1px solid rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.05);">
                     <div class="flex flex-between align-center">
                         <div>
@@ -1156,18 +1156,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             if(u.role !== 'admin') {
-                document.querySelectorAll('a[href="/settings"], a[href="/usermanager"], a[href="/terminal"]').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('a[href="/settings"], a[href="/usermanager"], a[href="/terminal"], a[href="/api/pma-login"]').forEach(el => el.style.display = 'none');
                 
-                if (window.location.pathname === '/databasemanager') {
-                    const style = document.createElement('style');
-                    style.innerHTML = `
-                        button[title="Tugaskan User"] { display: none !important; }
-                        #setupUserForm, #mysqlUsersTableBody, .card:has(h3:contains("User Database MySQL")) { display: none !important; }
-                        /* Fallback if :has doesn't work well */
-                        div.card-full:nth-of-type(2) { display: none !important; } 
-                    `;
-                    document.head.appendChild(style);
-                }
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    button[title="Tugaskan User"] { display: none !important; }
+                    #pmaSection { display: none !important; }
+                `;
+                document.head.appendChild(style);
                 
                 // If on dashboard, add change password button to sidebar header
                 if (window.location.pathname === '/dashboard') {

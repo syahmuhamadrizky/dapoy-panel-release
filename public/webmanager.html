@@ -645,6 +645,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if(u.role !== 'admin') {
                 document.querySelectorAll('a[href="/settings"], a[href="/usermanager"], a[href="/terminal"]').forEach(el => el.style.display = 'none');
                 
+                const webBaseDir = document.getElementById('webBaseDir');
+                if (webBaseDir) {
+                    webBaseDir.innerHTML = `<option value="/home/${u.username}/public_html/">/home/${u.username}/public_html/</option>`;
+                    webBaseDir.disabled = true;
+                }
+                
                 // If on dashboard, add change password button to sidebar header
                 if (window.location.pathname === '/dashboard') {
                     const header = document.querySelector('.sidebar-header');
