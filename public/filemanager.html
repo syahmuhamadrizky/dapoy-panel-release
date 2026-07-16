@@ -317,19 +317,19 @@
     <div class="modal" id="editorModal"
         style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
         <div class="modal-content editor"
-            style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);">
+            style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); width: 90vw; max-width: 1000px; height: 85vh; display: flex; flex-direction: column;">
             <div class="flex flex-between align-center mb-4">
-                <h3 class="modal-title m-0" id="editorTitle">📄 Text Editor</h3>
-                <button class="btn btn-sm btn-outline border-0" onclick="closeModal('editorModal')">×</button>
+                <h3 class="modal-title m-0" id="editorTitle">📝 Text Editor</h3>
+                <button class="btn btn-sm btn-outline border-0" onclick="closeModal('editorModal')">✕</button>
             </div>
             <div class="form-group mb-2">
                 <input type="text" id="editorFileName" class="form-control" placeholder="nama-file.txt">
             </div>
-            <div class="form-group mb-4" style="flex: 1; display: flex;">
+            <div class="form-group mb-4" style="flex: 1; display: flex; min-height: 0;">
                 <textarea id="editorContent" class="form-control" spellcheck="false"
-                    style="font-family: monospace; font-size: 13px;"></textarea>
+                    style="font-family: monospace; font-size: 13px; flex: 1; resize: none; padding: 12px; height: 100%; border-radius: var(--radius-md);"></textarea>
             </div>
-            <div class="text-right">
+            <div class="text-right mt-auto">
                 <button class="btn btn-primary" onclick="saveFile()" id="btnSaveFile">💾 Simpan File</button>
             </div>
         </div>
