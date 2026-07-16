@@ -157,8 +157,8 @@
 </div>
 
 <!-- Modal Tambah User -->
-<div class="modal-overlay" id="addUserModal">
-    <div class="modal-content">
+<div class="modal" id="addUserModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+    <div class="modal-content" style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); width: 400px; max-width: 90%;">
         <div class="modal-header">
             <h2>Tambah User Baru</h2>
             <button class="btn-close" onclick="closeAddUserModal()">×</button>
@@ -189,8 +189,8 @@
 </div>
 
 <!-- Modal Kelola Limit -->
-<div class="modal-overlay" id="limitModal">
-    <div class="modal-content">
+<div class="modal" id="limitModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+    <div class="modal-content" style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); width: 400px; max-width: 90%;">
         <div class="modal-header">
             <h2>Kelola Limit User</h2>
             <button class="btn-close" onclick="closeLimitModal()">x</button>
@@ -222,8 +222,8 @@
 </div>
 
 <!-- Modal Kelola Domain -->
-<div class="modal-overlay" id="domainModal">
-    <div class="modal-content">
+<div class="modal" id="domainModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+    <div class="modal-content" style="background: var(--bg-card); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); width: 450px; max-width: 90%;">
         <div class="modal-header">
             <h2>Kelola Domain User</h2>
             <button class="btn-close" onclick="closeDomainModal()">×</button>
@@ -260,31 +260,30 @@
         document.getElementById('limitMaxDiskMB').value = currentLimitUser.limits?.maxDiskMB || 1024;
         document.getElementById('limitMaxApp').value = currentLimitUser.limits?.maxApp || 3;
         document.getElementById('limitMaxRamMB').value = currentLimitUser.limits?.maxRamMB || 512;
-        document.getElementById('limitModal').classList.add('active');
+        document.getElementById('limitModal').style.display = 'flex';
     }
-    function closeLimitModal() { document.getElementById('limitModal').classList.remove('active'); }
+    function closeLimitModal() { document.getElementById('limitModal').style.display = 'none'; }
     
     async function saveLimits() {
-        const limits = {
-            maxDb: parseInt(document.getElementById('limitMaxDb').value) || 5,
-            maxDiskMB: parseInt(document.getElementById('limitMaxDiskMB').value) || 1024,
-            maxApp: parseInt(document.getElementById('limitMaxApp').value) || 3,
-            maxRamMB: parseInt(document.getElementById('limitMaxRamMB').value) || 512
-        };
+        const db = document.getElementById('limitMaxDb').value;
+        const disk = document.getElementById('limitMaxDiskMB').value;
+        const app = document.getElementById('limitMaxApp').value;
+        const ram = document.getElementById('limitMaxRamMB').value;
         try {
-            const res = await fetch('/api/users/limits', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: currentLimitUser.username, limits })
+            const res = await fetch('/api/users/update-limits', {
+                method: 'POST', headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({
+                    username: currentLimitUser.username,
+                    limits: { maxDb: parseInt(db), maxDiskMB: parseInt(disk), maxApp: parseInt(app), maxRamMB: parseInt(ram) }
+                })
             });
             const data = await res.json();
             if(data.success) {
+                alert('Limit berhasil diupdate');
                 closeLimitModal();
                 fetchUsers();
-            } else {
-                alert(data.message);
-            }
-        } catch(e) { alert('Error updating limits'); }
+            } else alert(data.message);
+        } catch(e) { alert('Terjadi kesalahan'); }
     }
 
     async function fetchUsers() {
@@ -293,17 +292,17 @@
             const data = await res.json();
             if (data.success) {
                 usersList = data.users;
-                renderTable();
+                renderUsers();
             }
         } catch(e) {
             console.error(e);
         }
     }
 
-    function renderTable() {
+    function renderUsers() {
         const tbody = document.getElementById('usersTableBody');
         if(usersList.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-4">Tidak ada user lain selain admin.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">Tidak ada user lain selain admin.</td></tr>';
             return;
         }
         
@@ -313,8 +312,8 @@
             html += `
             <tr>
                 <td><strong>${u.username}</strong></td>
-                  <td><span class="badge ${u.role === 'admin' ? 'badge-danger' : 'badge-primary'}">${(u.role || 'user').toUpperCase()}</span></td>
-                  <td>${domains || '<span class="text-muted" style="font-size:11px;">Semua Domain (TIDAK AMAN)</span>'}</td>
+                <td><span class="badge ${u.role === 'admin' ? 'badge-danger' : 'badge-primary'}">${(u.role || 'user').toUpperCase()}</span></td>
+                <td>${domains || '<span class="text-muted" style="font-size:11px;">Semua Domain (TIDAK AMAN)</span>'}</td>
                 <td>
                     <div style="font-size: 11px; color: var(--text-muted);">
                         DB: ${u.limits?.maxDb || 5} | Disk: ${u.limits?.maxDiskMB || 1024}MB<br>
@@ -323,7 +322,7 @@
                 </td>
                 <td>
                     <button class="btn btn-sm btn-outline" onclick="openDomainModal('${u.username}')">🌐 Domain</button>
-                    <button class="btn btn-sm btn-outline" style="color:var(--warning); border-color:var(--warning);" onclick="openLimitModal('${u.username}')">⚙️ Limit</button>
+                    <button class="btn btn-sm btn-outline" style="color:var(--warning); border-color:var(--warning);" onclick="openLimitModal('${u.username}')">⚖️ Limit</button>
                     <button class="btn btn-sm btn-danger" onclick="deleteUser('${u.username}')">🗑️</button>
                 </td>
             </tr>`;
@@ -331,28 +330,26 @@
         tbody.innerHTML = html;
     }
 
-    function openAddUserModal() { document.getElementById('addUserModal').classList.add('active'); }
-    function closeAddUserModal() { document.getElementById('addUserModal').classList.remove('active'); }
+    function openAddUserModal() { document.getElementById('addUserModal').style.display = 'flex'; }
+    function closeAddUserModal() { document.getElementById('addUserModal').style.display = 'none'; }
     
     async function submitAddUser() {
         const username = document.getElementById('newUsername').value;
         const password = document.getElementById('newPassword').value;
         const role = document.getElementById('newRole').value;
-        if(!username || !password) return alert('Lengkapi data');
+        if(!username || !password) return alert('Username & Password wajib diisi!');
         
         try {
             const res = await fetch('/api/users/add', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password, role })
+                method: 'POST', headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({username, password, role})
             });
             const data = await res.json();
             if(data.success) {
+                alert('User berhasil ditambahkan');
                 closeAddUserModal();
                 fetchUsers();
-            } else {
-                alert(data.message);
-            }
+            } else alert(data.message);
         } catch(e) { alert('Terjadi kesalahan'); }
     }
 
@@ -375,10 +372,10 @@
         if(!currentDomainUser) return;
         document.getElementById('domainTargetUser').innerText = username;
         renderDomainList();
-        document.getElementById('domainModal').classList.add('active');
+        document.getElementById('domainModal').style.display = 'flex';
     }
     
-    function closeDomainModal() { document.getElementById('domainModal').classList.remove('active'); }
+    function closeDomainModal() { document.getElementById('domainModal').style.display = 'none'; }
 
     function renderDomainList() {
         const container = document.getElementById('domainList');
