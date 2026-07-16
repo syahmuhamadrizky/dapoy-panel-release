@@ -229,49 +229,28 @@
                     <div class="card mb-4">
                         <div class="flex flex-between align-center">
                             <div>
-                                <h3 class="card-title">➕ Buat Database MySQL Baru</h3>
-                                <p class="text-muted" style="font-size: 13px;">Buat database dan user baru di MySQL
-                                    Server VPS Anda.</p>
+                                <h3 class="card-title">➕ Manajemen Database MySQL</h3>
+                                <p class="text-muted" style="font-size: 13px;">Buat dan kelola database pada MySQL Server Anda.</p>
                             </div>
                             <button class="btn btn-outline"
                                 onclick="toggleSetupForm('setupMysqlFormContainer', 'btnToggleMysqlSetup')"
-                                id="btnToggleMysqlSetup">Tampilkan Formulir</button>
+                                id="btnToggleMysqlSetup">Buat Database</button>
                         </div>
 
                         <div id="setupMysqlFormContainer"
                             style="display: none; margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 24px;">
-                            <form id="setupMysqlForm" onsubmit="event.preventDefault(); installDatabase();">
-                                <div class="grid-stats" style="grid-template-columns: 1fr 1fr; margin-bottom: 16px;">
-                                    <div class="form-group">
-                                        <label class="form-label">Nama Database Baru</label>
-                                        <input type="text" id="mysqlDbName" placeholder="db_aplikasi"
-                                            class="form-control" required="">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Username Baru</label>
-                                        <input type="text" id="mysqlDbUser" placeholder="user_aplikasi"
-                                            class="form-control" required="">
-                                    </div>
-                                </div>
+                            <form id="setupMysqlForm" onsubmit="event.preventDefault(); createDatabase();">
                                 <div class="form-group mb-4">
-                                    <label class="form-label">Password User</label>
-                                    <input type="text" id="mysqlDbPass" placeholder="Masukkan password yang kuat"
-                                        class="form-control" required="">
+                                    <label class="form-label">Nama Database Baru</label>
+                                    <input type="text" id="mysqlDbName" placeholder="db_aplikasi" class="form-control" required="">
                                 </div>
                                 <div class="text-right">
-                                    <button type="submit" class="btn btn-primary" id="btnCreateDb">➕ Buat
-                                        Database</button>
+                                    <button type="submit" class="btn btn-primary" id="btnCreateDb">➕ Buat Database</button>
                                 </div>
                             </form>
                         </div>
-                    </div>
 
-                    <!-- List MySQL Card -->
-                    <div class="card mb-4">
-                        <div class="mb-4">
-                            <h3 class="card-title">Daftar Database MySQL</h3>
-                        </div>
-                        <div class="table-container">
+                        <div class="table-container mt-4" style="border-top: 1px solid var(--border-color); padding-top: 16px;">
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -286,6 +265,93 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    <!-- Setup MySQL User Card -->
+                    <div class="card mb-4">
+                        <div class="flex flex-between align-center">
+                            <div>
+                                <h3 class="card-title">👤 Manajemen User Database</h3>
+                                <p class="text-muted" style="font-size: 13px;">Buat dan kelola user, serta berikan akses ke database tertentu.</p>
+                            </div>
+                            <button class="btn btn-outline"
+                                onclick="toggleSetupForm('setupUserFormContainer', 'btnToggleUserSetup')"
+                                id="btnToggleUserSetup">Buat User Baru</button>
+                        </div>
+
+                        <div id="setupUserFormContainer"
+                            style="display: none; margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 24px;">
+                            <form id="setupUserForm" onsubmit="event.preventDefault(); createUser();">
+                                <div class="grid-stats" style="grid-template-columns: 1fr 1fr; margin-bottom: 16px;">
+                                    <div class="form-group">
+                                        <label class="form-label">Username Baru</label>
+                                        <input type="text" id="mysqlDbUser" placeholder="user_aplikasi" class="form-control" required="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Password User</label>
+                                        <input type="text" id="mysqlDbPass" placeholder="Masukkan password yang kuat" class="form-control" required="">
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-primary" id="btnCreateUser">➕ Buat User</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="table-container mt-4" style="border-top: 1px solid var(--border-color); padding-top: 16px;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>USERNAME</th>
+                                        <th>PASSWORD</th>
+                                        <th>AKSI</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mysqlUsersTableBody">
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted py-4">Memuat data...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assign User Modal -->
+                <div id="assignUserModal"
+                    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); width: 400px; max-width: 90%; display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-lg);">
+                        <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="margin: 0; font-size: 18px; color: var(--text-main);">🔑 Tugaskan User</h3>
+                            <button class="btn btn-outline btn-sm" onclick="document.getElementById('assignUserModal').style.display='none'">Tutup</button>
+                        </div>
+                        <div style="padding: 16px;">
+                            <p class="text-muted" style="margin-bottom: 16px; font-size: 13px;">Database: <strong id="assignDbNameLabel" style="color:var(--text-main);"></strong></p>
+                            <div class="form-group mb-4">
+                                <label class="form-label">Pilih User</label>
+                                <select id="assignUserSelect" class="form-control"></select>
+                            </div>
+                            <button class="btn btn-primary w-full" onclick="assignUserSubmit()">Tugaskan User</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Password Modal -->
+                <div id="editPassModal"
+                    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); width: 400px; max-width: 90%; display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-lg);">
+                        <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="margin: 0; font-size: 18px; color: var(--text-main);">✏️ Edit Password User</h3>
+                            <button class="btn btn-outline btn-sm" onclick="document.getElementById('editPassModal').style.display='none'">Tutup</button>
+                        </div>
+                        <div style="padding: 16px;">
+                            <p class="text-muted" style="margin-bottom: 16px; font-size: 13px;">User: <strong id="editPassUserLabel" style="color:var(--text-main);"></strong></p>
+                            <div class="form-group mb-4">
+                                <label class="form-label">Password Baru</label>
+                                <input type="text" id="editPassNew" class="form-control" placeholder="Masukkan password baru">
+                            </div>
+                            <button class="btn btn-primary w-full" onclick="editPassSubmit()">Simpan Password</button>
                         </div>
                     </div>
                 </div>
@@ -582,49 +648,97 @@
         function renderTable(type, list) {
             const tbody = document.getElementById('mysqlTableBody');
             if (!list || list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted py-4">Tidak ada database.</td></tr>`;
+                tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-4">Tidak ada database.</td></tr>';
                 return;
             }
             let html = '';
             list.forEach(db => {
                 const isSystem = ['information_schema', 'mysql', 'performance_schema', 'sys'].includes(db);
-                const deleteBtn = isSystem ? '' : `<button class="btn btn-sm btn-danger" onclick="deleteDatabase('${db}')" title="Hapus Database">🗑️</button>`;
+                const actionBtns = isSystem ? '' : 
+                    `<button class="btn btn-sm btn-outline" style="color:var(--secondary); border-color:var(--secondary);" onclick="openAssignModal('${db}')" title="Tugaskan User">🔑 Assign User</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteDatabase('${db}')" title="Hapus Database">🗑️</button>`;
                 html += `
                 <tr>
                     <td><strong>${db}</strong> ${isSystem ? '<span class="badge badge-warning" style="font-size:10px;">System</span>' : ''}</td>
                     <td><span class="badge badge-success">Aktif</span></td>
-                    <td>${deleteBtn}</td>
+                    <td>${actionBtns}</td>
                 </tr>
                 `;
             });
             tbody.innerHTML = html;
         }
 
-        async function installDatabase() {
-            const dbName = document.getElementById('mysqlDbName').value.trim();
-            const dbUser = document.getElementById('mysqlDbUser').value.trim();
-            const dbPass = document.getElementById('mysqlDbPass').value;
-
-            if (!dbName || !dbUser || !dbPass) return alert('Semua field wajib diisi!');
-
-            if (!/^[a-zA-Z0-9_]+$/.test(dbName) || !/^[a-zA-Z0-9_]+$/.test(dbUser)) {
-                return alert('Nama database dan username hanya boleh berisi huruf, angka, dan underscore (_).');
+        async function loadUsers() {
+            document.getElementById('mysqlUsersTableBody').innerHTML = '<tr><td colspan="3" class="text-center text-muted py-4">Memuat data...</td></tr>';
+            try {
+                const res = await fetch('/api/database/users');
+                const data = await res.json();
+                if (data.success) {
+                    renderUsersTable(data.users);
+                } else {
+                    document.getElementById('mysqlUsersTableBody').innerHTML = '<tr><td colspan="3" class="text-center text-muted py-4">Error: ' + data.message + '</td></tr>';
+                }
+            } catch (e) {
+                document.getElementById('mysqlUsersTableBody').innerHTML = '<tr><td colspan="3" class="text-center text-muted py-4">Error mengambil data.</td></tr>';
             }
+        }
+
+        function renderUsersTable(users) {
+            const tbody = document.getElementById('mysqlUsersTableBody');
+            if (!users || users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-4">Tidak ada user database.</td></tr>';
+                return;
+            }
+            let html = '';
+            users.forEach(u => {
+                const passFieldId = 'pass_' + u.username;
+                html += `
+                <tr>
+                    <td><strong>${u.username}</strong></td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <input type="password" id="${passFieldId}" value="${u.password}" class="form-control" style="background:transparent; border:none; padding:0; width:100px; flex:1;" readonly>
+                            <button class="btn btn-sm" style="background:transparent; padding:0;" onclick="togglePassword('${passFieldId}')" title="Tampilkan/Sembunyikan">👁️</button>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline" style="color:var(--warning); border-color:var(--warning);" onclick="openEditPassModal('${u.username}')" title="Edit Password">✏️</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteUser('${u.username}')" title="Hapus User">🗑️</button>
+                    </td>
+                </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            if (input.type === 'password') {
+                input.type = 'text';
+            } else {
+                input.type = 'password';
+            }
+        }
+
+        async function createDatabase() {
+            const dbName = document.getElementById('mysqlDbName').value.trim();
+            if (!dbName) return alert('Nama database wajib diisi!');
+            if (!/^[a-zA-Z0-9_]+$/.test(dbName)) return alert('Nama database hanya boleh berisi huruf, angka, dan underscore (_).');
 
             const btn = document.getElementById('btnCreateDb');
             btn.disabled = true;
             btn.innerHTML = '⏳ Sedang Membuat...';
 
             try {
-                const res = await fetch('/api/database/create-native', {
+                const res = await fetch('/api/database/create-db', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ dbName, dbUser, dbPass })
+                    body: JSON.stringify({ dbName })
                 });
 
                 const data = await res.json();
                 if (data.success) {
-                    alert('✅ Database dan User berhasil dibuat!');
+                    alert('✅ Database berhasil dibuat!');
                     document.getElementById('setupMysqlForm').reset();
                     loadDatabases();
                 } else {
@@ -633,9 +747,40 @@
             } catch (e) {
                 alert('❌ Error system: ' + e.message);
             }
-
             btn.disabled = false;
             btn.innerHTML = '➕ Buat Database';
+        }
+
+        async function createUser() {
+            const dbUser = document.getElementById('mysqlDbUser').value.trim();
+            const dbPass = document.getElementById('mysqlDbPass').value;
+            if (!dbUser || !dbPass) return alert('Semua field wajib diisi!');
+            if (!/^[a-zA-Z0-9_]+$/.test(dbUser)) return alert('Username hanya boleh berisi huruf, angka, dan underscore (_).');
+
+            const btn = document.getElementById('btnCreateUser');
+            btn.disabled = true;
+            btn.innerHTML = '⏳ Sedang Membuat...';
+
+            try {
+                const res = await fetch('/api/database/create-user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ dbUser, dbPass })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    alert('✅ User berhasil dibuat!');
+                    document.getElementById('setupUserForm').reset();
+                    loadUsers();
+                } else {
+                    alert('❌ Gagal: ' + data.message);
+                }
+            } catch (e) {
+                alert('❌ Error system: ' + e.message);
+            }
+            btn.disabled = false;
+            btn.innerHTML = '➕ Buat User';
         }
 
         async function deleteDatabase(dbName) {
@@ -658,8 +803,106 @@
             }
         }
 
+        async function deleteUser(dbUser) {
+            if (!confirm(`Yakin ingin MENGHAPUS user '${dbUser}' secara permanen?`)) return;
+
+            try {
+                const res = await fetch('/api/database/delete-user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ dbUser })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    loadUsers();
+                } else {
+                    alert('Gagal: ' + data.message);
+                }
+            } catch (e) {
+                alert('Error sistem: ' + e.message);
+            }
+        }
+
+        async function openAssignModal(dbName) {
+            document.getElementById('assignDbNameLabel').textContent = dbName;
+            const select = document.getElementById('assignUserSelect');
+            select.innerHTML = '<option>Loading...</option>';
+            document.getElementById('assignUserModal').style.display = 'flex';
+
+            try {
+                const res = await fetch('/api/database/users');
+                const data = await res.json();
+                if (data.success) {
+                    select.innerHTML = '';
+                    if (data.users.length === 0) {
+                        select.innerHTML = '<option value="">-- Tidak ada user --</option>';
+                    } else {
+                        data.users.forEach(u => {
+                            select.innerHTML += `<option value="${u.username}">${u.username}</option>`;
+                        });
+                    }
+                }
+            } catch (e) {
+                select.innerHTML = '<option value="">Gagal memuat user</option>';
+            }
+        }
+
+        async function assignUserSubmit() {
+            const dbName = document.getElementById('assignDbNameLabel').textContent;
+            const dbUser = document.getElementById('assignUserSelect').value;
+            if (!dbUser) return alert('Pilih user terlebih dahulu');
+
+            try {
+                const res = await fetch('/api/database/assign-user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ dbName, dbUser })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('✅ ' + data.message);
+                    document.getElementById('assignUserModal').style.display = 'none';
+                } else {
+                    alert('❌ Gagal: ' + data.message);
+                }
+            } catch (e) {
+                alert('❌ Error sistem: ' + e.message);
+            }
+        }
+
+        function openEditPassModal(dbUser) {
+            document.getElementById('editPassUserLabel').textContent = dbUser;
+            document.getElementById('editPassNew').value = '';
+            document.getElementById('editPassModal').style.display = 'flex';
+        }
+
+        async function editPassSubmit() {
+            const dbUser = document.getElementById('editPassUserLabel').textContent;
+            const dbPass = document.getElementById('editPassNew').value;
+            if (!dbPass) return alert('Password baru wajib diisi!');
+
+            try {
+                const res = await fetch('/api/database/edit-user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ dbUser, dbPass })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('✅ ' + data.message);
+                    document.getElementById('editPassModal').style.display = 'none';
+                    loadUsers();
+                } else {
+                    alert('❌ Gagal: ' + data.message);
+                }
+            } catch (e) {
+                alert('❌ Error sistem: ' + e.message);
+            }
+        }
+
         window.onload = () => {
             loadDatabases();
+            loadUsers();
             checkMysqlStatus();
         };
 
