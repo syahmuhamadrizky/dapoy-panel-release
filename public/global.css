@@ -410,6 +410,10 @@ a:hover {
     color: var(--text-muted);
 }
 
+.flex-col {
+    flex-direction: column !important;
+}
+
 .flex {
     display: flex;
 }
