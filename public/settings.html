@@ -251,9 +251,14 @@
                                 <p style="color: var(--text-muted); font-size: 13px; margin: 0;">Tarik fitur terbaru dan
                                     perbaikan bug (membutuhkan restart otomatis).</p>
                             </div>
-                            <button onclick="checkUpdate()" class="btn btn-primary" id="btnUpdateSystem">
-                                <span id="btnUpdateText">🔄 Cek &amp; Update Sekarang</span>
-                            </button>
+                            <div style="display: flex; gap: 10px;">
+                                <button onclick="restartPanel()" class="btn btn-outline" id="btnRestartPanel" style="color: var(--warning); border-color: var(--warning);">
+                                    <span id="btnRestartText">🔄 Restart Panel</span>
+                                </button>
+                                <button onclick="checkUpdate()" class="btn btn-primary" id="btnUpdateSystem">
+                                    <span id="btnUpdateText">🚀 Cek &amp; Update Sekarang</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -550,15 +555,17 @@
             releaseTxt.innerHTML = `Release time: ${data.releaseTime}`;
 
             if (data.isLatest) {
-                icon.innerHTML = '✅';
-                title.innerHTML = 'It is currently the latest version';
-                desc.innerHTML = `The latest version is ${data.latestVersion} Release: ${data.releaseTime}<br><br>You are already using the most advanced version. Have a great day using Dapoy Panel!`;
-                actionDiv.style.display = 'none';
-            } else {
-                icon.innerHTML = '🚀';
-                title.innerHTML = 'A new version is available!';
-                desc.innerHTML = `The latest version is <strong style="color: var(--primary);">${data.latestVersion}</strong> Release: ${data.releaseTime}<br><br>Your system is behind by <strong>${data.commitsBehind} update(s)</strong>.<br>Please update to enjoy new features and security patches!`;
+                icon.innerHTML = '✨';
+                title.innerHTML = 'Versi saat ini sudah terbaru';
+                desc.innerHTML = `Versi rilis terbaru adalah ${data.latestVersion} (${data.releaseTime})<br><br>Sistem Dapoy Panel Anda sudah yang terupdate. Anda dapat memaksa instal ulang / update jika diperlukan.`;
                 actionDiv.style.display = 'block';
+                document.getElementById('btnExecuteUpdate').innerText = 'Force Update / Re-install';
+            } else {
+                icon.innerHTML = '🔄';
+                title.innerHTML = 'Update Baru Tersedia!';
+                desc.innerHTML = `Versi rilis terbaru adalah <strong style="color: var(--primary);">${data.latestVersion}</strong> (${data.releaseTime})<br><br>Sistem Anda tertinggal sebanyak <strong>${data.commitsBehind} commit(s)</strong>.<br>Silakan lakukan update untuk menikmati fitur terbaru dan perbaikan sistem.`;
+                actionDiv.style.display = 'block';
+                document.getElementById('btnExecuteUpdate').innerText = 'Update Sekarang';
             }
 
             modal.style.display = 'flex';
@@ -566,6 +573,34 @@
 
         function closeUpdateModal() {
             document.getElementById('updateModal').style.display = 'none';
+        }
+
+        async function restartPanel() {
+            if (!confirm('Apakah Anda yakin ingin merestart Dapoy Panel? Akses web akan terputus selama beberapa detik.')) return;
+            
+            var btn = document.getElementById('btnRestartPanel');
+            var text = document.getElementById('btnRestartText');
+            btn.disabled = true;
+            text.innerHTML = '⏳ Merestart...';
+
+            try {
+                var response = await fetch('/api/system/restart', { method: 'POST' });
+                var data = await response.json();
+                if (data.success) {
+                    alert(data.message);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 5000); // reload page after 5 seconds
+                } else {
+                    alert('Gagal merestart: ' + data.message);
+                    btn.disabled = false;
+                    text.innerHTML = '🔄 Restart Panel';
+                }
+            } catch (e) {
+                alert('Terjadi kesalahan jaringan: ' + e.message);
+                btn.disabled = false;
+                text.innerHTML = '🔄 Restart Panel';
+            }
         }
 
         async function executeUpdate() {
