@@ -652,14 +652,23 @@
                 return;
             }
             let html = '';
-            list.forEach(db => {
-                const isSystem = ['information_schema', 'mysql', 'performance_schema', 'sys'].includes(db);
-                const actionBtns = isSystem ? '' : 
-                    `<button class="btn btn-sm btn-outline" style="color:var(--secondary); border-color:var(--secondary);" onclick="openAssignModal('${db}')" title="Tugaskan User">🔑 Assign User</button>
+            list.forEach(item => {
+                const db = item.name || item;
+                const users = item.users || [];
+                
+                const usersHtml = users.length > 0 
+                    ? users.map(u => `<span class="badge" style="font-size:10px; margin-right:4px; background: rgba(255,255,255,0.1); border: 1px solid var(--secondary); color: var(--text-color);">👤 ${u}</span>`).join('') 
+                    : '<span class="text-muted" style="font-size:11px;">Belum ada akses</span>';
+
+                const actionBtns = `
+                    <button class="btn btn-sm btn-outline" style="color:var(--secondary); border-color:var(--secondary);" onclick="openAssignModal('${db}')" title="Tugaskan User">🔑 Assign User</button>
                     <button class="btn btn-sm btn-danger" onclick="deleteDatabase('${db}')" title="Hapus Database">🗑️</button>`;
                 html += `
                 <tr>
-                    <td><strong>${db}</strong> ${isSystem ? '<span class="badge badge-warning" style="font-size:10px;">System</span>' : ''}</td>
+                    <td>
+                        <strong>${db}</strong><br/>
+                        <div style="margin-top: 5px;">${usersHtml}</div>
+                    </td>
                     <td><span class="badge badge-success">Aktif</span></td>
                     <td>${actionBtns}</td>
                 </tr>
