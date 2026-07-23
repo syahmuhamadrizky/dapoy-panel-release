@@ -1042,7 +1042,7 @@
                 hostname = document.getElementById('appTunnelHostnameManual').value.trim();
             }
             if (!hostname) return alert('Masukkan nama domain!');
-            const service = 'http://localhost:' + targetAppPort;
+            const service = 'http://127.0.0.1:' + targetAppPort;
             
             const btn = document.getElementById('btnSubmitAppTunnel');
             btn.disabled = true;
@@ -1109,7 +1109,7 @@
                 <div class="form-group" style="margin-top: 15px;">
                     <label>Target Lokal (Port Aplikasi)</label>
                     <div style="background: var(--bg-main); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); color: var(--text-muted); font-family: monospace;">
-                        http://localhost:<span id="appTunnelPort"></span>
+                        http://127.0.0.1:<span id="appTunnelPort"></span>
                     </div>
                 </div>
             </div>

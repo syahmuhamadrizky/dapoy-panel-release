@@ -407,7 +407,7 @@
                             const tunnelRes = await fetch('/api/tunnel/config', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ hostname: domain, service: 'http://localhost:80' })
+                                body: JSON.stringify({ hostname: domain, service: 'http://127.0.0.1:80' })
                             });
                             const tunnelData = await tunnelRes.json();
                             if (!tunnelData.success) {

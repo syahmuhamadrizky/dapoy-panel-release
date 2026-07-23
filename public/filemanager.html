@@ -549,7 +549,7 @@
             const currentDir = currentPath === '/' ? '' : currentPath;
             const fileName = filePath.split('/').pop();
             const folderName = fileName.replace(/\.zip|\.tar\.gz|\.tgz|\.tar/gi, '');
-            const defaultTarget = currentDir + '/' + folderName;
+            const defaultTarget = currentDir || '/';
 
             const targetDir = prompt(`Masukkan path tujuan ekstrak:\n(Folder akan otomatis dibuat dan file lama akan ditimpa jika ada)`, defaultTarget);
             if (!targetDir) return;
