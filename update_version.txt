@@ -1,5 +1,5 @@
-Versi Update: 2.5.7
+Versi Update: 2.5.8
 
 Keterangan:
-- [FIX] Memperbaiki error sintaks MySQL pada escaping user database yang menyebabkan user reguler tidak dapat login ke phpMyAdmin karena kredensialnya tidak dikenali.
+- [UPDATE] Menambahkan fitur sinkronisasi otomatis user MySQL pada saat user panel reguler berhasil login. Hal ini memastikan user lama yang sebelumnya gagal tersinkronisasi dapat otomatis dibuatkan akun MySQL dan dapat mengakses phpMyAdmin tanpa masalah.
 - [FIX] Penanganan otomatis pada fitur ZIP Extractor untuk merapikan struktur folder akibat backslash (\\) yang dihasilkan oleh kompresor ZIP Windows. Update ini memungkinkan folder dapat dibaca dengan benar di environment Linux/cPanel.
