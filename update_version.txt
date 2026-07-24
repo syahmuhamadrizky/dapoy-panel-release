@@ -1,5 +1,6 @@
-Versi Update: 2.5.8
+Versi Update: 2.5.9
 
 Keterangan:
-- [UPDATE] Menambahkan fitur sinkronisasi otomatis user MySQL pada saat user panel reguler berhasil login. Hal ini memastikan user lama yang sebelumnya gagal tersinkronisasi dapat otomatis dibuatkan akun MySQL dan dapat mengakses phpMyAdmin tanpa masalah.
+- [UPDATE] Menyembunyikan menu "New" (Buat Database) di phpMyAdmin untuk user reguler, sehingga user diwajibkan untuk membuat database secara terpusat melalui Dapoy Panel.
+- [FIX] Menyempurnakan escaping password untuk auto-login phpMyAdmin.
 - [FIX] Penanganan otomatis pada fitur ZIP Extractor untuk merapikan struktur folder akibat backslash (\\) yang dihasilkan oleh kompresor ZIP Windows. Update ini memungkinkan folder dapat dibaca dengan benar di environment Linux/cPanel.
