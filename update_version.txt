@@ -1,4 +1,4 @@
-Versi Update: 2.5.10
+Versi Update: 2.5.11
 
 Keterangan:
-- [FIX] Memperbaiki bug command substitution (backticks escaping) pada eksekusi query database via SSH/bash yang menyebabkan kegagalan (Command not found / Syntax error) saat melakukan manajemen database, termasuk create-db, assign-user, revoke-user, dan delete-native.
+- [FIX] Memperbaiki bug pada fitur ZIP Extractor di mana pesan warning dari Linux (berkaitan dengan format backslash Windows) menyebabkan proses terhenti (aborted by set -e) sebelum script perapihan folder sempat dijalankan.
