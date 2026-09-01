@@ -902,8 +902,11 @@
             if (autoGroup.style.display === 'block') {
                 const sub = document.getElementById('tunnelSubdomain').value.trim();
                 const dom = document.getElementById('tunnelDomainSelect').value;
-                if (!sub) return alert('Subdomain harus diisi!');
-                hostname = `${sub}.${dom}`;
+                if (sub === '' || sub === '@') {
+                    hostname = dom;
+                } else {
+                    hostname = `${sub}.${dom}`;
+                }
             } else {
                 hostname = document.getElementById('tunnelHostname').value.trim();
             }
