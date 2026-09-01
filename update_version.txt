@@ -1,4 +1,4 @@
-Versi Update: 2.5.12
+Versi Update: 2.5.13
 
 Keterangan:
 - [FEATURE] Menambahkan dukungan untuk penggunaan domain utama (tanpa subdomain) pada pengaturan Cloudflare Tunnel. Sekarang subdomain dapat dikosongkan atau diisi dengan `@`.
